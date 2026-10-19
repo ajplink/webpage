@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Associação Plink — ripple mark (matches the header logo) -->
+  <rect width="32" height="32" rx="6" fill="#fbfaf7"/>
+  <g fill="none" stroke="#b01161" stroke-width="1.6">
+    <circle cx="16" cy="16" r="8"/>
+    <circle cx="16" cy="16" r="13" opacity="0.55"/>
+  </g>
+  <circle cx="16" cy="16" r="3" fill="#1d4ed8"/>
+</svg>
