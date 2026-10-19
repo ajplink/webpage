@@ -1,0 +1,111 @@
+---
+/**
+ * Hero — one-sentence mission, one call to action, and a tiny inline SVG
+ * motif (a damped wave: thin, geometric, scientific). No photography.
+ */
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+}
+
+const { eyebrow, title, lead } = Astro.props;
+---
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <p class="lead">{lead}</p>
+      <div class="hero-actions">
+        <slot />
+      </div>
+    </div>
+
+    <svg
+      class="hero-motif"
+      viewBox="0 0 240 160"
+      width="240"
+      height="160"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <!-- axes -->
+      <path d="M20 20 V140 H230" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"></path>
+      <!-- dotted grid -->
+      <path
+        d="M20 50 H230 M20 80 H230 M20 110 H230"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        stroke-dasharray="1 7"
+        opacity="0.3"></path>
+      <!-- damped wave -->
+      <path
+        d="M20 80 C35 30 55 30 70 80 S105 130 120 80 S155 42 170 80 S200 112 215 80"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"></path>
+      <!-- zero crossings -->
+      <g fill="currentColor">
+        <circle cx="20" cy="80" r="2.5"></circle>
+        <circle cx="70" cy="80" r="2.5"></circle>
+        <circle cx="120" cy="80" r="2.5"></circle>
+        <circle cx="170" cy="80" r="2.5"></circle>
+        <circle cx="215" cy="80" r="2.5"></circle>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-xl) var(--space-l);
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+
+  .hero-text h1 {
+    margin-top: var(--space-2xs);
+    font-size: var(--step-5);
+    color: var(--color-text);
+  }
+
+  .hero-text .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    align-items: center;
+    margin-top: var(--space-m);
+  }
+
+  .hero-motif {
+    width: min(100%, 22rem);
+    height: auto;
+    color: var(--color-accent);
+    justify-self: end;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 40rem) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-motif {
+      width: min(100%, 14rem);
+      justify-self: start;
+    }
+  }
+</style>

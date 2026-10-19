@@ -1,0 +1,77 @@
+---
+/**
+ * EventItem — one event in a list: date, title, location, summary, status.
+ */
+import type { Locale } from '../config/site';
+import type { LocalizedEntry } from '../lib/content';
+import { eventStatus } from '../lib/content';
+import { formatDateRange, t } from '../i18n';
+import { href } from '../i18n/routes';
+import Card from './Card.astro';
+
+interface Props {
+  locale: Locale;
+  event: LocalizedEntry<'events'>;
+}
+
+const { locale, event } = Astro.props;
+const { title, summary, location, date, endDate } = event.data;
+const status = eventStatus(event);
+const dateText = formatDateRange(locale, date, endDate);
+const isoDate = date.toISOString().slice(0, 10);
+---
+
+<Card as="li">
+  <p class="date">
+    <time datetime={isoDate}>{dateText}</time>
+    {status === 'cancelled' && <span class="badge badge--accent">{t(locale, 'events.cancelled')}</span>}
+    {status === 'past' && <span class="badge">{t(locale, 'events.past')}</span>}
+  </p>
+  <h3 class="title">
+    <a href={href(locale, 'events', event.slug)}>{title}</a>
+  </h3>
+  <p class="location">{location}</p>
+  <p class="summary">{summary}</p>
+  <a class="link-arrow details" href={href(locale, 'events', event.slug)}>
+    {t(locale, 'common.details')}
+  </a>
+</Card>
+
+<style>
+  .date {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .title {
+    font-size: var(--step-1);
+  }
+
+  .title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .title a:hover {
+    color: var(--color-primary);
+  }
+
+  .location {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .summary {
+    font-size: var(--step--1);
+  }
+
+  .details {
+    margin-top: auto;
+    font-size: var(--step--1);
+  }
+</style>

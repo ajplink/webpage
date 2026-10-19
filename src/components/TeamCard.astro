@@ -1,0 +1,118 @@
+---
+/**
+ * TeamCard — person card: photo (or initials fallback), name, role, bio, links.
+ */
+import { Image } from 'astro:assets';
+import type { LocalizedEntry } from '../lib/content';
+import Card from './Card.astro';
+
+interface Props {
+  member: LocalizedEntry<'team'>;
+}
+
+const { member } = Astro.props;
+const { name, role, bio, photo, links } = member.data;
+
+/** Initials fallback when no photo is provided (never invent portraits). */
+const initials = name
+  .split(/\s+/)
+  .filter((word) => word.length > 1)
+  .slice(0, 2)
+  .map((word) => word[0])
+  .join('')
+  .toUpperCase();
+---
+
+<Card as="li">
+  <div class="head">
+    {
+      photo ? (
+        <Image
+          class="photo"
+          src={photo}
+          alt=""
+          width={72}
+          height={72}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <span class="initials" aria-hidden="true">
+          {initials}
+        </span>
+      )
+    }
+    <div>
+      <h3 class="name">{name}</h3>
+      <p class="role">{role}</p>
+    </div>
+  </div>
+  <p class="bio">{bio}</p>
+  {
+    links && links.length > 0 && (
+      <ul class="links">
+        {links.map((link) => (
+          <li>
+            <a href={link.url} rel="me noopener">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Card>
+
+<style>
+  .head {
+    display: flex;
+    gap: var(--space-s);
+    align-items: center;
+  }
+
+  .photo,
+  .initials {
+    width: 72px;
+    height: 72px;
+    flex: none;
+    border-radius: 50%;
+  }
+
+  .photo {
+    object-fit: cover;
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .initials {
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--color-primary);
+    background-color: var(--color-tint);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .name {
+    font-size: var(--step-1);
+  }
+
+  .role {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .bio {
+    font-size: var(--step--1);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: auto 0 0;
+    list-style: none;
+    font-size: var(--step--1);
+  }
+</style>

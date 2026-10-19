@@ -1,0 +1,239 @@
+---
+/**
+ * Header — brand, primary navigation and language switch.
+ *
+ * Mobile: navigation lives inside a <details> element (keyboard accessible,
+ * zero JavaScript). Desktop: the same links are shown inline; only one of the
+ * two navigations is displayed (and exposed to assistive tech) at a time.
+ */
+import { SITE, type Locale } from '../config/site';
+import { href, type RouteKey } from '../i18n/routes';
+import { t } from '../i18n';
+import LanguageSwitch from './LanguageSwitch.astro';
+
+interface Props {
+  locale: Locale;
+  /** Route key of the current page, for aria-current. */
+  current: RouteKey;
+  /** Entry slug when on a detail page (detail pages mark their section). */
+  entrySlug?: string;
+}
+
+const { locale, current, entrySlug } = Astro.props;
+
+const items = SITE.nav.map((key) => ({
+  key: key as RouteKey,
+  label: t(locale, `nav.${key}`),
+  href: href(locale, key),
+}));
+
+function isCurrent(key: RouteKey): boolean {
+  return current === key && !entrySlug;
+}
+
+function isSection(key: RouteKey): boolean {
+  return current === key;
+}
+---
+
+<header class="header">
+  <div class="container header-bar">
+    <a class="brand" href={href(locale, 'home')}>
+      <!-- Tiny line motif: ripples from a point ("plink"). -->
+      <svg class="brand-mark" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+        <circle cx="12" cy="12" r="2.25" fill="currentColor"></circle>
+        <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.25"></circle>
+        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1" opacity="0.55"></circle>
+      </svg>
+      <span class="brand-name">{SITE.name}</span>
+    </a>
+
+    <nav class="nav-desktop" aria-label={t(locale, 'a11y.mainNav')}>
+      <ul>
+        {
+          items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={
+                  isCurrent(item.key) ? 'page' : isSection(item.key) ? 'true' : undefined
+                }
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-tools">
+      <LanguageSwitch locale={locale} routeKey={current} entrySlug={entrySlug} />
+    </div>
+
+    <details class="nav-mobile">
+      <summary>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+        {t(locale, 'a11y.menu')}
+      </summary>
+      <nav class="nav-mobile-panel" aria-label={t(locale, 'a11y.mobileNav')}>
+        <ul>
+          {
+            items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={
+                    isCurrent(item.key) ? 'page' : isSection(item.key) ? 'true' : undefined
+                  }
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <LanguageSwitch locale={locale} routeKey={current} entrySlug={entrySlug} />
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .header {
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .header-bar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-2xs);
+  }
+
+  .brand {
+    display: inline-flex;
+    gap: var(--space-2xs);
+    align-items: center;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    color: var(--color-accent);
+    flex: none;
+  }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .nav-desktop ul {
+    display: flex;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .nav-desktop a {
+    display: inline-block;
+    padding: var(--space-3xs) var(--space-2xs);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--radius);
+  }
+
+  .nav-desktop a:hover {
+    color: var(--color-primary);
+    background-color: var(--color-tint);
+  }
+
+  .nav-desktop a[aria-current] {
+    box-shadow: inset 0 -2px 0 0 var(--color-accent);
+  }
+
+  .nav-desktop a[aria-current='page'] {
+    font-weight: 650;
+  }
+
+  /* Mobile-first: only the <details> menu is visible below 48rem. */
+  .nav-desktop,
+  .header-tools {
+    display: none;
+  }
+
+  .nav-mobile {
+    position: static;
+  }
+
+  .nav-mobile summary {
+    display: inline-flex;
+    gap: var(--space-2xs);
+    align-items: center;
+    padding: var(--space-3xs) var(--space-2xs);
+    font-weight: 600;
+    cursor: pointer;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    list-style: none;
+  }
+
+  .nav-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-mobile-panel {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 5;
+    padding: var(--space-s);
+    background-color: var(--color-bg);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .nav-mobile-panel ul {
+    display: grid;
+    gap: var(--space-3xs);
+    padding: 0;
+    margin: 0 0 var(--space-s);
+    list-style: none;
+  }
+
+  .nav-mobile-panel a {
+    display: block;
+    padding: var(--space-2xs);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--radius);
+  }
+
+  .nav-mobile-panel a:hover,
+  .nav-mobile-panel a[aria-current] {
+    background-color: var(--color-tint);
+  }
+
+  .nav-mobile-panel a[aria-current='page'] {
+    font-weight: 650;
+  }
+
+  @media (min-width: 48rem) {
+    .nav-desktop,
+    .header-tools {
+      display: block;
+    }
+
+    .nav-mobile {
+      display: none;
+    }
+  }
+</style>

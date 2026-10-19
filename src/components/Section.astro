@@ -1,0 +1,42 @@
+---
+/**
+ * Section — titled region with an optional "view all" link.
+ * Wraps its content in a labelled <section> (landmark + heading association).
+ */
+interface Props {
+  title: string;
+  /** Unique id, used for aria-labelledby. */
+  id: string;
+  href?: string;
+  linkLabel?: string;
+}
+
+const { title, id, href, linkLabel } = Astro.props;
+---
+
+<section class="section" aria-labelledby={id}>
+  <div class="container">
+    <div class="section-head">
+      <h2 id={id}>{title}</h2>
+      {href && linkLabel && <a class="link-arrow" href={href}>{linkLabel}</a>}
+    </div>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--space-l);
+  }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-m);
+    padding-bottom: var(--space-2xs);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+/**
+ * SEO — document metadata: title, description, canonical, hreflang,
+ * Open Graph / Twitter cards and JSON-LD Organization.
+ * No third-party requests: everything is self-hosted or inline.
+ */
+import { DEFAULT_LOCALE, HTML_LANG, LOCALES, SITE, type Locale } from '../config/site';
+import { absoluteUrl, type RouteKey } from '../i18n/routes';
+import { t } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Page title (without the site name suffix). */
+  title: string;
+  description: string;
+  /** Route key of the current page, used for canonical/hreflang URLs. */
+  routeKey: RouteKey;
+  /** Entry slug when the page is a detail page. */
+  entrySlug?: string;
+  /** Optional Open Graph image URL (defaults to the placeholder). */
+  image?: string;
+  type?: 'website' | 'article';
+  /** Keep drafts and utility pages out of search engines. */
+  noindex?: boolean;
+}
+
+const {
+  locale,
+  title,
+  description,
+  routeKey,
+  entrySlug,
+  image,
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonical = absoluteUrl(locale, routeKey, entrySlug);
+const ogImage = image ?? `${SITE.url}/og-placeholder.png`;
+const fullTitle =
+  routeKey === 'home' ? `${SITE.name} — ${SITE.tagline[locale]}` : `${title} · ${SITE.name}`;
+
+/** Static organization data (identical on every page). */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  legalName: SITE.legalName,
+  url: `${SITE.url}/`,
+  logo: ogImage,
+  email: SITE.contactEmail,
+  description: SITE.description[locale],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address,
+  },
+  sameAs: SITE.social.map((s) => s.url),
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<link rel="canonical" href={canonical} />
+{LOCALES.map((l) => <link rel="alternate" hreflang={HTML_LANG[l]} href={absoluteUrl(l, routeKey, entrySlug)} />)}
+<link rel="alternate" hreflang="x-default" href={absoluteUrl(DEFAULT_LOCALE, routeKey, entrySlug)} />
+{SITE.features.rss && <link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`${SITE.name} — ${t(locale, 'nav.news')}`}
+  href={`${SITE.url}/${locale}/rss.xml`}
+/>}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={HTML_LANG[locale]} />
+{LOCALES.filter((l) => l !== locale).map((l) => <meta property="og:locale:alternate" content={HTML_LANG[l]} />)}
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={SITE.name} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />

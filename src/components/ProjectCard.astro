@@ -1,0 +1,103 @@
+---
+/**
+ * ProjectCard — one project in the grid: status, title, summary, tags, leads.
+ *
+ * The root element carries `data-status` and `data-tags` attributes so the
+ * projects page can filter cards with pure CSS (:has() + attribute selectors).
+ */
+import type { Locale } from '../config/site';
+import type { LocalizedEntry } from '../lib/content';
+import { t } from '../i18n';
+import { href } from '../i18n/routes';
+import Card from './Card.astro';
+import Tag from './Tag.astro';
+
+interface Props {
+  locale: Locale;
+  project: LocalizedEntry<'projects'>;
+  /** Pre-resolved lead names (see projectLeads in lib/content.ts). */
+  leads: string[];
+}
+
+const { locale, project, leads } = Astro.props;
+const { title, summary, status, tags, hasSimulation } = project.data;
+
+const statusLabel = t(locale, `projects.status.${status}`);
+const statusBadgeClass =
+  status === 'active' ? 'badge badge--accent' : status === 'idea' ? 'badge badge--quiet' : 'badge';
+---
+
+<Card
+  as="li"
+  dataAttrs={{ 'data-status': status, 'data-tags': tags.join(' ') }}
+>
+  <p class="status">
+    <span class={statusBadgeClass}>{statusLabel}</span>
+    {hasSimulation && <span class="badge">{t(locale, 'projects.simulationPending')}</span>}
+  </p>
+  <h3 class="title">
+    <a href={href(locale, 'projects', project.slug)}>{title}</a>
+  </h3>
+  <p class="summary">{summary}</p>
+  {
+    leads.length > 0 && (
+      <p class="leads">
+        <span class="leads-label">{t(locale, 'projects.leads')}:</span> {leads.join(', ')}
+      </p>
+    )
+  }
+  {
+    tags.length > 0 && (
+      <ul class="tags">
+        {tags.map((tag) => (
+          <li>
+            <Tag label={tag} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Card>
+
+<style>
+  .status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  .title {
+    font-size: var(--step-1);
+  }
+
+  .title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .title a:hover {
+    color: var(--color-primary);
+  }
+
+  .summary {
+    font-size: var(--step--1);
+  }
+
+  .leads {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .leads-label {
+    font-weight: 600;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: auto 0 0;
+    list-style: none;
+  }
+</style>
