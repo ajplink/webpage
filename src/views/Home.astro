@@ -1,0 +1,108 @@
+---
+/**
+ * Home — mission hero, upcoming events, latest news, featured projects.
+ */
+import { SITE, type Locale } from '../config/site';
+import { t } from '../i18n';
+import { href } from '../i18n/routes';
+import { eventsByStatus, projectLeads, projects, publishedNews } from '../lib/content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import EventItem from '../components/EventItem.astro';
+import NewsItem from '../components/NewsItem.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const [{ upcoming }, news, allProjects] = await Promise.all([
+  eventsByStatus(locale),
+  publishedNews(locale),
+  projects(locale),
+]);
+
+const featuredEvents = upcoming.slice(0, 3);
+const latestNews = news.slice(0, 3);
+const featuredProjects = allProjects.slice(0, 3);
+const leadNames = new Map<string, string[]>();
+for (const project of featuredProjects) {
+  leadNames.set(project.slug, (await projectLeads(project, locale)).map((m) => m.data.name));
+}
+---
+
+<Base
+  {locale}
+  title={SITE.name}
+  description={SITE.description[locale]}
+  routeKey="home"
+>
+  <Hero
+    eyebrow={t(locale, 'home.eyebrow')}
+    title={SITE.tagline[locale]}
+    lead={SITE.description[locale]}
+  >
+    <a class="button" href={href(locale, 'projects')}>{t(locale, 'home.cta')}</a>
+    <a class="button button--ghost" href={href(locale, 'join')}>{t(locale, 'home.ctaSecondary')}</a>
+  </Hero>
+
+  <Section
+    title={t(locale, 'home.upcomingEvents')}
+    id="upcoming-events"
+    href={href(locale, 'events')}
+    linkLabel={t(locale, 'home.viewAll')}
+  >
+    {
+      featuredEvents.length > 0 ? (
+        <ul class="grid">
+          {featuredEvents.map((event) => (
+            <EventItem {locale} {event} />
+          ))}
+        </ul>
+      ) : (
+        <p>{t(locale, 'home.empty')}</p>
+      )
+    }
+  </Section>
+
+  <Section
+    title={t(locale, 'home.latestNews')}
+    id="latest-news"
+    href={href(locale, 'news')}
+    linkLabel={t(locale, 'home.viewAll')}
+  >
+    {
+      latestNews.length > 0 ? (
+        <ul class="grid">
+          {latestNews.map((item) => (
+            <NewsItem {locale} {item} />
+          ))}
+        </ul>
+      ) : (
+        <p>{t(locale, 'home.empty')}</p>
+      )
+    }
+  </Section>
+
+  <Section
+    title={t(locale, 'home.featuredProjects')}
+    id="featured-projects"
+    href={href(locale, 'projects')}
+    linkLabel={t(locale, 'home.viewAll')}
+  >
+    {
+      featuredProjects.length > 0 ? (
+        <ul class="grid">
+          {featuredProjects.map((project) => (
+            <ProjectCard {locale} {project} leads={leadNames.get(project.slug) ?? []} />
+          ))}
+        </ul>
+      ) : (
+        <p>{t(locale, 'home.empty')}</p>
+      )
+    }
+  </Section>
+</Base>

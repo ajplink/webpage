@@ -1,0 +1,51 @@
+---
+/**
+ * About — editable content from the `pages` collection (entry slug: `about`).
+ */
+import type { Locale } from '../config/site';
+import { localizedEntry } from '../lib/content';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const page = await localizedEntry('pages', locale, 'about');
+if (!page) throw new Error('Missing `pages/about` content entry');
+const { Content } = await render(page);
+---
+
+<Base
+  {locale}
+  title={page.data.title}
+  description={page.data.summary ?? ''}
+  routeKey="about"
+>
+  <article class="container page">
+    <header class="page-head">
+      <h1>{page.data.title}</h1>
+      {page.data.summary && <p class="lead">{page.data.summary}</p>}
+    </header>
+    <Prose>
+      <Content />
+    </Prose>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+</style>

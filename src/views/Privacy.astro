@@ -1,0 +1,101 @@
+---
+/**
+ * Privacy / legal — RGPD-aware stub: no cookies, no analytics, no tracking.
+ * The body text is editable content (`pages/privacy`); the legal identity
+ * data below comes from src/config/site.ts.
+ */
+import { SITE, type Locale } from '../config/site';
+import { localizedEntry } from '../lib/content';
+import { t } from '../i18n';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const page = await localizedEntry('pages', locale, 'privacy');
+if (!page) throw new Error('Missing `pages/privacy` content entry');
+const { Content } = await render(page);
+---
+
+<Base
+  {locale}
+  title={page.data.title}
+  description={page.data.summary ?? ''}
+  routeKey="privacy"
+>
+  <article class="container page">
+    <header class="page-head">
+      <h1>{page.data.title}</h1>
+      {page.data.summary && <p class="lead">{page.data.summary}</p>}
+    </header>
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <aside class="legal" aria-labelledby="legal-title">
+      <h2 id="legal-title">{t(locale, 'join.contact')}</h2>
+      <dl>
+        <div>
+          <dt>{SITE.name}</dt>
+          <dd>{SITE.legalName}</dd>
+        </div>
+        <div>
+          <dt>NIPC</dt>
+          <dd>{SITE.legalId}</dd>
+        </div>
+        <div>
+          <dt>{t(locale, 'events.location')}</dt>
+          <dd>{SITE.address}</dd>
+        </div>
+        <div>
+          <dt>{t(locale, 'join.emailLabel')}</dt>
+          <dd><a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a></dd>
+        </div>
+      </dl>
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .legal {
+    max-width: var(--measure);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-l);
+    font-size: var(--step--1);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .legal dl {
+    display: grid;
+    gap: var(--space-2xs);
+    margin: var(--space-s) 0 0;
+  }
+
+  .legal dt {
+    font-weight: 650;
+    color: var(--color-text);
+  }
+
+  .legal dd {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>

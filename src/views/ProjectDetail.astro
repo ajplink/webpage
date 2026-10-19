@@ -1,0 +1,184 @@
+---
+/**
+ * Project detail — summary, leads, tags, links, body and the reserved
+ * simulation slot (see components/SimulationSlot.astro).
+ */
+import { Image } from 'astro:assets';
+import type { Locale } from '../config/site';
+import { localizedEntry, projectLeads } from '../lib/content';
+import { t } from '../i18n';
+import { href } from '../i18n/routes';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+import Tag from '../components/Tag.astro';
+import SimulationSlot from '../components/SimulationSlot.astro';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const entry = await localizedEntry('projects', locale, slug);
+if (!entry) throw new Error(`Missing projects entry: ${slug}`);
+const { title, summary, status, tags, cover, links, hasSimulation } = entry.data;
+const leads = await projectLeads(entry, locale);
+const { Content } = await render(entry);
+
+const statusKey = { idea: 'projects.status.idea', active: 'projects.status.active', completed: 'projects.status.completed' } as const;
+const statusBadgeClass =
+  status === 'active' ? 'badge badge--accent' : status === 'idea' ? 'badge badge--quiet' : 'badge';
+---
+
+<Base
+  {locale}
+  {title}
+  description={summary}
+  routeKey="projects"
+  entrySlug={entry.slug}
+  image={cover?.src}
+  type="article"
+>
+  <article class="container page">
+    <header class="page-head">
+      <p class="eyebrow">
+        <span class={statusBadgeClass}>{t(locale, statusKey[status])}</span>
+        {hasSimulation && <span class="badge">{t(locale, 'projects.simulationPending')}</span>}
+      </p>
+      <h1>{title}</h1>
+      <p class="lead">{summary}</p>
+    </header>
+
+    {
+      (leads.length > 0 || tags.length > 0 || links.length > 0) && (
+        <aside class="meta">
+          {
+            leads.length > 0 && (
+              <div>
+                <h2 class="meta-title">{t(locale, 'projects.leads')}</h2>
+                <ul class="meta-list">
+                  {leads.map((member) => (
+                    <li>{member.data.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+          {
+            tags.length > 0 && (
+              <div>
+                <h2 class="meta-title">{t(locale, 'news.tags')}</h2>
+                <ul class="meta-list tags">
+                  {tags.map((tag) => (
+                    <li>
+                      <Tag label={tag} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+          {
+            links.length > 0 && (
+              <div>
+                <h2 class="meta-title">{t(locale, 'projects.links')}</h2>
+                <ul class="meta-list">
+                  {links.map((link) => (
+                    <li>
+                      <a href={link.url} rel="noopener">
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+        </aside>
+      )
+    }
+
+    {
+      cover && (
+        <Image
+          class="cover"
+          src={cover}
+          alt=""
+          width={1200}
+          height={630}
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    {/* Reserved slot for the future interactive simulation — renders nothing. */}
+    <SimulationSlot />
+
+    <p class="back">
+      <a class="link-arrow" href={href(locale, 'projects')}>{t(locale, 'common.backTo')} {t(locale, 'nav.projects')}</a>
+    </p>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .meta {
+    display: grid;
+    gap: var(--space-s);
+    grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+    margin-bottom: var(--space-l);
+    padding: var(--space-s);
+    font-size: var(--step--1);
+    background-color: var(--color-tint);
+    border-radius: var(--radius);
+  }
+
+  .meta-title {
+    margin-bottom: var(--space-3xs);
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .meta-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .cover {
+    width: min(100%, 48rem);
+    height: auto;
+    margin-bottom: var(--space-l);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .back {
+    margin-top: var(--space-xl);
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+/**
+ * News detail — one post (MDX body: prose with headings, links, media).
+ */
+import { Image } from 'astro:assets';
+import type { Locale } from '../config/site';
+import { localizedEntry } from '../lib/content';
+import { formatDate, t } from '../i18n';
+import { href } from '../i18n/routes';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+import Tag from '../components/Tag.astro';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const entry = await localizedEntry('news', locale, slug);
+if (!entry) throw new Error(`Missing news entry: ${slug}`);
+const { title, summary, date, cover, tags } = entry.data;
+const { Content } = await render(entry);
+---
+
+<Base
+  {locale}
+  {title}
+  description={summary}
+  routeKey="news"
+  entrySlug={entry.slug}
+  image={cover?.src}
+  type="article"
+>
+  <article class="container page">
+    <header class="page-head">
+      <p class="eyebrow">
+        <time datetime={date.toISOString().slice(0, 10)}>{formatDate(locale, date)}</time>
+      </p>
+      <h1>{title}</h1>
+      <p class="lead">{summary}</p>
+      {
+        tags.length > 0 && (
+          <ul class="tags" aria-label={t(locale, 'news.tags')}>
+            {tags.map((tag) => (
+              <li>
+                <Tag label={tag} />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    {
+      cover && (
+        <Image
+          class="cover"
+          src={cover}
+          alt=""
+          width={1200}
+          height={630}
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <p class="back">
+      <a class="link-arrow" href={href(locale, 'news')}>{t(locale, 'common.backTo')} {t(locale, 'nav.news')}</a>
+    </p>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: var(--space-s) 0 0;
+    list-style: none;
+  }
+
+  .cover {
+    width: min(100%, 48rem);
+    height: auto;
+    margin-bottom: var(--space-l);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .back {
+    margin-top: var(--space-xl);
+  }
+</style>

@@ -1,0 +1,182 @@
+---
+/**
+ * Projects — grid with status + topic filters.
+ *
+ * The filters are PURE CSS (zero JavaScript): radio inputs + :has() rules.
+ * The per-tag rules are generated below because tag names come from content;
+ * the page degrades gracefully to "show everything" where :has() is missing.
+ */
+import type { Locale } from '../config/site';
+import { projectLeads, projects } from '../lib/content';
+import { t } from '../i18n';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const allProjects = await projects(locale);
+const title = t(locale, 'nav.projects');
+
+const leadNames = new Map<string, string[]>();
+for (const project of allProjects) {
+  leadNames.set(project.slug, (await projectLeads(project, locale)).map((m) => m.data.name));
+}
+
+/** Unique topic tags across all projects, for the filter row. */
+const tags = [...new Set(allProjects.flatMap((p) => p.data.tags))].sort();
+
+const statuses = ['active', 'idea', 'completed'] as const;
+
+/** Escape a value for use inside a CSS attribute selector. */
+const cssAttr = (value: string) => value.replace(/["\\]/g, '\\$&');
+
+const filterCss = [
+  ...statuses.map(
+    (status) =>
+      `.projects:has(#st-${status}:checked) .projects-grid > [data-status]:not([data-status='${status}']) { display: none; }`,
+  ),
+  ...tags.map((tag, i) =>
+    [
+      `.projects:has(#tg-${i}:checked) .projects-grid > [data-tags]:not([data-tags~="${cssAttr(tag)}"]) { display: none; }`,
+      `.projects:has(#tg-${i}:checked) .projects-grid > [data-tags=""] { display: none; }`,
+    ].join('\n'),
+  ),
+].join('\n');
+---
+
+<Base {locale} {title} description={title} routeKey="projects">
+  <style is:inline set:html={`/* CSS-only project filters (generated in ProjectsIndex.astro) */\n${filterCss}`} />
+
+  <div class="container page projects">
+    <header class="page-head">
+      <h1>{title}</h1>
+    </header>
+
+    <div class="filters" role="group" aria-label={t(locale, 'projects.filters')}>
+      <fieldset>
+        <legend>{t(locale, 'projects.filtersStatus')}</legend>
+        <div class="options">
+          <input type="radio" name="status" id="st-all" checked />
+          <label for="st-all">{t(locale, 'projects.filtersAll')}</label>
+          {
+            statuses.map((status) => (
+              <>
+                <input type="radio" name="status" id={`st-${status}`} />
+                <label for={`st-${status}`}>{t(locale, `projects.status.${status}`)}</label>
+              </>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      {
+        tags.length > 0 && (
+          <fieldset>
+            <legend>{t(locale, 'projects.filtersTags')}</legend>
+            <div class="options">
+              <input type="radio" name="tag" id="tg-all" checked />
+              <label for="tg-all">{t(locale, 'projects.filtersAll')}</label>
+              {tags.map((tag, i) => (
+                <>
+                  <input type="radio" name="tag" id={`tg-${i}`} />
+                  <label for={`tg-${i}`}>{tag}</label>
+                </>
+              ))}
+            </div>
+          </fieldset>
+        )
+      }
+    </div>
+
+    <h2 class="visually-hidden">{t(locale, 'projects.allProjects')}</h2>
+    <ul class="grid projects-grid">
+      {
+        allProjects.map((project) => (
+          <ProjectCard {locale} {project} leads={leadNames.get(project.slug) ?? []} />
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .filters {
+    display: grid;
+    gap: var(--space-s);
+    margin-bottom: var(--space-l);
+    padding-bottom: var(--space-s);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .filters fieldset {
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+
+  .filters legend {
+    padding: 0;
+    margin-bottom: var(--space-2xs);
+    font-size: var(--step--1);
+    font-weight: 650;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  /* Real radio inputs stay focusable and announced; labels act as chips. */
+  .options input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .options label {
+    padding: var(--space-3xs) var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    background-color: var(--color-tint);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius);
+    transition:
+      color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease);
+  }
+
+  .options label:hover {
+    color: var(--color-primary);
+  }
+
+  .options input:checked + label {
+    font-weight: 650;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .options input:focus-visible + label {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+</style>

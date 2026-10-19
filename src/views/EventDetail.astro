@@ -1,0 +1,110 @@
+---
+/**
+ * Event detail — one event: dates, place, registration and full body.
+ */
+import { Image } from 'astro:assets';
+import type { Locale } from '../config/site';
+import { eventStatus, localizedEntry } from '../lib/content';
+import { formatDateRange, t } from '../i18n';
+import { href } from '../i18n/routes';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const entry = await localizedEntry('events', locale, slug);
+if (!entry) throw new Error(`Missing events entry: ${slug}`);
+const { title, summary, location, date, endDate, cover, registrationUrl } = entry.data;
+const status = eventStatus(entry);
+const { Content } = await render(entry);
+---
+
+<Base
+  {locale}
+  {title}
+  description={summary}
+  routeKey="events"
+  entrySlug={entry.slug}
+  image={cover?.src}
+  type="article"
+>
+  <article class="container page">
+    <header class="page-head">
+      <p class="eyebrow">
+        <time datetime={date.toISOString().slice(0, 10)}>{formatDateRange(locale, date, endDate)}</time>
+        · {location}
+        {status === 'cancelled' && <span class="badge badge--accent">{t(locale, 'events.cancelled')}</span>}
+        {status === 'past' && <span class="badge">{t(locale, 'events.past')}</span>}
+      </p>
+      <h1>{title}</h1>
+      <p class="lead">{summary}</p>
+      {
+        status === 'upcoming' && registrationUrl && (
+          <p>
+            <a class="button" href={registrationUrl}>
+              {t(locale, 'events.register')}
+            </a>
+          </p>
+        )
+      }
+    </header>
+
+    {
+      cover && (
+        <Image
+          class="cover"
+          src={cover}
+          alt=""
+          width={1200}
+          height={630}
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <p class="back">
+      <a class="link-arrow" href={href(locale, 'events')}>{t(locale, 'common.backTo')} {t(locale, 'nav.events')}</a>
+    </p>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .page-head p:last-child {
+    margin-top: var(--space-m);
+  }
+
+  .cover {
+    width: min(100%, 48rem);
+    height: auto;
+    margin-bottom: var(--space-l);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .back {
+    margin-top: var(--space-xl);
+  }
+</style>

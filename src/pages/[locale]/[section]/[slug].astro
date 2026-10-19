@@ -1,0 +1,46 @@
+---
+/**
+ * Detail pages per locale (localized section prefix + shared entry slug):
+ * /pt/eventos/<slug>/ · /en-us/events/<slug>/ · news · projects …
+ */
+import { LOCALES, type Locale } from '../../../config/site';
+import {
+  ROUTES,
+  SECTION_COLLECTIONS,
+  type SectionKey,
+} from '../../../i18n/routes';
+import { isPublished, localizedEntries } from '../../../lib/content';
+import EventDetail from '../../../views/EventDetail.astro';
+import NewsDetail from '../../../views/NewsDetail.astro';
+import ProjectDetail from '../../../views/ProjectDetail.astro';
+
+const VIEWS = {
+  events: EventDetail,
+  news: NewsDetail,
+  projects: ProjectDetail,
+} as const;
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of LOCALES) {
+    for (const key of Object.keys(SECTION_COLLECTIONS) as SectionKey[]) {
+      const entries = await localizedEntries(SECTION_COLLECTIONS[key], locale);
+      for (const entry of entries) {
+        // Drafts are never generated, in any locale.
+        if (!isPublished(entry)) continue;
+        paths.push({
+          params: { locale, section: ROUTES[key][locale], slug: entry.slug },
+          props: { key, slug: entry.slug },
+        });
+      }
+    }
+  }
+  return paths;
+}
+
+const { locale } = Astro.params as { locale: Locale };
+const { key, slug } = Astro.props as { key: keyof typeof VIEWS; slug: string };
+const View = VIEWS[key];
+---
+
+<View {locale} {slug} />

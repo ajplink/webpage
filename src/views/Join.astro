@@ -1,0 +1,76 @@
+---
+/**
+ * Join / Contact — how to become a member or collaborator, how to submit a
+ * project, and static contact details (no backend in v1: mailto + form link).
+ */
+import { SITE, type Locale } from '../config/site';
+import { localizedEntry } from '../lib/content';
+import { t } from '../i18n';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const page = await localizedEntry('pages', locale, 'join');
+if (!page) throw new Error('Missing `pages/join` content entry');
+const { Content } = await render(page);
+---
+
+<Base
+  {locale}
+  title={page.data.title}
+  description={page.data.summary ?? ''}
+  routeKey="join"
+>
+  <article class="container page">
+    <header class="page-head">
+      <h1>{page.data.title}</h1>
+      {page.data.summary && <p class="lead">{page.data.summary}</p>}
+    </header>
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <aside class="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">{t(locale, 'join.contact')}</h2>
+      <div class="contact-actions">
+        <a class="button" href={SITE.formUrl} rel="noopener">{t(locale, 'join.formLink')}</a>
+        <a class="button button--ghost" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'join.emailLabel')}: {SITE.contactEmail}</a>
+      </div>
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .contact {
+    max-width: var(--measure);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-l);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-top: var(--space-s);
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+/**
+ * Team — people grouped by department (DREE, DP, DL, DCI, Direção).
+ * Department headings carry a tiny colour dot from the brand palette.
+ */
+import type { Locale } from '../config/site';
+import { teamByDepartment } from '../lib/content';
+import { t } from '../i18n';
+import Base from '../layouts/Base.astro';
+import TeamCard from '../components/TeamCard.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const groups = await teamByDepartment(locale);
+const title = t(locale, 'nav.team');
+---
+
+<Base
+  {locale}
+  {title}
+  description={t(locale, 'team.departments')}
+  routeKey="team"
+>
+  <div class="container page">
+    <header class="page-head">
+      <p class="eyebrow">{t(locale, 'team.departments')}</p>
+      <h1>{title}</h1>
+    </header>
+
+    {
+      groups.map((group) => (
+        <section class="department" aria-labelledby={`dept-${group.department}`}>
+          <h2 id={`dept-${group.department}`} class="department-title">
+            <span class="dot" data-department={group.department} aria-hidden="true" />
+            {group.department}
+          </h2>
+          <ul class="grid">
+            {group.members.map((member) => (
+              <TeamCard {member} />
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .department + .department {
+    margin-top: var(--space-xl);
+  }
+
+  .department-title {
+    display: flex;
+    gap: var(--space-2xs);
+    align-items: center;
+    margin-bottom: var(--space-s);
+  }
+
+  .dot {
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+  }
+
+  /* Restrained use of the brand palette: one dot per department. */
+  .dot[data-department='Direção'] {
+    background-color: var(--palette-black);
+  }
+
+  .dot[data-department='DREE'] {
+    background-color: var(--palette-blue);
+  }
+
+  .dot[data-department='DP'] {
+    background-color: var(--palette-pink);
+  }
+
+  .dot[data-department='DL'] {
+    background-color: var(--palette-green);
+  }
+
+  .dot[data-department='DCI'] {
+    background-color: var(--palette-orange);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .dot[data-department='Direção'] {
+      background-color: var(--color-text-muted);
+    }
+  }
+</style>

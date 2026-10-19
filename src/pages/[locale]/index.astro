@@ -1,0 +1,16 @@
+---
+/**
+ * Home per locale: /pt/ · /en-us/ · /en-gb/
+ * (the default locale is additionally mirrored at / by src/pages/index.astro).
+ */
+import { LOCALES, type Locale } from '../../config/site';
+import Home from '../../views/Home.astro';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params as { locale: Locale };
+---
+
+<Home {locale} />

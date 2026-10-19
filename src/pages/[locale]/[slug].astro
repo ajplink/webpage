@@ -1,0 +1,40 @@
+---
+/**
+ * Top-level pages per locale (localized slugs, see src/i18n/routes.ts):
+ * about · team · events · news · projects · join · privacy
+ */
+import { LOCALES, type Locale } from '../../config/site';
+import { PAGE_KEYS, ROUTES, type RouteKey } from '../../i18n/routes';
+import About from '../../views/About.astro';
+import Team from '../../views/Team.astro';
+import EventsIndex from '../../views/EventsIndex.astro';
+import NewsIndex from '../../views/NewsIndex.astro';
+import ProjectsIndex from '../../views/ProjectsIndex.astro';
+import Join from '../../views/Join.astro';
+import Privacy from '../../views/Privacy.astro';
+
+const VIEWS = {
+  about: About,
+  team: Team,
+  events: EventsIndex,
+  news: NewsIndex,
+  projects: ProjectsIndex,
+  join: Join,
+  privacy: Privacy,
+} as const;
+
+export function getStaticPaths() {
+  return LOCALES.flatMap((locale) =>
+    PAGE_KEYS.map((key) => ({
+      params: { locale, slug: ROUTES[key][locale] },
+      props: { key: key as RouteKey },
+    })),
+  );
+}
+
+const { locale } = Astro.params as { locale: Locale };
+const { key } = Astro.props as { key: keyof typeof VIEWS };
+const View = VIEWS[key];
+---
+
+<View {locale} />

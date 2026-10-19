@@ -1,0 +1,71 @@
+---
+/**
+ * News — reverse-chronological list with topic tags and an RSS link.
+ */
+import { SITE, type Locale } from '../config/site';
+import { publishedNews } from '../lib/content';
+import { t } from '../i18n';
+import Base from '../layouts/Base.astro';
+import NewsItem from '../components/NewsItem.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const news = await publishedNews(locale);
+const title = t(locale, 'nav.news');
+---
+
+<Base {locale} {title} description={title} routeKey="news" type="website">
+  <div class="container page">
+    <header class="page-head">
+      <h1>{title}</h1>
+      {
+        SITE.features.rss && (
+          <a class="link-arrow rss" href={`/${locale}/rss.xml`}>
+            {t(locale, 'news.rss')}
+          </a>
+        )
+      }
+    </header>
+
+    {
+      news.length > 0 ? (
+        <>
+          <h2 class="visually-hidden">{t(locale, 'news.allPosts')}</h2>
+          <ul class="grid">
+            {news.map((item) => (
+              <NewsItem {locale} {item} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p class="empty">{t(locale, 'home.empty')}</p>
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-l);
+  }
+
+  .rss {
+    font-size: var(--step--1);
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>

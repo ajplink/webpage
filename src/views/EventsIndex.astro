@@ -1,0 +1,81 @@
+---
+/**
+ * Events — upcoming first (soonest first), then past (most recent first).
+ * The status of every event is derived from its dates in lib/content.ts.
+ */
+import type { Locale } from '../config/site';
+import { eventsByStatus } from '../lib/content';
+import { t } from '../i18n';
+import Base from '../layouts/Base.astro';
+import EventItem from '../components/EventItem.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { upcoming, past } = await eventsByStatus(locale);
+const title = t(locale, 'nav.events');
+---
+
+<Base {locale} {title} description={title} routeKey="events">
+  <div class="container page">
+    <header class="page-head">
+      <h1>{title}</h1>
+    </header>
+
+    <section aria-labelledby="events-upcoming">
+      <h2 id="events-upcoming">{t(locale, 'events.upcoming')}</h2>
+      {
+        upcoming.length > 0 ? (
+          <ul class="grid">
+            {upcoming.map((event) => (
+              <EventItem {locale} {event} />
+            ))}
+          </ul>
+        ) : (
+          <p class="empty">{t(locale, 'events.noUpcoming')}</p>
+        )
+      }
+    </section>
+
+    <section class="past" aria-labelledby="events-past">
+      <h2 id="events-past">{t(locale, 'events.past')}</h2>
+      {
+        past.length > 0 ? (
+          <ul class="grid">
+            {past.map((event) => (
+              <EventItem {locale} {event} />
+            ))}
+          </ul>
+        ) : (
+          <p class="empty">{t(locale, 'events.noPast')}</p>
+        )
+      }
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  section h2 {
+    margin-bottom: var(--space-s);
+  }
+
+  .past {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-l);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>
