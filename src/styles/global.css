@@ -1,0 +1,342 @@
+/**
+ * global.css — base styles and a handful of shared primitives.
+ *
+ * Rules:
+ * - all colours, sizes, spacing and motion come from tokens.css;
+ * - component-specific rules live scoped inside their .astro component;
+ * - this file stays small: reset, typography, prose, layout primitives.
+ */
+
+/* ------------------------------------------------------------------ reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  hanging-punctuation: first last;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: var(--leading-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* ------------------------------------------------------------- typography */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: var(--step-4);
+}
+
+h2 {
+  font-size: var(--step-2);
+}
+
+h3 {
+  font-size: var(--step-1);
+}
+
+h4 {
+  font-size: var(--step-0);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration-thickness: var(--border-width);
+  text-underline-offset: 0.18em;
+  transition: color var(--duration) var(--ease);
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--color-primary) 82%, var(--color-text));
+}
+
+:where(a, button, summary, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+
+/* ------------------------------------------------------ layout primitives */
+
+.container {
+  width: min(100% - 2 * var(--space-s), var(--container));
+  margin-inline: auto;
+}
+
+/** Horizontal label above a title. */
+.eyebrow {
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/** Larger intro paragraph under a title. */
+.lead {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  max-width: var(--measure);
+}
+
+/** Responsive card grid used by listings. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
+  gap: var(--space-m);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/** Visually hidden but available to screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------ UI elements */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-s);
+  font-size: var(--step-0);
+  font-weight: 600;
+  color: var(--color-primary-contrast);
+  background-color: var(--color-primary);
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition:
+    background-color var(--duration) var(--ease),
+    color var(--duration) var(--ease);
+}
+
+.button:hover {
+  color: var(--color-primary-contrast);
+  background-color: color-mix(in srgb, var(--color-primary) 85%, var(--color-text));
+}
+
+.button--ghost {
+  color: var(--color-primary);
+  background-color: transparent;
+}
+
+.button--ghost:hover {
+  color: var(--color-primary);
+  background-color: var(--color-tint);
+}
+
+/** Quiet text link with an arrow. */
+.link-arrow {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link-arrow::after {
+  content: ' →';
+}
+
+.link-arrow:hover::after {
+  content: ' ⟶';
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2xs);
+  left: var(--space-2xs);
+  z-index: 10;
+  padding: var(--space-2xs) var(--space-s);
+  font-weight: 600;
+  color: var(--color-primary-contrast);
+  background-color: var(--color-primary);
+  border-radius: var(--radius);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* ------------------------------------------------------------------ badges */
+
+/** Small status/label badge (events, projects). */
+.badge {
+  display: inline-block;
+  padding: var(--space-3xs) var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.3;
+  color: var(--color-text-muted);
+  background-color: var(--color-tint);
+  border-radius: var(--radius);
+}
+
+/** Emphasised status (cancelled, active). */
+.badge--accent {
+  color: var(--color-primary-contrast);
+  background-color: var(--color-accent);
+}
+
+/** Status in accent colour as text (upcoming). */
+.badge--quiet {
+  color: var(--color-accent);
+  background-color: transparent;
+  padding-inline: 0;
+}
+
+/* ------------------------------------------------------------------ prose */
+/* Typographic styles for Markdown/MDX bodies. Keep measure narrow. */
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > * + * {
+  margin-top: var(--space-s);
+}
+
+.prose h2,
+.prose h3 {
+  margin-top: var(--space-l);
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: var(--space-2xs);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--space-s);
+}
+
+.prose li + li {
+  margin-top: var(--space-3xs);
+}
+
+.prose blockquote {
+  padding-left: var(--space-s);
+  border-left: 2px solid var(--color-accent);
+  color: var(--color-text-muted);
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  padding: 0.1em 0.35em;
+  background-color: var(--color-tint);
+  border-radius: var(--radius);
+}
+
+.prose pre {
+  padding: var(--space-s);
+  overflow-x: auto;
+  background-color: var(--color-tint);
+  border-radius: var(--radius);
+}
+
+.prose pre code {
+  padding: 0;
+  background: none;
+}
+
+.prose figure {
+  margin-block: var(--space-m);
+}
+
+.prose figcaption {
+  margin-top: var(--space-2xs);
+  font-size: var(--step--1);
+  color: var(--color-text-muted);
+}
+
+.prose hr {
+  margin-block: var(--space-l);
+  border: 0;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-2xs);
+  text-align: left;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+/* --------------------------------------------------------- reduced motion */
+/* Respect the OS setting: no transitions or animations for these users. */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
