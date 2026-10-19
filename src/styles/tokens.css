@@ -1,0 +1,161 @@
+/**
+ * tokens.css — THE single source of truth for look and feel.
+ *
+ * Nothing visual may be hard-coded anywhere else: components use these custom
+ * properties exclusively. To rebrand the site, edit block 1 (brand palette)
+ * and optionally the two font stacks in block 3 — everything else derives
+ * from them.
+ *
+ * Light/dark are both defined here via `prefers-color-scheme` (no JS toggle
+ * in v1). All colour pairs are WCAG AA verified — re-run `npm run contrast`
+ * after changing any colour (measured ratios are noted in the comments).
+ */
+
+:root {
+  /* ======================================================================
+     1. BRAND PALETTE — change these seven values to rebrand the association.
+        Colours: blue, pink, yellow, green, orange + black and white.
+        (Yellow is decorative-only: 1.85:1 on the light background, so it may
+        never carry small text — see the department chips for a safe use.)
+     ====================================================================== */
+
+  /** Primary brand blue — links, buttons, key accents. */
+  --palette-blue: #1d4ed8;
+  /** Brand pink — the single UI accent (badges, motifs, highlights). */
+  --palette-pink: #b01161;
+  /** Brand yellow — decorative only (never small text on light backgrounds). */
+  --palette-yellow: #e8b302;
+  /** Brand green — decorative + department accents. */
+  --palette-green: #0f7a4d;
+  /** Brand orange — decorative + department accents. */
+  --palette-orange: #c2451d;
+  /** Near-black used for text and for the dark background. */
+  --palette-black: #1a1d23;
+  /** Paper white. */
+  --palette-white: #ffffff;
+
+  /* ======================================================================
+     2. SEMANTIC COLOURS — what each colour is FOR. Remap to the palette (or
+        to any colour) without touching a single component.
+        Measured contrast ratios (light scheme):
+          text/bg 16.17 · text/surface 16.17 · muted/bg 6.27 · muted/surface 6.54
+          primary/bg 6.42 · white-on-primary 6.70 · accent/bg 6.49
+     ====================================================================== */
+
+  /** Page background. */
+  --color-bg: #fbfaf7;
+  /** Raised surfaces (cards, panels). */
+  --color-surface: var(--palette-white);
+  /** Main text. */
+  --color-text: #1a1d23;
+  /** Secondary text (meta, captions). AA on --color-bg and --color-surface. */
+  --color-text-muted: #565e6b;
+  /** Primary interactive colour (links, buttons). */
+  --color-primary: var(--palette-blue);
+  /** Text/icons on top of --color-primary. */
+  --color-primary-contrast: var(--palette-white);
+  /** The single accent (status badges, motifs). */
+  --color-accent: var(--palette-pink);
+  /** Borders and hairlines (used instead of shadows). */
+  --color-border: #e7e4de;
+  /** Focus ring colour (3:1 minimum against the page background). */
+  --color-focus: var(--color-primary);
+  /** Soft tint for status badges and department chips. */
+  --color-tint: #f2efe9;
+
+  /* ======================================================================
+     3. TYPOGRAPHY
+     ====================================================================== */
+
+  /** Body/UI typeface (self-hosted Inter Variable, Latin subset). */
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /** Display typeface (self-hosted Fraunces Variable, Latin subset). */
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  /** Monospace (system stack — zero bytes downloaded). */
+  --font-mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Fluid type scale (Utopia-style): each step scales gently with the
+     viewport width. step--1 = small print … step-0 = body … step-5 = display. */
+  --step--1: clamp(0.83rem, 0.79rem + 0.21vw, 0.94rem);
+  --step-0: clamp(1rem, 0.94rem + 0.31vw, 1.19rem);
+  --step-1: clamp(1.25rem, 1.12rem + 0.63vw, 1.49rem);
+  --step-2: clamp(1.56rem, 1.33rem + 1.12vw, 1.86rem);
+  --step-3: clamp(1.95rem, 1.56rem + 1.95vw, 2.33rem);
+  --step-4: clamp(2.44rem, 1.81rem + 3.15vw, 2.91rem);
+  --step-5: clamp(3.05rem, 2.06rem + 4.95vw, 3.64rem);
+
+  /** Line heights. */
+  --leading-tight: 1.12;
+  --leading-body: 1.65;
+  /** Tracking for display type and small caps labels. */
+  --tracking-tight: -0.018em;
+  --tracking-wide: 0.06em;
+
+  /* ======================================================================
+     4. SPACE & LAYOUT — fluid spacing scale, then layout constants.
+     ====================================================================== */
+
+  --space-3xs: clamp(0.25rem, 0.23rem + 0.1vw, 0.31rem);
+  --space-2xs: clamp(0.5rem, 0.47rem + 0.16vw, 0.63rem);
+  --space-xs: clamp(0.75rem, 0.7rem + 0.24vw, 0.94rem);
+  --space-s: clamp(1rem, 0.94rem + 0.31vw, 1.25rem);
+  --space-m: clamp(1.5rem, 1.41rem + 0.47vw, 1.88rem);
+  --space-l: clamp(2rem, 1.88rem + 0.63vw, 2.5rem);
+  --space-xl: clamp(3rem, 2.81rem + 0.94vw, 3.75rem);
+  --space-2xl: clamp(4rem, 3.75rem + 1.25vw, 5rem);
+  --space-3xl: clamp(6rem, 5.63rem + 1.88vw, 7.5rem);
+
+  /** Maximum line length for prose text. */
+  --measure: 65ch;
+  /** Maximum width of the page container. */
+  --container: 72rem;
+  /** Corner radius: subtle, barely there. */
+  --radius: 0.2rem;
+  /** Rare, barely visible lift (cards use borders, not shadows). */
+  --shadow: 0 1px 2px rgb(26 29 35 / 0.06);
+  /** Hairline width used for borders and rules. */
+  --border-width: 1px;
+
+  /* ======================================================================
+     5. MOTION — short durations, calm easing; disabled under reduced motion
+        (see global.css).
+     ====================================================================== */
+
+  --duration: 160ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ======================================================================
+   DARK SCHEME — same semantics, dark surfaces. Triggered automatically by
+   the operating-system setting (prefers-color-scheme: dark).
+   Measured contrast ratios (dark scheme):
+     text/bg 15.74 · muted/bg 8.35 · muted/surface 7.63 · primary/bg 8.89
+     on-primary 8.85 · accent/bg 9.45
+   ====================================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Background layers */
+    --color-bg: #12151b;
+    --color-surface: #1a1e26;
+
+    /* Text */
+    --color-text: #eceef2;
+    --color-text-muted: #a7b0be;
+
+    /* Interactive colours are lightened to keep AA contrast on dark surfaces */
+    --color-primary: #93b4ff;
+    --color-primary-contrast: #0e1526;
+    --color-accent: #ff9cc9;
+
+    /* Lines, focus and tints */
+    --color-border: #2c323c;
+    --color-focus: #93b4ff;
+    --color-tint: #232935;
+
+    /* Decorative palette lifts slightly so it reads on dark surfaces */
+    --palette-yellow: #f2c230;
+
+    /* Shadows are invisible on dark backgrounds; borders carry the structure */
+    --shadow: none;
+  }
+}
