@@ -1,0 +1,34 @@
+// Astro configuration for Associação Plink.
+// Non-visual site parameters live in src/config/site.ts (single source of truth);
+// visual parameters live in src/styles/tokens.css.
+import { defineConfig } from 'astro/config';
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import { SITE, LOCALES, DEFAULT_LOCALE, HTML_LANG } from './src/config/site';
+
+export default defineConfig({
+  // Public origin of the deployed site. Placeholder until the real domain exists.
+  site: SITE.url,
+  output: 'static',
+  // Directory-style output: every URL ends with "/" (canonical URLs follow the same rule).
+  trailingSlash: 'always',
+  i18n: {
+    defaultLocale: DEFAULT_LOCALE,
+    locales: [...LOCALES],
+    routing: {
+      // The default locale lives under /pt/ ... (and is mirrored at / by src/pages/index.astro).
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: false,
+    },
+  },
+  integrations: [
+    mdx(),
+    sitemap({
+      // hreflang alternates for the three locales, keyed by URL path prefix.
+      i18n: {
+        defaultLocale: DEFAULT_LOCALE,
+        locales: Object.fromEntries(LOCALES.map((l) => [l, HTML_LANG[l]])),
+      },
+    }),
+  ],
+});

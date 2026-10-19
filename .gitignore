@@ -1,0 +1,18 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs & OS
+npm-debug.log*
+.DS_Store
+
+# editor
+.vscode/
+.idea/
+
+# local env overrides (none used by the site itself)
+.env
+.env.production
