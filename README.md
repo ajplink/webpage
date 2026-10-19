@@ -1,0 +1,144 @@
+# Associação Plink — website
+
+Static website for **Associação Plink**, a Portuguese national youth association
+that runs pedagogical STEM projects for young people and supports educators.
+Built with **Astro** (static output), **TypeScript strict**, content collections,
+and plain CSS. **Zero client-side JavaScript.**
+
+- Languages: **pt-PT** (default) · **en-US** · **en-GB** — `/pt/`, `/en-us/`, `/en-gb/`
+  (the Portuguese home is additionally served at `/`).
+- Content is Markdown/MDX files: adding content never requires touching code
+  (see [CONTRIBUTING.md](CONTRIBUTING.md), in Portuguese).
+- No cookies, no analytics, no third-party requests at runtime.
+
+## Quick start
+
+```bash
+npm install
+npm run dev        # dev server at http://localhost:4321
+npm run build      # astro check && astro build → dist/
+npm run preview    # serve dist/ locally
+npm run contrast   # WCAG contrast check of the design tokens
+```
+
+## Stack and why each dependency is here
+
+| Package | Why |
+| --- | --- |
+| `astro` | Static site framework (fixed by the brief). Static output, no server. |
+| `@astrojs/mdx` | MDX bodies for news/projects/events content. |
+| `@astrojs/sitemap` | `sitemap-index.xml` with hreflang alternates per locale. |
+| `@astrojs/rss` | Per-locale news feed at `/<locale>/rss.xml`. |
+| `@fontsource-variable/inter`, `@fontsource-variable/fraunces` | Self-hosted variable fonts (Latin subset fetched at runtime via `unicode-range`), OFL-licensed, no CDN. |
+| `@astrojs/check`, `typescript` (dev) | `astro check` in `npm run build` (zero warnings enforced). |
+
+Nothing else. No UI framework, no CSS framework, no client JS. (Svelte will be
+added later **only** for the interactive simulations.)
+
+## Project layout
+
+```
+astro.config.ts         static output, i18n routing, sitemap
+src/config/site.ts      NON-VISUAL parameters: identity, locales, nav, flags
+src/styles/tokens.css   VISUAL parameters: all colours/type/space/motion tokens
+src/styles/global.css   reset, typography, prose, shared primitives
+src/content.config.ts   Zod schemas for the 5 collections
+src/content/<collection>/<locale>/<slug>.md   one file per item per locale
+src/i18n/               UI strings, localized route table, t()/href() helpers
+src/lib/content.ts      localized queries, fallback chain, event status
+src/layouts/Base.astro  document skeleton (head, skip link, header, main, footer)
+src/components/         Header, Footer, SEO, Hero, Section, Card, TeamCard,
+                        EventItem, NewsItem, ProjectCard, Tag, Prose,
+                        LanguageSwitch, SimulationSlot
+src/views/              one file per page type (routes stay thin)
+src/pages/              routes: [locale]/…, RSS, robots.txt, 404, root mirror
+public/                 _headers, favicon.svg, og-placeholder.png
+scripts/contrast.mjs    token contrast checker (npm run contrast)
+CONTRIBUTING.md         how to add content (pt)
+AGENTS.md, .agents/     invariants and guides for future development
+```
+
+## Rebranding in 5 minutes
+
+1. **Colours** — `src/styles/tokens.css`, block 1 (*brand palette*): `--palette-blue`,
+   `--palette-pink`, `--palette-yellow`, `--palette-green`, `--palette-orange`,
+   `--palette-black`, `--palette-white`. Everything semantic derives from them.
+   Then run `npm run contrast` — all pairs must stay ≥ 4.5:1 (AA).
+   Dark mode overrides are in the same file, at the bottom.
+2. **Fonts** — `src/styles/tokens.css`, `--font-sans` / `--font-display`, plus the
+   two `@fontsource-variable/…` imports in `src/layouts/Base.astro` (max 2 families).
+3. **Identity** — `src/config/site.ts`: name, legal name, NIPC, address, e-mail,
+   social links, tagline, description, footer text.
+4. **URLs** — localized slugs live in `src/i18n/routes.ts` (one line per locale).
+5. **Favicon / OG image** — `public/favicon.svg` and `public/og-placeholder.png`
+   mirror the palette by hand (SVG favicons can't read CSS variables); regenerate
+   the placeholder covers in `src/assets/covers/` if you want brand-consistent art.
+
+## Adding content
+
+One file per item, one folder per locale — see [CONTRIBUTING.md](CONTRIBUTING.md)
+for copy-paste templates (team member, event, news post, project, page).
+Rules in short: the `pt` file is the source of truth for dates/tags/status;
+translated files carry the text fields; a missing translation falls back to
+Portuguese and the page still exists at its locale URL.
+
+## Performance and verification
+
+Measured on `npm run preview` + Lighthouse (mobile emulation, simulated throttling):
+
+| Page | Performance | Accessibility | Best practices | SEO |
+| --- | --- | --- | --- | --- |
+| `/pt/` (home) | 100 | 100 | 100 | 100 |
+| `/pt/projetos/` | 100 | 100 | 100 | 100 |
+| `/pt/noticias/` | 100 | 100 | 100 | 100 |
+| `/pt/noticias/apresentacao-plink/` | 100 | 100 | 100 | 100 |
+| `/en-us/` | 100 | 100 | 100 | 100 |
+
+Page weight (home, transfer sizes): HTML 4.2 KB + CSS 3.4 KB (gzip) + Inter
+Variable 47 KB + Fraunces Variable 36 KB (woff2, Latin subsets) = **≈ 90 KB**,
+inside the 150 KB budget. Images are excluded from the budget and are emitted
+by Astro as AVIF/WebP with explicit dimensions.
+
+Reproduce (Lighthouse is intentionally not a project dependency):
+
+```bash
+npm run build && npm run preview &
+npx lighthouse http://localhost:4321/pt/ \
+  --chrome-flags="--headless=new --no-sandbox" --output=json
+npm run contrast
+```
+
+Accessibility verified beyond Lighthouse: keyboard-only navigation (skip link
+focuses first), one `h1` per page, no heading-level jumps, landmarks, `lang`
+attributes per locale, visible focus rings, 320 px without horizontal overflow,
+`prefers-reduced-motion` respected.
+
+## Hosting
+
+Output is hosting-agnostic: `dist/` after `npm run build`.
+`public/_headers` ships security headers (CSP without third-party origins,
+HSTS, frame denial) and cache policy (`/_astro/*` immutable, HTML revalidated
+by the host's ETag). COOP/COEP for future `/simulacoes/*` routes is prepared
+there as commented-out rules — **never enable it site-wide**.
+
+Canonical URLs use a trailing slash (`/pt/sobre/`), matching the directory
+output. `/` mirrors the Portuguese home with a canonical pointing at `/pt/`.
+Update `SITE.url` in `src/config/site.ts` before going live (currently the
+placeholder `https://plink.example`).
+
+## Decisions worth reviewing
+
+1. **"US/BR EN" was interpreted as US + British English** (`en-us`, `en-gb`),
+   with `en-gb → en-us → pt` fallback. Adding `pt-BR` later is one line in
+   `LOCALES` + one folder per collection.
+2. **Event status is derived from dates** (`upcoming`/`past`), never typed;
+   `cancelled` is the only hand-set status (frontmatter `cancelled: true`).
+3. **`/pt/…` is canonical; `/` mirrors the home only** (other pt pages are not
+   duplicated at the root).
+4. **Project filters are pure CSS** (`:has()` + radio inputs). Browsers without
+   `:has()` simply show all projects. No JS, no announcements to screen readers
+   when filtering — revisit if that matters to users.
+5. **Drafts are schema-validated** (a broken draft fails the build on purpose)
+   but never listed, generated or fed to RSS.
+6. **Layout choice**: `text-wrap: balance` on headings, hanging punctuation —
+   small editorial touches that can be removed in `global.css`.
