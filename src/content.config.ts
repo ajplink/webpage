@@ -34,7 +34,7 @@ const team = defineCollection({
       /** Role/position — translate this. */
       role: z.string(),
       /** Internal department. */
-      department: z.enum(['DREE', 'DP', 'DL', 'DCI', 'Direção']),
+      department: z.enum(['Direção', 'Conselho Fiscal', 'Mesa da Assembleia', 'DREE', 'DP', 'DL', 'DCI']),
       /** Optional photo (src/assets/...). Falls back to initials when absent. */
       photo: image().optional(),
       /** Short bio shown on the team card (one or two sentences). */

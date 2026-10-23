@@ -9,9 +9,11 @@ import Card from './Card.astro';
 
 interface Props {
   member: LocalizedEntry<'team'>;
+  /** Marquee clone of another card: hidden from assistive tech. */
+  clone?: boolean;
 }
 
-const { member } = Astro.props;
+const { member, clone } = Astro.props;
 const { name, role, bio, photo, links } = member.data;
 
 /** Initials fallback when no portrait exists (never invent photos). */
@@ -24,7 +26,7 @@ const initials = name
   .toUpperCase();
 ---
 
-<Card as="li">
+<Card as="li" ariaHidden={clone}>
   {
     photo ? (
       <Image

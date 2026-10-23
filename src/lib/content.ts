@@ -21,17 +21,25 @@ import { DEFAULT_LOCALE, FALLBACKS, LOCALES, type Locale } from '../config/site'
  */
 const TEXT_FIELDS = ['title', 'summary', 'role', 'location', 'bio', 'links'] as const;
 
-/** Display order of the departments on the team page. */
-export const DEPARTMENTS = ['Direção', 'DREE', 'DP', 'DL', 'DCI'] as const;
-export type Department = (typeof DEPARTMENTS)[number];
+/** The social bodies, in display order (Órgãos Sociais on the team page). */
+export const ORGAOS_SOCIAIS = ['Direção', 'Conselho Fiscal', 'Mesa da Assembleia'] as const;
 
-/** One brand-palette accent per department (token references, not colours). */
+/** The departments, in display order. */
+export const DEPARTMENTS = ['DREE', 'DP', 'DL', 'DCI'] as const;
+
+/** Every team body, in display order. */
+export const TEAM_GROUPS = [...ORGAOS_SOCIAIS, ...DEPARTMENTS] as const;
+export type Department = (typeof TEAM_GROUPS)[number];
+
+/** One brand-palette accent per body (token references, not colours). */
 export const DEPT_ACCENT: Record<Department, string> = {
   'Direção': 'var(--palette-blue)',
-  DREE: 'var(--palette-green)',
-  DP: 'var(--palette-pink)',
+  'Conselho Fiscal': 'var(--palette-orange)',
+  'Mesa da Assembleia': 'var(--palette-green)',
+  DREE: 'var(--palette-pink)',
+  DP: 'var(--palette-yellow)',
   DL: 'var(--palette-orange)',
-  DCI: 'var(--palette-yellow)',
+  DCI: 'var(--palette-blue)',
 };
 
 /** An entry resolved for one locale, with provenance information. */
@@ -199,7 +207,7 @@ export async function teamByDepartment(
         (a.data.order ?? Number.MAX_SAFE_INTEGER) - (b.data.order ?? Number.MAX_SAFE_INTEGER) ||
         a.data.name.localeCompare(b.data.name),
     );
-  return DEPARTMENTS.map((department) => ({
+  return TEAM_GROUPS.map((department) => ({
     department,
     members: entries.filter((m) => m.data.department === department),
   })).filter((group) => group.members.length > 0);

@@ -18,7 +18,6 @@ interface Props {
 
 const { animate = false, width = 180, class: className } = Astro.props;
 const height = Math.round((width / 3083) * 1503);
-const maskId = 'write-' + Math.random().toString(36).slice(2, 8);
 ---
 
 <svg
@@ -32,53 +31,34 @@ const maskId = 'write-' + Math.random().toString(36).slice(2, 8);
   {
     animate && (
       <defs>
-        <!-- the pen route; the thick stroke reveals the letters as it moves -->
-        <mask id={maskId} maskUnits="userSpaceOnUse">
-          <path
-            class="wordmark-pen"
-            pathLength="1"
-            d="M760,1900
-       C740,2100 715,2400 700,2560
-       C692,2640 745,2650 775,2590
-       C805,2400 815,2100 825,1900
-       C880,1830 990,1840 1030,1930
-       C1065,2030 1035,2270 965,2350
-       C905,2415 845,2430 805,2415
-       C880,2500 1020,2530 1150,2495
-       C1230,2330 1370,1650 1440,1330
-       C1465,1255 1525,1270 1512,1360
-       C1495,1600 1440,2150 1420,2440
-       C1445,2505 1530,2510 1610,2480
-       C1680,2270 1760,2010 1810,1900
-       C1840,1845 1890,1865 1880,1950
-       C1865,2130 1850,2350 1848,2470
-       C1885,2515 1965,2510 2040,2475
-       C2110,2280 2150,2020 2185,1910
-       C2240,1830 2345,1845 2352,1955
-       C2358,2130 2355,2330 2352,2455
-       C2395,2300 2445,2020 2505,1915
-       C2575,1835 2685,1870 2688,1990
-       C2691,2160 2685,2330 2682,2455
-       C2725,2515 2820,2515 2900,2478
-       C2985,2280 3075,1650 3145,1335
-       C3175,1258 3245,1280 3232,1385
-       C3215,1620 3160,2120 3138,2445
-       C3128,2280 3150,2130 3195,2040
-       C3265,1955 3355,1985 3335,2085
-       C3325,2135 3290,2175 3265,2195
-       C3345,2245 3435,2325 3505,2385
-       C3540,2415 3585,2405 3620,2360"
-            fill="none"
-            stroke="#fff"
-            stroke-width="700"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </mask>
+    <!-- the pen route: a fat stroke sweeps the writing order and reveals the
+         ink as it passes (dashes in thousandths of the path length — small
+         normalized values rasterise unreliably). -->
+    <mask id="write-pen" maskUnits="userSpaceOnUse" x="0" y="0" width="4200" height="4200">
+      <path
+        class="wordmark-pen"
+        pathLength="1000"
+        d="M760,1900 C740,2100 715,2400 700,2560 C692,2640 745,2650 775,2590 C805,2400 815,2100 825,1900
+          C880,1830 990,1840 1030,1930 C1065,2030 1035,2270 965,2350 C905,2415 845,2430 805,2415
+          C880,2500 1020,2530 1150,2495 C1230,2330 1370,1650 1440,1330 C1465,1255 1525,1270 1512,1360
+          C1495,1600 1440,2150 1420,2440 C1445,2505 1530,2510 1610,2480 C1680,2270 1760,2010 1810,1900
+          C1840,1845 1890,1865 1880,1950 C1865,2130 1850,2350 1848,2470 C1885,2515 1965,2510 2040,2475
+          C2110,2280 2150,2020 2185,1910 C2240,1830 2345,1845 2352,1955 C2358,2130 2355,2330 2352,2455
+          C2395,2300 2445,2020 2505,1915 C2575,1835 2685,1870 2688,1990 C2691,2160 2685,2330 2682,2455
+          C2725,2515 2820,2515 2900,2478 C2985,2280 3075,1650 3145,1335 C3175,1258 3245,1280 3232,1385
+          C3215,1620 3160,2120 3138,2445 C3128,2280 3150,2130 3195,2040 C3265,1955 3355,1985 3335,2085
+          C3325,2135 3290,2175 3265,2195 C3345,2245 3435,2325 3505,2385 C3540,2415 3585,2405 3620,2360"
+        fill="none"
+        stroke="#fff"
+        stroke-width="1000"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </mask>
       </defs>
     )
   }
-  <g mask={animate ? `url(#${maskId})` : undefined}>
+  <g class="wordmark-art" mask={animate ? 'url(#write-pen)' : undefined}>
     <path class="logo-ink" d="M821
       2717c-10.8-2.3-20-11.4-26-25.7-8.4-19.4-12.4-112.4-11.8-269.8.5-141.2-.6-231.3-2.8-233.5-.9-.9-2.7.2-7.3
       4.2a706 706 0 0 1-85.1 67 854 854 0 0 1-65.5 39.7 587 587 0 0 1-100 41.6c-22.1
@@ -143,12 +123,14 @@ const maskId = 'write-' + Math.random().toString(36).slice(2, 8);
       583 583 0 0 0-5.4 25.5c-1 4.4-2.6 13.2-3.7 19.5-1 6.3-2.6 14.7-3.3 18.5-1.8 8.7-3.5 19.1-4.6 27l-2.5
       16c-.8 5.5-2 13.8-2.5 18.5s-1.4 11.7-2 15.5a2361 2361 0 0 0-12.4 117.5 3142 3142 0 0 0-10.6
       155.7c-1.1 18.3-1.4 93.7-.4 97.8q1.8 6.7 8.2-4.3" />
-    <path class="logo-spark" d="M1816.6 1946c-15-4.6-21-23.6-12.7-40.6 8-16.3 75-74.8 99.6-87 46.7-23.1 81 14.3 46.6 50.9-9.3
+    <g class="wordmark-sparks">
+      <path class="logo-spark" d="M1816.6 1946c-15-4.6-21-23.6-12.7-40.6 8-16.3 75-74.8 99.6-87 46.7-23.1 81 14.3 46.6 50.9-9.3
       9.9-13.5 13.1-48.6 37.7-54.7 38.2-67.6 44.2-84.9
       39m-63.1-44.9c-20-9-21.6-39.4-4.5-82.6l5.5-14.5c2-5.7 10-23.6 17-38.5 22.7-47.7 63-62.8 79.9-30 10
       19.5 6.3 34.6-20.4 83a823 823 0 0 0-13.4 25c-22.5 46.6-44.6 66.5-64.1
       57.6m-63.5-13c-23-14.7-39-53.3-46.6-111.6l-2-14.8c-7-52.7 26.6-88.8 59-63.4 15.6 12.3 19 27.9 18.3
       86.6-.8 79.1-10.7 114.7-28.7 103.2" />
+    </g>
   </g>
 </svg>
 
@@ -169,14 +151,65 @@ const maskId = 'write-' + Math.random().toString(36).slice(2, 8);
 
   /* Static default = the finished word. The animation only replays it. */
   .wordmark-pen {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: write calc(var(--draw-duration) * 1.25) var(--ease) forwards;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    animation: write calc(var(--draw-duration) * 1.25) var(--ease) both;
   }
 
   @keyframes write {
+    from {
+      stroke-dashoffset: 1000;
+    }
+  }
+
+  /* the three sparks on the i blink in when the word is done */
+  .wordmark-sparks {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .wordmark--draw .wordmark-sparks {
+    animation: spark-blink 700ms var(--ease) both;
+    animation-delay: calc(var(--draw-duration) * 1.2);
+  }
+
+  /* Reduced motion: no writing, no blink — straight to the finished word. */
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark--draw .wordmark-pen,
+    .wordmark--draw .wordmark-sparks {
+      animation: none;
+    }
+  }
+
+  @keyframes spark-blink {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+
+    35% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    55% {
+      opacity: 0.25;
+      transform: scale(1);
+    }
+
+    75% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+
+    88% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+
     to {
-      stroke-dashoffset: 0;
+      opacity: 1;
+      transform: none;
     }
   }
 </style>

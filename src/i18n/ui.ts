@@ -172,10 +172,20 @@ const ui = {
   },
 
   /* Full department names (PLACEHOLDER expansions until Ricardo confirms). */
+  'team.organs': { pt: 'Órgãos Sociais', 'en-gb': 'Governing bodies' },
+  'team.depts': { pt: 'Departamentos', 'en-gb': 'Departments' },
   'dept.Direção': { pt: 'Direção', 'en-gb': 'Board' },
+  'dept.Conselho Fiscal': {
+    pt: 'Conselho Fiscal',
+    'en-gb': 'Fiscal Council',
+  },
+  'dept.Mesa da Assembleia': {
+    pt: 'Mesa da Assembleia',
+    'en-gb': 'General Assembly Board',
+  },
   'dept.DREE': {
-    pt: 'Departamento de Recursos Educativos e Eventos',
-    'en-gb': 'Department of Educational Resources and Events',
+    pt: 'Departamento de Relações Educativas e Empresariais',
+    'en-gb': 'Department of Educational and Business Relations',
   },
   'dept.DP': {
     pt: 'Departamento de Projetos',
@@ -186,16 +196,16 @@ const ui = {
     'en-gb': 'Logistics Department',
   },
   'dept.DCI': {
-    pt: 'Departamento de Comunicação e Informática',
-    'en-gb': 'Communication and IT Department',
+    pt: 'Departamento de Comunicação e Imagem',
+    'en-gb': 'Communication and Image Department',
   },
   'desc.Direção': {
     pt: 'Decide o rumo, aprova os projetos e garante que as coisas avançam.',
     'en-gb': 'Sets the direction, approves projects and keeps things moving.',
   },
   'desc.DREE': {
-    pt: 'Cria os materiais e as formações que levam a ciência para as escolas.',
-    'en-gb': 'Builds the kits and training that bring science into schools.',
+    pt: 'Liga a associação às escolas e ao mundo empresarial.',
+    'en-gb': 'Connects the association with schools and the business world.',
   },
   'desc.DP': {
     pt: 'Acompanha os projetos dos membros, da ideia à demonstração final.',
@@ -206,8 +216,16 @@ const ui = {
     'en-gb': 'Makes events happen: venues, materials, sign-ups and logistics.',
   },
   'desc.DCI': {
-    pt: 'Site, redes, design e as ferramentas internas que nos mantêm organizados.',
-    'en-gb': 'Website, social media, design and the internal tools that keep us organised.',
+    pt: 'Comunicação e imagem: o que se vê, o que se diz e como se diz.',
+    'en-gb': 'Communication and image: what is seen, what is said and how it is said.',
+  },
+  'desc.Conselho Fiscal': {
+    pt: 'Vigia as contas e garante que tudo bate certo.',
+    'en-gb': 'Watches the accounts and keeps everything honest.',
+  },
+  'desc.Mesa da Assembleia': {
+    pt: 'Conduz a assembleia-geral: agenda, votos e actas.',
+    'en-gb': 'Runs the general assembly: agenda, votes and minutes.',
   },
 
   'join.contact': { pt: 'Contacto', 'en-gb': 'Contact' },

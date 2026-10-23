@@ -7,13 +7,15 @@ interface Props {
   as?: 'article' | 'li' | 'div';
   /** Extra data-* attributes (used by the CSS-only project filters). */
   dataAttrs?: Record<string, string>;
+  /** Duplicate of another card (marquee clone): hidden from assistive tech. */
+  ariaHidden?: boolean;
 }
 
-const { as = 'article', dataAttrs = {} } = Astro.props;
+const { as = 'article', dataAttrs = {}, ariaHidden } = Astro.props;
 const Tag = as;
 ---
 
-<Tag class="card" {...dataAttrs}><slot /></Tag>
+<Tag class="card" {...dataAttrs} aria-hidden={ariaHidden ? 'true' : undefined}><slot /></Tag>
 
 <style>
   .card {

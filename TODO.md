@@ -4,25 +4,25 @@
 
 - [x] **Navbar wordmark broken** — cause: the ink/spark paths were swapped
       (word drew in invisible yellow). Fixed.
-- [ ] **Team page: remove the useless headers, circles and "these people make
+- [x] **Team page: remove the useless headers, circles and "these people make
       this happen" talk** — names are self-explanatory.
 - [x] **Home: the self-writing wordmark not showing while it writes** — same
       swapped-path bug, fixed; reveal verified progressive.
-- [ ] **Footer**: remove the footerText line, keep it small, social media as
+- [x] **Footer**: remove the footerText line, keep it small, social media as
       icons (no YouTube), links horizontal.
-- [ ] **Change the font** — open-source preferred.
-- [ ] **Use more of the width of the page**.
-- [ ] **404 page speaks only one language** — make it trilingual-bilingual.
+- [x] **Change the font** — open-source preferred.
+- [x] **Use more of the width of the page**.
+- [x] **404 page speaks only one language** — make it trilingual-bilingual.
 - [x] **HTML blobs in built pages** — generated output (Astro compression):
       left alone as instructed.
-- [ ] **Repo organisation**: logo SVGs out of the root into assets/, folder
+- [x] **Repo organisation**: logo SVGs out of the root into assets/, folder
       for team photos.
-- [ ] **Remove the lamp logo from the navbar** — keep only the written one.
-- [ ] **Wordmark words black or white** (pure, per scheme).
-- [ ] **Revolver motif** — the square lamp logo has 4 circles; scrolling down
+- [x] **Remove the lamp logo from the navbar** — keep only the written one.
+- [x] **Wordmark words black or white** (pure, per scheme).
+- [x] **Revolver motif** — the square lamp logo has 4 circles; scrolling down
       should step through them like a revolver (scroll-driven animation).
-- [ ] **Animate the theme and language buttons** (micro-interactions).
-- [ ] **Remove US English — two languages are enough** (pt + en-gb); retire
+- [x] **Animate the theme and language buttons** (micro-interactions).
+- [x] **Remove US English — two languages are enough** (pt + en-gb); retire
       en-us content to an archive folder (nothing is deleted).
 - [ ] **"The site still feels very boring"** — overall energy pass (revolver
       motif, animations, motion on scroll where it earns its place).

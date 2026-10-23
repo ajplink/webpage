@@ -1,11 +1,17 @@
 ---
 /**
- * Team — one carousel per department, big portraits, full department names.
- * The carousel is plain CSS (scroll-snap + a focusable region): arrow keys
- * scroll it, zero JavaScript.
+ * Team — Órgãos Sociais first (Direção, Conselho Fiscal, Mesa da Assembleia),
+ * then the departments. Each body gets an auto-scrolling rail of people
+ * (pure CSS marquee: pauses on hover/focus, manual scroll under reduced
+ * motion). Names speak for themselves — no filler copy.
  */
 import type { Locale } from '../config/site';
-import { teamByDepartment } from '../lib/content';
+import {
+  teamByDepartment,
+  ORGAOS_SOCIAIS,
+  DEPARTMENTS,
+  type Department,
+} from '../lib/content';
 import { t } from '../i18n';
 import Base from '../layouts/Base.astro';
 import TeamCard from '../components/TeamCard.astro';
@@ -17,6 +23,12 @@ interface Props {
 const { locale } = Astro.props;
 const groups = await teamByDepartment(locale);
 const title = t(locale, 'nav.team');
+
+const bodies = (wanted: readonly Department[]) =>
+  wanted.map((d) => groups.find((g) => g.department === d)).filter((g) => g !== undefined);
+
+const organs = bodies(ORGAOS_SOCIAIS);
+const depts = bodies(DEPARTMENTS);
 ---
 
 <Base {locale} {title} description={t(locale, 'team.departments')} routeKey="team">
@@ -25,18 +37,47 @@ const title = t(locale, 'nav.team');
       <h1>{title}</h1>
     </header>
 
-    {
-      groups.map((group) => (
-        <section class="department" aria-labelledby={`dept-${group.department}`}>
-          <h2 id={`dept-${group.department}`} class="dept-title">{t(locale, `dept.${group.department}` as 'dept.Direção')}</h2>
-          <ul class="carousel" tabindex="0" role="group" aria-label={t(locale, `dept.${group.department}` as 'dept.Direção')}>
-            {group.members.map((member) => (
-              <TeamCard {member} />
-            ))}
-          </ul>
-        </section>
-      ))
-    }
+    <section aria-labelledby="orgaos">
+      <h2 id="orgaos" class="group-title">{t(locale, 'team.organs')}</h2>
+      {
+        organs.map((group) => (
+          <div class="body">
+            <h3 class="body-title">{t(locale, `dept.${group.department}` as 'dept.Direção')}</h3>
+            <div class="carousel">
+              <ul class="carousel-track" style={`--items: ${group.members.length}`}>
+                {group.members.map((member) => (
+                  <TeamCard {member} />
+                ))}
+                {group.members.map((member) => (
+                  <TeamCard {member} clone />
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section aria-labelledby="depts">
+      <h2 id="depts" class="group-title">{t(locale, 'team.depts')}</h2>
+      {
+        depts.map((group) => (
+          <div class="body">
+            <h3 class="body-title">{t(locale, `dept.${group.department}` as 'dept.Direção')}</h3>
+            <div class="carousel">
+              <ul class="carousel-track" style={`--items: ${group.members.length}`}>
+                {group.members.map((member) => (
+                  <TeamCard {member} />
+                ))}
+                {group.members.map((member) => (
+                  <TeamCard {member} clone />
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))
+      }
+    </section>
   </div>
 </Base>
 
@@ -49,44 +90,59 @@ const title = t(locale, 'nav.team');
     margin-bottom: var(--space-xl);
   }
 
-  .page-head .lead {
-    margin-top: var(--space-s);
-    color: var(--color-text-muted);
+  .group-title {
+    margin-bottom: var(--space-m);
+    font-size: var(--step-1);
+    color: var(--color-accent);
   }
 
-  .department + .department {
-    margin-top: var(--space-2xl);
+  .body + .body {
+    margin-top: var(--space-l);
   }
 
-  .dept-title {
+  .body-title {
     margin-bottom: var(--space-s);
+    font-size: var(--step-2);
   }
 
-  /* Horizontal card rail: drag, swipe or arrow keys (focusable region). */
+  /* Auto-scrolling rail: the content is rendered twice and slides by half. */
   .carousel {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(16rem, 19rem);
-    gap: var(--space-m);
-    overflow-x: auto;
-    padding: var(--space-3xs) var(--space-2xs) var(--space-s);
-    margin-inline: calc(-1 * var(--space-2xs));
-    list-style: none;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--space-2xs);
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border) transparent;
+    overflow: hidden;
   }
 
-  .carousel > * {
-    scroll-snap-align: start;
-    height: 100%;
+  .carousel-track {
+    display: flex;
+    width: max-content;
+    padding-block: var(--space-3xs) var(--space-s);
+    animation: marquee calc(var(--items) * 7s) linear infinite;
+    animation-play-state: running;
   }
 
-  .carousel:focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 2px;
-    border-radius: var(--radius);
+  .carousel-track > :global(*) {
+    width: min(19rem, 72vw);
+    flex: none;
+    margin-right: var(--space-m);
   }
 
+  .carousel:hover .carousel-track,
+  .carousel:focus-within .carousel-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Reduced motion: no marquee — the rail scrolls by hand instead. */
+  @media (prefers-reduced-motion: reduce) {
+    .carousel {
+      overflow-x: auto;
+    }
+
+    .carousel-track {
+      animation: none;
+    }
+  }
 </style>
