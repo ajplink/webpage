@@ -54,8 +54,8 @@
 
   /** Page background. */
   --color-bg: #fbfaf7;
-  /** Brand artwork colours: the wordmark ink and its yellow sparks (nome.svg). */
-  --logo-ink: #080808;
+  /** Brand artwork colours: the wordmark ink (black or white) and its yellow sparks. */
+  --logo-ink: #000000;
   --logo-spark: #fed10d;
   /** Raised surfaces (cards, panels). */
   --color-surface: var(--palette-white);
@@ -80,10 +80,10 @@
      3. TYPOGRAPHY
      ====================================================================== */
 
-  /** Body/UI typeface (self-hosted Inter Variable, Latin subset). */
-  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  /** Display typeface (self-hosted Fraunces Variable, Latin subset). */
-  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  /** Body/UI typeface (self-hosted Bricolage Grotesque Variable, OFL, Latin). */
+  --font-sans: 'Bricolage Grotesque Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /** Display typeface — same family: one voice, one download. */
+  --font-display: 'Bricolage Grotesque Variable', Georgia, 'Times New Roman', serif;
   /** Monospace (system stack — zero bytes downloaded). */
   --font-mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Menlo, Consolas, monospace;
 
@@ -123,9 +123,9 @@
   /** Maximum line length for prose text. */
   --measure: 65ch;
   /** Maximum width of the page container. */
-  --container: 72rem;
+  --container: 84rem;
   /** Wide container for carousels and full-bleed bands. */
-  --container-wide: 84rem;
+  --container-wide: 96rem;
 
   /** Shape language: soft, hand-drawn, never square. */
   --radius-s: 0.5rem;
@@ -168,8 +168,8 @@
     --color-bg: #12151b;
     --color-surface: #1a1e26;
 
-    /* The wordmark ink flips to paper-white on dark */
-    --logo-ink: #f4f4f2;
+    /* The wordmark ink is pure white on dark */
+    --logo-ink: #ffffff;
 
     /* Text */
     --color-text: #eceef2;
@@ -202,7 +202,7 @@
 :root[data-theme='dark'] {
   --color-bg: #12151b;
   --color-surface: #1a1e26;
-  --logo-ink: #f4f4f2;
+  --logo-ink: #ffffff;
   --color-text: #eceef2;
   --color-text-muted: #a7b0be;
   --color-primary: #93b4ff;

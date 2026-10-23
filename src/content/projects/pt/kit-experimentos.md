@@ -1,7 +1,7 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por um projeto real.
-title: Kit de Experimentos de Química (exemplo)
-summary: Doze experimentos seguros de química com materiais de supermercado e guias passo a passo.
+title: "Kit de Experimentos de Química (exemplo)"
+summary: "Doze experimentos seguros de química com materiais de supermercado e guias passo a passo."
 status: completed
 tags: [quimica, educacao]
 leads: [pt/ines-exemplo]

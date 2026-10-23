@@ -1,0 +1,149 @@
+---
+/**
+ * Área de Sócio — where members check their details. v1 has no backend and
+ * no login: the view shows a clearly-labelled DEMO statement card and the
+ * content explains how data requests actually work (email/form, human-handled).
+ */
+import { SITE, type Locale } from '../config/site';
+import { localizedEntry } from '../lib/content';
+import { t } from '../i18n';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const page = await localizedEntry('pages', locale, 'members');
+if (!page) throw new Error('Missing `pages/members` content entry');
+const { Content } = await render(page);
+
+/** DEMO statement fields — fictional, marked as example in the UI itself. */
+const demo = {
+  name: 'Sócio Exemplo',
+  number: 'PL-0000',
+  since: '2026',
+  department: 'DP',
+};
+---
+
+<Base {locale} title={page.data.title} description={page.data.summary ?? ''} routeKey="members">
+  <article class="container page">
+    <header class="page-head">
+      <p class="eyebrow">{t(locale, 'nav.members')}</p>
+      <h1>{page.data.title}</h1>
+      {page.data.summary && <p class="lead">{page.data.summary}</p>}
+    </header>
+
+    <div class="page-grid">
+      <aside class="statement" aria-labelledby="statement-title">
+        <div class="panel statement-card" style="--panel-color: var(--palette-blue)">
+          <p class="stamp" aria-hidden="true">{t(locale, 'members.yourData')}</p>
+          <h2 id="statement-title">{demo.name}</h2>
+          <dl>
+            <div>
+              <dt>{t(locale, 'members.number')}</dt>
+              <dd>{demo.number}</dd>
+            </div>
+            <div>
+              <dt>{t(locale, 'members.since')}</dt>
+              <dd>{demo.since}</dd>
+            </div>
+            <div>
+              <dt>{t(locale, 'team.department')}</dt>
+              <dd>{demo.department}</dd>
+            </div>
+            <div>
+              <dt>{t(locale, 'members.status')}</dt>
+              <dd class="paid"><Icon name="check" size={18} /> {t(locale, 'members.statusPaid')}</dd>
+            </div>
+          </dl>
+          <a class="button" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'members.update')}</a>
+        </div>
+        <p class="mock-note">{t(locale, 'members.mockNote')}</p>
+      </aside>
+
+      <Prose>
+        <Content />
+      </Prose>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .page-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: start;
+  }
+
+  .statement-card {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .stamp {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .statement-card h2 {
+    font-size: var(--step-2);
+  }
+
+  .statement-card dl {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-block: var(--space-2xs);
+  }
+
+  .statement-card dt {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .statement-card dd {
+    font-family: var(--font-mono);
+  }
+
+  .paid {
+    display: flex;
+    gap: var(--space-3xs);
+    align-items: center;
+    color: var(--palette-green);
+  }
+
+  .mock-note {
+    margin-top: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .statement :global(.button) {
+    justify-content: center;
+  }
+
+  @media (max-width: 52rem) {
+    .page-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

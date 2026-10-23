@@ -1,0 +1,50 @@
+---
+/**
+ * Squiggle — hand-drawn marker underline for section titles (the "ink" layer
+ * of the design). Width follows its parent; colour via --squiggle-color.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={['squiggle', className]}
+  viewBox="0 0 120 12"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path
+    pathLength="1"
+    d="M2 8C12 2 22 2 32 7S52 12 62 7 82 2 92 7s20 4 26-1"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3"
+    stroke-linecap="round"></path>
+</svg>
+
+<style>
+  .squiggle {
+    width: 100%;
+    height: 0.4em;
+    color: var(--squiggle-color, var(--color-accent));
+  }
+
+  /* the marker underline draws itself on scroll (falls back to on-load) */
+  .squiggle path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    animation: squiggle-draw 600ms var(--ease) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 22%;
+  }
+
+  @keyframes squiggle-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+</style>

@@ -25,6 +25,15 @@ const TEXT_FIELDS = ['title', 'summary', 'role', 'location', 'bio', 'links'] as 
 export const DEPARTMENTS = ['Direção', 'DREE', 'DP', 'DL', 'DCI'] as const;
 export type Department = (typeof DEPARTMENTS)[number];
 
+/** One brand-palette accent per department (token references, not colours). */
+export const DEPT_ACCENT: Record<Department, string> = {
+  'Direção': 'var(--palette-blue)',
+  DREE: 'var(--palette-green)',
+  DP: 'var(--palette-pink)',
+  DL: 'var(--palette-orange)',
+  DCI: 'var(--palette-yellow)',
+};
+
 /** An entry resolved for one locale, with provenance information. */
 export type LocalizedEntry<C extends CollectionKey> = CollectionEntry<C> & {
   /** Locale of the file actually used (may differ from the requested one). */

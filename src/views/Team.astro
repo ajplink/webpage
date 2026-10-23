@@ -5,7 +5,7 @@
  * scroll it, zero JavaScript.
  */
 import type { Locale } from '../config/site';
-import { teamByDepartment, type Department } from '../lib/content';
+import { teamByDepartment } from '../lib/content';
 import { t } from '../i18n';
 import Base from '../layouts/Base.astro';
 import TeamCard from '../components/TeamCard.astro';
@@ -17,42 +17,23 @@ interface Props {
 const { locale } = Astro.props;
 const groups = await teamByDepartment(locale);
 const title = t(locale, 'nav.team');
-
-/** One accent colour per department (brand palette). */
-const DEPT_ACCENT: Record<Department, string> = {
-  'Direção': 'var(--palette-blue)',
-  DREE: 'var(--palette-green)',
-  DP: 'var(--palette-pink)',
-  DL: 'var(--palette-orange)',
-  DCI: 'var(--palette-yellow)',
-};
 ---
 
-<Base {locale} {title} description={t(locale, 'team.lead')} routeKey="team">
+<Base {locale} {title} description={t(locale, 'team.departments')} routeKey="team">
   <div class="container page">
     <header class="page-head">
-      <p class="eyebrow">{t(locale, 'team.departments')}</p>
       <h1>{title}</h1>
-      <p class="lead">{t(locale, 'team.lead')}</p>
     </header>
 
     {
       groups.map((group) => (
         <section class="department" aria-labelledby={`dept-${group.department}`}>
-          <div class="dept-head">
-            <h2 id={`dept-${group.department}`} class="dept-title">
-              <span class="dot" style={`--dept: ${DEPT_ACCENT[group.department]}`} aria-hidden="true" />
-              {t(locale, `dept.${group.department}` as 'dept.Direção')}
-            </h2>
-            <p class="dept-desc">{t(locale, `desc.${group.department}` as 'desc.Direção')}</p>
-            <p class="dept-count">{t(locale, 'team.count').replace('{n}', String(group.members.length))}</p>
-          </div>
+          <h2 id={`dept-${group.department}`} class="dept-title">{t(locale, `dept.${group.department}` as 'dept.Direção')}</h2>
           <ul class="carousel" tabindex="0" role="group" aria-label={t(locale, `dept.${group.department}` as 'dept.Direção')}>
             {group.members.map((member) => (
               <TeamCard {member} />
             ))}
           </ul>
-          <p class="scroll-hint" aria-hidden="true">{t(locale, 'team.scroll')}</p>
         </section>
       ))
     }
@@ -77,36 +58,8 @@ const DEPT_ACCENT: Record<Department, string> = {
     margin-top: var(--space-2xl);
   }
 
-  .dept-head {
-    display: grid;
-    gap: var(--space-3xs);
-    margin-bottom: var(--space-s);
-  }
-
   .dept-title {
-    display: flex;
-    gap: var(--space-2xs);
-    align-items: center;
-  }
-
-  /* The one department accent: a colour dot from the brand palette. */
-  .dot {
-    width: 0.55em;
-    height: 0.55em;
-    flex: none;
-    background-color: var(--dept, var(--color-accent));
-    border-radius: var(--radius-pill);
-  }
-
-  .dept-desc {
-    max-width: var(--measure);
-    color: var(--color-text-muted);
-  }
-
-  .dept-count {
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    color: var(--color-accent);
+    margin-bottom: var(--space-s);
   }
 
   /* Horizontal card rail: drag, swipe or arrow keys (focusable region). */
@@ -136,8 +89,4 @@ const DEPT_ACCENT: Record<Department, string> = {
     border-radius: var(--radius);
   }
 
-  .scroll-hint {
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
-  }
 </style>

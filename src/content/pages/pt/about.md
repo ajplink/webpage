@@ -1,29 +1,37 @@
 ---
-# ENTRADA DE EXEMPLO — texto editável da página "Sobre".
-title: Sobre a Plink
-summary: Uma associação de juventude que transforma curiosidade em projetos de ciência, tecnologia, engenharia e matemática.
+# CONTEÚDO DE EXEMPLO — substituir por texto real. Esta página alimenta /pt/sobre/.
+title: "Sobre a Plink"
+summary: "Uma associação de juventude que transforma curiosidade em projetos — com as mãos, a sério, e com muito bom humor."
 ---
 
-> **Conteúdo de exemplo** — substituir por texto real. Este ficheiro alimenta a página /pt/sobre/.
+> Ciência não é uma montra. É algo que se faz com as mãos, que falha à terceira
+> tentativa e que funciona à quarta. É isso que levamos às escolas.
 
-## Missão
+## O que fazemos
 
-A Associação Plink facilita projetos pedagógicos de STEM (ciência, tecnologia, engenharia e matemática) para jovens, em Portugal. Trabalhamos com escolas, educadores e voluntários para criar experiências práticas, inclusivas e acessíveis.
+A Associação Plink cria projetos pedagógicos de ciência, tecnologia, engenharia
+e matemática para jovens, em Portugal. Trabalhamos com escolas, educadores e
+voluntários para construir experiências práticas, inclusivas e acessíveis —
+kits que se montam, oficinas que se sujam, competições que se ganham (e perdem)
+com boa desportividade.
 
-## Valores
+## O que acreditamos
 
 - **Aprender fazendo** — cada projeto nasce de uma pergunta real e termina com algo construído.
-- **Acesso para todos** — atividades pensadas para funcionar em qualquer escola, com qualquer orçamento.
+- **Acesso para todos** — atividades que funcionam em qualquer escola, com qualquer orçamento.
 - **Ciência aberta** — materiais e métodos partilhados, para que outros possam reutilizar e melhorar.
-- **Comunidade** — jovens, professores e voluntários a trabalhar lado a lado.
+- **Comunidade** — jovens, professores e voluntários a trabalhar lado a lado, sem hierarquias desnecessárias.
 
 ## Como funciona
 
-A associação organiza-se em quatro departamentos:
+A associação organiza-se em departamentos, cada um com a sua especialidade —
+da criação de materiais à logística dos eventos. Qualquer membro pode submeter
+um projeto: os aprovados recebem acompanhamento e acesso aos recursos.
 
-1. **DREE** — Recursos Educativos: materiais, guias e formação para educadores.
-2. **DP** — Projetos: acompanhamento dos projetos submetidos pelos membros.
-3. **DL** — Logística: eventos, workshops e competições.
-4. **DCI** — Comunicação e Informática: site, redes e ferramentas internas.
+E sim, decidimos tudo em reuniões. Mas são reuniões com ata — e terminam a horas.
 
-Qualquer membro pode submeter um projeto. Os projetos aprovados recebem acompanhamento de um responsável e acesso aos recursos da associação.
+## De onde vem o nome
+
+*Plink* é o som de uma ideia a bater certo: o clique, o sino, a gota de chuva
+no vidro. Escolhemos um nome que se escreve de uma vez só — e uma lâmpada que
+nunca se apaga.

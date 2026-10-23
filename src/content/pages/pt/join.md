@@ -1,27 +1,32 @@
 ---
-# ENTRADA DE EXEMPLO — texto editável da página "Juntar".
-title: Juntar-me à Plink
-summary: Tornar-se membro, colaborar como voluntário ou submeter um projeto — três portas de entrada.
+# CONTEÚDO DE EXEMPLO — substituir por texto real quando os dados reais existirem.
+title: "Tornar-me Sócio"
+summary: "Uma quota por ano, uma palavra nas decisões e acesso a tudo o que a associação constrói. Sem burocracia criativa."
 ---
 
-> **Conteúdo de exemplo** — substituir por texto real. Este ficheiro alimenta a página /pt/juntar/.
+> **Conteúdo de exemplo** — substituir por texto real. Esta página alimenta /pt/tornar-me-socio/.
 
-## Tornar-se membro
+## O que ganhas como sócio
 
-A associação é aberta a jovens, educadores e simpatizantes. A adesão dá acesso às atividades internas, à possibilidade de submeter projetos e ao voto nas assembleias.
+- **Dizes a tua palavra** — os sócios votam na assembleia e decidem o rumo da associação.
+- **Submetes projetos** — com acompanhamento de um responsável e acesso aos recursos da associação.
+- **Material emprestado** — kits, ferramentas e instrumentos para as tuas atividades.
+- **Eventos e oficinas** — lugar garantido, com desconto nas inscrições pagas.
+- **Formação e mentoria** — aprendes com quem já fez, ensinas a quem está a começar.
+- **Uma rede inteira** — escolas, educadores e jovens que gostam de fazer coisas a sério.
 
-## Colaborar como voluntário
+## Como te tornas sócio
 
-Precisamos de ajuda em eventos, workshops, traduções, desenho de materiais e manutenção de ferramentas. Não é preciso ser especialista: é preciso consistência e vontade de ensinar.
+1. Preenche o formulário de adesão — leva dois minutos.
+2. Paga a quota anual (valores abaixo).
+3. Recebes por email a confirmação e o teu número de sócio.
 
-## Submeter um projeto
+## Quota anual
 
-1. Descreve a tua ideia numa página: o problema, o público-alvo e o que queres construir.
-2. Indica quantas pessoas precisas e que materiais tens (ou não tens).
-3. Envia a proposta pelo formulário ou por email.
+A quota é de **[valor] € por ano**, com valor reduzido para estudantes. *(PLACEHOLDER)*
+Cobre seguros, material consumível e o café das reuniões — o café é levado muito a sério.
 
-A equipa responde em algumas semanas com acompanhamento de um responsável do departamento de projetos.
+## E se não quiser ser sócio?
 
-## Contacto
-
-Para qualquer dúvida, escreve-nos — respondemos a todas as mensagens.
+Sem problema: quase tudo o que fazemos é aberto ao público. Podes só aparecer —
+e, se quiseres ajudar sem quota, há sempre [trabalho voluntário](#contacto) para toda a gente.

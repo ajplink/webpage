@@ -1,0 +1,121 @@
+---
+/**
+ * Doações — what donations buy (content) + how to give (interface panel with
+ * PLACEHOLDER payment details) + transparency note.
+ */
+import { SITE, type Locale } from '../config/site';
+import { localizedEntry } from '../lib/content';
+import { t } from '../i18n';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+import Icon from '../components/Icon.astro';
+import Squiggle from '../components/Squiggle.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const page = await localizedEntry('pages', locale, 'donations');
+if (!page) throw new Error('Missing `pages/donations` content entry');
+const { Content } = await render(page);
+---
+
+<Base {locale} title={page.data.title} description={page.data.summary ?? ''} routeKey="donations">
+  <article class="container page">
+    <header class="page-head">
+      <p class="eyebrow">{t(locale, 'nav.donations')}</p>
+      <h1>{page.data.title}</h1>
+      {page.data.summary && <p class="lead">{page.data.summary}</p>}
+    </header>
+
+    <div class="page-grid">
+      <Prose>
+        <Content />
+      </Prose>
+
+      <aside class="give">
+        <div class="panel give-card" style="--panel-color: var(--palette-yellow)">
+          <Icon name="coin" size={28} />
+          <h2>{t(locale, 'donations.give')}</h2>
+          <dl>
+            <div>
+              <dt>IBAN</dt>
+              <dd>PT50 0000 0000 0000 0000 0000 0 <span class="placeholder">PLACEHOLDER</span></dd>
+            </div>
+            <div>
+              <dt>MB WAY</dt>
+              <dd>900 000 000 <span class="placeholder">PLACEHOLDER</span></dd>
+            </div>
+          </dl>
+          <Squiggle />
+          <a class="button" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'donations.give')}</a>
+        </div>
+      </aside>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .page-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+
+  .give-card {
+    display: grid;
+    gap: var(--space-2xs);
+    color: var(--color-text);
+  }
+
+  .give-card h2 {
+    font-size: var(--step-1);
+  }
+
+  .give-card dl {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .give-card dt {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .give-card dd {
+    font-family: var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+
+  .placeholder {
+    font-size: 0.85em;
+    color: var(--color-accent);
+  }
+
+  .give-card :global(.button) {
+    justify-content: center;
+    margin-top: var(--space-2xs);
+  }
+
+  @media (max-width: 52rem) {
+    .page-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

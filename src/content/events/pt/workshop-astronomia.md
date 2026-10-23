@@ -1,9 +1,9 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por um evento real (evento já passado).
-title: Workshop de Astronomia Observacional (exemplo)
+title: "Workshop de Astronomia Observacional (exemplo)"
 date: 2026-06-05
-location: Évora (exemplo)
-summary: Uma noite de observação do céu com telescópios, mapas estelares e introdução à astrofísica.
+location: "Évora (exemplo)"
+summary: "Uma noite de observação do céu com telescópios, mapas estelares e introdução à astrofísica."
 ---
 
 > **Conteúdo de exemplo** — substituir por texto real.

@@ -20,8 +20,16 @@ Components consume custom properties; nothing visual is hard-coded elsewhere
 5. **Motion** — `--duration`, `--ease`; all transitions are disabled under
    `prefers-reduced-motion` (in `global.css`).
 
-Dark scheme: a `@media (prefers-color-scheme: dark)` block redefines the same
-semantic tokens. No JS toggle in v1.
+Dark scheme: the same semantic tokens are redefined in two places —
+`@media (prefers-color-scheme: dark) :root:not([data-theme='light'])` (OS
+preference) and `:root[data-theme='dark']` (manual pin). The header toggle
+sets `data-theme` via `/theme.js`, the one documented progressive
+enhancement; keep both dark blocks in sync.
+
+Brand artwork: `--logo-ink` / `--logo-spark` colour the wordmark (nome.svg)
+so it flips to paper-white in the dark scheme. Shape language lives in
+`--radius-s/…/pill`; each department owns a palette hue via `DEPT_ACCENT`
+(src/lib/content.ts).
 
 ## Rules
 
@@ -34,5 +42,7 @@ semantic tokens. No JS toggle in v1.
 - Max two type families (currently Fraunces display + Inter body, both
   self-hosted Latin subsets via `@fontsource-variable`, `font-display: swap`).
 - Shared primitives live in `global.css` (`.container`, `.prose`, `.badge`,
-  `.grid`, `.button`, `.eyebrow`, `.lead`, `.skip-link`); component-specific
-  rules stay scoped inside their `.astro` file.
+  `.grid`, `.button`, `.panel`, `.band`, `.eyebrow`, `.lead`, `.skip-link`);
+  component-specific rules stay scoped inside their `.astro` file.
+- Exception to "no hard-coded colours": flag SVGs (`Flag.astro`) and the
+  favicon/brand artwork mirror real-world or brand colours.

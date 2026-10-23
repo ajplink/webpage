@@ -1,14 +1,18 @@
 ---
 /**
- * Join / Contact — how to become a member or collaborator, how to submit a
- * project, and static contact details (no backend in v1: mailto + form link).
+ * Join / Tornar-me Sócio — the benefits of being an associate and how to
+ * sign up. Content from the `pages` collection (entry slug: `join`); the
+ * fee card and CTAs live here because they are interface, not prose.
  */
 import { SITE, type Locale } from '../config/site';
 import { localizedEntry } from '../lib/content';
+import { href } from '../i18n/routes';
 import { t } from '../i18n';
 import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
+import Icon from '../components/Icon.astro';
+import Squiggle from '../components/Squiggle.astro';
 
 interface Props {
   locale: Locale;
@@ -20,29 +24,36 @@ if (!page) throw new Error('Missing `pages/join` content entry');
 const { Content } = await render(page);
 ---
 
-<Base
-  {locale}
-  title={page.data.title}
-  description={page.data.summary ?? ''}
-  routeKey="join"
->
+<Base {locale} title={page.data.title} description={page.data.summary ?? ''} routeKey="join">
   <article class="container page">
     <header class="page-head">
+      <p class="eyebrow">{t(locale, 'nav.join')}</p>
       <h1>{page.data.title}</h1>
       {page.data.summary && <p class="lead">{page.data.summary}</p>}
     </header>
 
-    <Prose>
-      <Content />
-    </Prose>
+    <div class="page-grid">
+      <Prose>
+        <Content />
+      </Prose>
 
-    <aside class="contact" aria-labelledby="contact-title">
-      <h2 id="contact-title">{t(locale, 'join.contact')}</h2>
-      <div class="contact-actions">
-        <a class="button" href={SITE.formUrl} rel="noopener">{t(locale, 'join.formLink')}</a>
-        <a class="button button--ghost" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'join.emailLabel')}: {SITE.contactEmail}</a>
-      </div>
-    </aside>
+      <aside class="join-aside">
+        <div class="panel join-card" style="--panel-color: var(--palette-pink)">
+          <Icon name="star" size={28} />
+          <h2>{t(locale, 'join.fee')}</h2>
+          <p class="fee">[valor] € <span>/ ano</span></p>
+          <p class="fee-note">Estudantes: [valor] € · <span class="placeholder">PLACEHOLDER</span></p>
+          <Squiggle />
+          <div class="join-actions">
+            <a class="button" href={SITE.formUrl} rel="noopener">{t(locale, 'join.formLink')}</a>
+            <a class="button button--ghost" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'join.emailLabel')}</a>
+          </div>
+          <p class="quiet">
+            <a href={href(locale, 'members')}>{t(locale, 'join.alreadyMember')}</a>
+          </p>
+        </div>
+      </aside>
+    </div>
   </article>
 </Base>
 
@@ -60,17 +71,60 @@ const { Content } = await render(page);
     color: var(--color-text-muted);
   }
 
-  .contact {
-    max-width: var(--measure);
-    margin-top: var(--space-xl);
-    padding-top: var(--space-l);
-    border-top: var(--border-width) solid var(--color-border);
+  .page-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
   }
 
-  .contact-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-s);
-    margin-top: var(--space-s);
+  .join-card {
+    display: grid;
+    gap: var(--space-2xs);
+    color: var(--color-text);
+  }
+
+  .join-card h2 {
+    font-size: var(--step-1);
+  }
+
+  .fee {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  .fee span {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .fee-note {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .placeholder {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  .join-actions {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-top: var(--space-2xs);
+  }
+
+  .quiet {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 52rem) {
+    .page-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

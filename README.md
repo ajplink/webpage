@@ -48,11 +48,15 @@ src/lib/content.ts      localized queries, fallback chain, event status
 src/layouts/Base.astro  document skeleton (head, skip link, header, main, footer)
 src/components/         Header, Footer, SEO, Hero, Section, Card, TeamCard,
                         EventItem, NewsItem, ProjectCard, Tag, Prose,
-                        LanguageSwitch, SimulationSlot
+                        Logo (wordmark), Bulb (mark), Icon (SVG icon set),
+                        Squiggle, Flag, LanguageSwitch, ThemeToggle,
+                        SimulationSlot
 src/views/              one file per page type (routes stay thin)
 src/pages/              routes: [locale]/…, RSS, robots.txt, 404, root mirror
-public/                 _headers, favicon.svg, og-placeholder.png
+public/                 _headers, favicon.svg, lampada.svg, og-placeholder.png,
+                        theme.js (the one documented progressive enhancement)
 scripts/contrast.mjs    token contrast checker (npm run contrast)
+scripts/avatars.mjs     regenerates the placeholder SVG team portraits
 CONTRIBUTING.md         how to add content (pt)
 AGENTS.md, .agents/     invariants and guides for future development
 ```

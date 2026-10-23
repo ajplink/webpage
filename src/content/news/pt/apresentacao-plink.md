@@ -1,9 +1,8 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por uma notícia real.
-title: Apresentação da Associação Plink (exemplo)
+title: "Apresentação da Associação Plink (exemplo)"
 date: 2026-10-01
 summary: "Começamos a nossa atividade com uma ideia simples: projetos STEM feitos por jovens, para jovens."
-cover: ../../../assets/covers/noticia-apresentacao.png
 tags: [associacao, anuncio]
 draft: false
 ---

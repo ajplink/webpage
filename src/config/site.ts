@@ -11,7 +11,7 @@
 /* ------------------------------------------------------------------ locales */
 
 /** All locales served by the site. Order = order shown in the language switcher. */
-export const LOCALES = ['pt', 'en-us', 'en-gb'] as const;
+export const LOCALES = ['pt', 'en-gb'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
@@ -21,14 +21,12 @@ export const DEFAULT_LOCALE: Locale = 'pt';
 /** Short labels for the language switcher (not translated; they are language names). */
 export const LOCALE_LABELS: Record<Locale, string> = {
   pt: 'PT',
-  'en-us': 'EN (US)',
-  'en-gb': 'EN (UK)',
+  'en-gb': 'EN',
 };
 
 /** BCP-47 values for <html lang> and Intl formatters. */
 export const HTML_LANG: Record<Locale, string> = {
   pt: 'pt-PT',
-  'en-us': 'en-US',
   'en-gb': 'en-GB',
 };
 
@@ -39,8 +37,7 @@ export const HTML_LANG: Record<Locale, string> = {
  */
 export const FALLBACKS: Record<Locale, Locale[]> = {
   pt: [],
-  'en-us': ['pt'],
-  'en-gb': ['en-us', 'pt'],
+  'en-gb': ['pt'],
 };
 
 /* -------------------------------------------------------------------- types */
@@ -64,13 +61,11 @@ export const SITE = {
 
   tagline: {
     pt: 'Projetos STEM pedagógicos, feitos por e para jovens.',
-    'en-us': 'Hands-on STEM learning projects, by and for young people.',
     'en-gb': 'Hands-on STEM learning projects, by and for young people.',
   } satisfies Localized,
 
   description: {
     pt: 'Associação Plink é uma associação de juventude portuguesa que facilita projetos pedagógicos de ciência, tecnologia, engenharia e matemática para jovens e apoia educadores com eventos, workshops e competições.',
-    'en-us': 'Associação Plink is a Portuguese youth association that facilitates hands-on STEM projects for young people and supports educators with events, workshops and competitions.',
     'en-gb': 'Associação Plink is a Portuguese youth association that facilitates hands-on STEM projects for young people and supports educators with events, workshops and competitions.',
   } satisfies Localized,
 
@@ -85,7 +80,6 @@ export const SITE = {
   social: [
     { label: 'Instagram', url: 'https://example.org/instagram' },
     { label: 'LinkedIn', url: 'https://example.org/linkedin' },
-    { label: 'YouTube', url: 'https://example.org/youtube' },
   ],
 
   /* --------------------------------------------------------- navigation */
@@ -94,13 +88,7 @@ export const SITE = {
    * Main navigation, in order. Values are route keys defined in src/i18n/routes.ts;
    * labels are translated in src/i18n/ui.ts (`nav.<key>`).
    */
-  nav: ['about', 'team', 'events', 'news', 'projects', 'join'] as const,
-
-  footerText: {
-    pt: 'Associação Plink — projetos STEM pedagógicos para jovens e educadores. Feito com HTML, CSS e Astro.',
-    'en-us': 'Associação Plink — hands-on STEM projects for young people and educators. Built with HTML, CSS and Astro.',
-    'en-gb': 'Associação Plink — hands-on STEM projects for young people and educators. Built with HTML, CSS and Astro.',
-  } satisfies Localized,
+  nav: ['about', 'team', 'events', 'news', 'projects', 'sponsors', 'join'] as const,
 
   /* ------------------------------------------------------ feature flags */
 

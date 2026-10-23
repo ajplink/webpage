@@ -1,7 +1,7 @@
 ---
 # ENTRADA DE EXEMPLO — texto editável da página "Privacidade".
-title: Privacidade e informação legal
-summary: Este site não usa cookies, não tem analytics e não recolhe dados pessoais.
+title: "Privacidade e informação legal"
+summary: "Este site não usa cookies, não tem analytics e não recolhe dados pessoais."
 ---
 
 > **Conteúdo de exemplo** — substituir por texto legal real (revisão jurídica recomendada).

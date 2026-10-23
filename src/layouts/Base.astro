@@ -3,8 +3,7 @@
  * Base layout — the only place that owns the document skeleton:
  * <head>, skip link, header, <main> and footer.
  */
-import '@fontsource-variable/inter/wght.css';
-import '@fontsource-variable/fraunces/wght.css';
+import '@fontsource-variable/bricolage-grotesque/standard.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
 
@@ -14,6 +13,7 @@ import { htmlLang, t } from '../i18n';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Revolver from '../components/Revolver.astro';
 
 interface Props {
   locale: Locale;
@@ -61,5 +61,6 @@ const { locale, title, description, routeKey, entrySlug, image, type, noindex } 
       <slot />
     </main>
     <Footer {locale} />
+    <Revolver />
   </body>
 </html>

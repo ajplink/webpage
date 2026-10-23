@@ -12,7 +12,6 @@ import { t } from '../i18n';
 import LanguageSwitch from './LanguageSwitch.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import Logo from './Logo.astro';
-import Bulb from './Bulb.astro';
 
 interface Props {
   locale: Locale;
@@ -42,8 +41,7 @@ function isSection(key: RouteKey): boolean {
 <header class="header">
   <div class="container header-bar">
     <a class="brand" href={href(locale, 'home')} aria-label={SITE.name}>
-      <Bulb size={30} eager />
-      <Logo width={116} />
+      <Logo width={132} />
     </a>
 
     <nav class="nav-desktop" aria-label={t(locale, 'a11y.mainNav')}>

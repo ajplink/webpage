@@ -1,11 +1,13 @@
 ---
 /**
- * Footer — secondary navigation, contact, social links and legal line.
+ * Footer — small and horizontal: mark + name, links in one row, social as
+ * icons. No marketing line, no stacking columns.
  */
 import { SITE, type Locale } from '../config/site';
 import { href } from '../i18n/routes';
 import { t } from '../i18n';
 import Bulb from './Bulb.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
@@ -13,18 +15,24 @@ interface Props {
 
 const { locale } = Astro.props;
 const year = new Date().getFullYear();
+
+/** Icon per social network (Icon.astro glyphs). */
+const SOCIAL_ICON = { Instagram: 'instagram', LinkedIn: 'linkedin' } as const;
 ---
 
 <footer class="footer">
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <p class="brand-name"><Bulb size={22} class="footer-bulb" />{SITE.name}</p>
-      <p class="tagline">{SITE.tagline[locale]}</p>
-    </div>
+  <div class="container footer-row">
+    <p class="footer-brand">
+      <Bulb size={22} />
+      <span>{SITE.name}</span>
+    </p>
 
     <nav aria-label={t(locale, 'a11y.footerNav')}>
-      <ul>
+      <ul class="footer-links">
         <li><a href={href(locale, 'join')}>{t(locale, 'nav.join')}</a></li>
+        <li><a href={href(locale, 'members')}>{t(locale, 'nav.members')}</a></li>
+        <li><a href={href(locale, 'donations')}>{t(locale, 'nav.donations')}</a></li>
+        <li><a href={href(locale, 'sponsors')}>{t(locale, 'nav.sponsors')}</a></li>
         <li><a href={href(locale, 'privacy')}>{t(locale, 'nav.privacy')}</a></li>
         <li><a href={`mailto:${SITE.contactEmail}`}>{t(locale, 'join.emailLabel')}</a></li>
       </ul>
@@ -34,7 +42,9 @@ const year = new Date().getFullYear();
       {
         SITE.social.map((item) => (
           <li>
-            <a href={item.url} rel="me noopener">{item.label}</a>
+            <a href={item.url} rel="me noopener" aria-label={item.label}>
+              <Icon name={SOCIAL_ICON[item.label as keyof typeof SOCIAL_ICON]} size={20} />
+            </a>
           </li>
         ))
       }
@@ -42,48 +52,39 @@ const year = new Date().getFullYear();
   </div>
 
   <div class="container footer-legal">
-    <p>
-      © {year} {SITE.legalName} · {SITE.legalId}
-    </p>
-    <p class="footer-note">{SITE.footerText[locale]}</p>
+    <p>© {year} {SITE.legalName} · {SITE.legalId}</p>
   </div>
 </footer>
 
 <style>
   .footer {
     margin-top: var(--space-2xl);
-    padding-block: var(--space-l);
+    padding-block: var(--space-m);
     font-size: var(--step--1);
     color: var(--color-text-muted);
     border-top: var(--border-width) solid var(--color-border);
   }
 
-  .footer-grid {
-    display: grid;
-    gap: var(--space-m);
-    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
-    align-items: start;
+  .footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-l);
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .brand-name {
+  .footer-brand {
     display: flex;
     gap: var(--space-2xs);
     align-items: center;
-    font-family: var(--font-display);
-    font-size: var(--step-0);
-    font-weight: 600;
+    font-weight: 650;
     color: var(--color-text);
   }
 
-  .tagline {
-    max-width: 32ch;
-    margin-top: var(--space-3xs);
-  }
-
-  .footer nav ul,
-  .footer-social {
-    display: grid;
-    gap: var(--space-3xs);
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
     padding: 0;
     margin: 0;
     list-style: none;
@@ -97,14 +98,27 @@ const year = new Date().getFullYear();
     color: var(--color-primary);
   }
 
-  .footer-legal {
-    margin-top: var(--space-l);
-    padding-top: var(--space-s);
-    border-top: var(--border-width) solid var(--color-border);
+  .footer-social {
+    display: flex;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: 0;
+    list-style: none;
   }
 
-  .footer-note {
-    max-width: var(--measure);
-    margin-top: var(--space-3xs);
+  .footer-social a {
+    display: grid;
+    place-items: center;
+    padding: var(--space-3xs);
+    border-radius: var(--radius-pill);
+  }
+
+  .footer-social a:hover {
+    background-color: var(--color-tint);
+  }
+
+  .footer-legal {
+    margin-top: var(--space-s);
+    font-size: var(--step--1);
   }
 </style>

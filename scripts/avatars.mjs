@@ -5,7 +5,7 @@
  *   node scripts/avatars.mjs
  *
  * Reads `name:` from every src/content/team/pt/*.md and writes
- * src/assets/avatars/<slug>.svg. Deterministic: the member's name seeds the
+ * src/assets/team-photos/<slug>.svg. Deterministic: the member's name seeds the
  * palette, hair and features, so re-running never churns the files.
  *
  * These are PLACEHOLDER portraits (never invented photos of real people):
@@ -18,7 +18,7 @@ import { dirname, join, basename } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const teamDir = join(root, 'src/content/team/pt');
-const outDir = join(root, 'src/assets/avatars');
+const outDir = join(root, 'src/assets/team-photos');
 mkdirSync(outDir, { recursive: true });
 
 /* ------------------------------------------------------------- palette */
@@ -95,4 +95,4 @@ for (const file of files) {
   const name = /^name:\s*(.+)$/m.exec(md)?.[1]?.trim() ?? slug;
   writeFileSync(join(outDir, `${slug}.svg`), avatar(hash(name + slug)));
 }
-console.log(`avatars: ${files.length} written to src/assets/avatars/`);
+console.log(`avatars: ${files.length} written to src/assets/team-photos/`);

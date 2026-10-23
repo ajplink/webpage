@@ -1,0 +1,62 @@
+---
+/**
+ * Revolver — the four circles from the lamp logo, arranged like a revolver
+ * cylinder that steps as you scroll (CSS scroll-driven animation: zero JS,
+ * static fallback where scroll timelines aren't supported).
+ */
+---
+
+<div class="revolver" aria-hidden="true">
+  <svg viewBox="0 0 200 200" width="112" height="112" focusable="false">
+    <g class="revolver-ring">
+      <circle cx="100" cy="38" r="25" fill="var(--palette-blue)"></circle>
+      <circle cx="162" cy="100" r="25" fill="var(--palette-orange)"></circle>
+      <circle cx="100" cy="162" r="25" fill="var(--palette-pink)"></circle>
+      <circle cx="38" cy="100" r="25" fill="var(--palette-green)"></circle>
+    </g>
+    <!-- the barrel pin -->
+    <circle cx="100" cy="100" r="8" fill="var(--color-accent)"></circle>
+  </svg>
+</div>
+
+<style>
+  .revolver {
+    position: fixed;
+    right: var(--space-s);
+    bottom: var(--space-s);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .revolver-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: revolver-turn linear both;
+    /* the page scroll IS the timeline: turning the cylinder as you go */
+    animation-timeline: scroll();
+    animation-range: 0% 100%;
+  }
+
+  @keyframes revolver-turn {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(540deg);
+    }
+  }
+
+  /* Small screens: no room for a dial. Reduced motion: no spin. */
+  @media (max-width: 48rem) {
+    .revolver {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .revolver-ring {
+      animation: none;
+    }
+  }
+</style>

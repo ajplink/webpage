@@ -1,9 +1,9 @@
 ---
 # ENTRADA DE EXEMPLO — conteúdo de exemplo, substituir por uma pessoa real.
-name: Marta Reis
-role: Projetos de ciência
+name: "Marta Reis"
+role: "Projetos de ciência"
 department: DP
-photo: ../../../assets/avatars/marta-reis.svg
+photo: ../../../assets/team-photos/marta-reis.svg
 order: 3
 active: true
 bio: "Mentora de projetos escolares e especialista em fazer a pergunta que falta."

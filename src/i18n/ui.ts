@@ -12,261 +12,287 @@ import { DEFAULT_LOCALE, FALLBACKS, type Locale, type Localized } from '../confi
 const ui = {
   'a11y.skip': {
     pt: 'Saltar para o conteúdo',
-    'en-us': 'Skip to content',
     'en-gb': 'Skip to content',
   },
   'a11y.mainNav': {
     pt: 'Navegação principal',
-    'en-us': 'Main navigation',
     'en-gb': 'Main navigation',
   },
   'a11y.mobileNav': {
     pt: 'Navegação',
-    'en-us': 'Navigation',
     'en-gb': 'Navigation',
   },
   'a11y.footerNav': {
     pt: 'Navegação de rodapé',
-    'en-us': 'Footer navigation',
     'en-gb': 'Footer navigation',
   },
   'a11y.language': {
     pt: 'Idioma',
-    'en-us': 'Language',
     'en-gb': 'Language',
   },
   'a11y.menu': {
     pt: 'Menu',
-    'en-us': 'Menu',
     'en-gb': 'Menu',
   },
 
   'theme.toggle': {
     pt: 'Alternar tema claro/escuro',
-    'en-us': 'Toggle light/dark theme',
     'en-gb': 'Toggle light/dark theme',
   },
   'theme.toLight': {
     pt: 'Mudar para tema claro',
-    'en-us': 'Switch to light theme',
     'en-gb': 'Switch to light theme',
   },
   'theme.toDark': {
     pt: 'Mudar para tema escuro',
-    'en-us': 'Switch to dark theme',
     'en-gb': 'Switch to dark theme',
   },
 
-  'nav.about': { pt: 'Sobre', 'en-us': 'About', 'en-gb': 'About' },
-  'nav.team': { pt: 'Equipa', 'en-us': 'Team', 'en-gb': 'Team' },
-  'nav.events': { pt: 'Eventos', 'en-us': 'Events', 'en-gb': 'Events' },
-  'nav.news': { pt: 'Notícias', 'en-us': 'News', 'en-gb': 'News' },
-  'nav.projects': { pt: 'Projetos', 'en-us': 'Projects', 'en-gb': 'Projects' },
-  'nav.join': { pt: 'Juntar', 'en-us': 'Join', 'en-gb': 'Join' },
-  'nav.privacy': { pt: 'Privacidade', 'en-us': 'Privacy', 'en-gb': 'Privacy' },
+  'nav.about': { pt: 'Sobre', 'en-gb': 'About' },
+  'nav.team': { pt: 'Equipa', 'en-gb': 'Team' },
+  'nav.events': { pt: 'Eventos', 'en-gb': 'Events' },
+  'nav.news': { pt: 'Notícias', 'en-gb': 'News' },
+  'nav.projects': { pt: 'Projetos', 'en-gb': 'Projects' },
+  'nav.join': { pt: 'Sócios', 'en-gb': 'Members' },
+  'nav.members': {
+    pt: 'Área de Sócio',
+    'en-gb': "Members' area",
+  },
+  'nav.donations': { pt: 'Doações', 'en-gb': 'Donations' },
+  'nav.sponsors': { pt: 'Apoios', 'en-gb': 'Sponsors' },
+  'nav.privacy': { pt: 'Privacidade', 'en-gb': 'Privacy' },
 
   'home.eyebrow': {
     pt: 'Associação de juventude · Portugal',
-    'en-us': 'Youth association · Portugal',
     'en-gb': 'Youth association · Portugal',
   },
   'home.cta': {
     pt: 'Explorar projetos',
-    'en-us': 'Explore projects',
     'en-gb': 'Explore projects',
   },
   'home.ctaSecondary': {
-    pt: 'Juntar-me à Plink',
-    'en-us': 'Join Plink',
-    'en-gb': 'Join Plink',
+    pt: 'Conhecer a Plink',
+    'en-gb': 'Meet Plink',
+  },
+  'home.joinQuiet': {
+    pt: 'Se isto te soa bem, os sócios são gente como tu.',
+    'en-gb': 'If this sounds like you, our members are people like you.',
   },
   'home.upcomingEvents': {
     pt: 'Próximos eventos',
-    'en-us': 'Upcoming events',
     'en-gb': 'Upcoming events',
   },
   'home.latestNews': {
     pt: 'Últimas notícias',
-    'en-us': 'Latest news',
     'en-gb': 'Latest news',
   },
   'home.featuredProjects': {
     pt: 'Projetos em destaque',
-    'en-us': 'Featured projects',
     'en-gb': 'Featured projects',
   },
-  'home.viewAll': { pt: 'Ver todos', 'en-us': 'View all', 'en-gb': 'View all' },
+  'home.viewAll': { pt: 'Ver todos', 'en-gb': 'View all' },
   'home.empty': {
     pt: 'Em breve — voltem para ver novidades.',
-    'en-us': 'Coming soon — check back for updates.',
     'en-gb': 'Coming soon — check back for updates.',
   },
 
-  'common.readMore': { pt: 'Ler mais', 'en-us': 'Read more', 'en-gb': 'Read more' },
-  'common.backTo': { pt: 'Voltar a', 'en-us': 'Back to', 'en-gb': 'Back to' },
-  'common.details': { pt: 'Detalhes', 'en-us': 'Details', 'en-gb': 'Details' },
+  'common.readMore': { pt: 'Ler mais', 'en-gb': 'Read more' },
+  'common.backTo': { pt: 'Voltar a', 'en-gb': 'Back to' },
+  'common.details': { pt: 'Detalhes', 'en-gb': 'Details' },
   'common.fallbackNote': {
     pt: 'Esta página está disponível em português.',
-    'en-us': 'This page is currently only available in Portuguese.',
     'en-gb': 'This page is currently only available in Portuguese.',
   },
 
-  'events.upcoming': { pt: 'Próximos', 'en-us': 'Upcoming', 'en-gb': 'Upcoming' },
-  'events.past': { pt: 'Anteriores', 'en-us': 'Past', 'en-gb': 'Past' },
-  'events.cancelled': { pt: 'Cancelado', 'en-us': 'Cancelled', 'en-gb': 'Cancelled' },
+  'events.upcoming': { pt: 'Próximos', 'en-gb': 'Upcoming' },
+  'events.past': { pt: 'Anteriores', 'en-gb': 'Past' },
+  'events.cancelled': { pt: 'Cancelado', 'en-gb': 'Cancelled' },
   'events.register': {
     pt: 'Inscrever-me',
-    'en-us': 'Register',
     'en-gb': 'Register',
   },
-  'events.location': { pt: 'Local', 'en-us': 'Location', 'en-gb': 'Location' },
-  'events.date': { pt: 'Data', 'en-us': 'Date', 'en-gb': 'Date' },
+  'events.location': { pt: 'Local', 'en-gb': 'Location' },
+  'events.date': { pt: 'Data', 'en-gb': 'Date' },
   'events.noUpcoming': {
     pt: 'Sem eventos marcados de momento.',
-    'en-us': 'No events scheduled right now.',
     'en-gb': 'No events scheduled right now.',
   },
   'events.noPast': {
     pt: 'Ainda não há eventos anteriores.',
-    'en-us': 'No past events yet.',
     'en-gb': 'No past events yet.',
   },
 
-  'projects.status.idea': { pt: 'Ideia', 'en-us': 'Idea', 'en-gb': 'Idea' },
-  'projects.status.active': { pt: 'Ativo', 'en-us': 'Active', 'en-gb': 'Active' },
+  'projects.status.idea': { pt: 'Ideia', 'en-gb': 'Idea' },
+  'projects.status.active': { pt: 'Ativo', 'en-gb': 'Active' },
   'projects.status.completed': {
     pt: 'Concluído',
-    'en-us': 'Completed',
     'en-gb': 'Completed',
   },
   'projects.leads': {
     pt: 'Responsáveis',
-    'en-us': 'Project leads',
     'en-gb': 'Project leads',
   },
-  'projects.links': { pt: 'Ligações', 'en-us': 'Links', 'en-gb': 'Links' },
-  'projects.filters': { pt: 'Filtrar', 'en-us': 'Filter', 'en-gb': 'Filter' },
+  'projects.links': { pt: 'Ligações', 'en-gb': 'Links' },
+  'projects.filters': { pt: 'Filtrar', 'en-gb': 'Filter' },
   'projects.allProjects': {
     pt: 'Todos os projetos',
-    'en-us': 'All projects',
     'en-gb': 'All projects',
   },
-  'projects.filtersAll': { pt: 'Todos', 'en-us': 'All', 'en-gb': 'All' },
-  'projects.filtersStatus': { pt: 'Estado', 'en-us': 'Status', 'en-gb': 'Status' },
-  'projects.filtersTags': { pt: 'Tema', 'en-us': 'Topic', 'en-gb': 'Topic' },
+  'projects.filtersAll': { pt: 'Todos', 'en-gb': 'All' },
+  'projects.filtersStatus': { pt: 'Estado', 'en-gb': 'Status' },
+  'projects.filtersTags': { pt: 'Tema', 'en-gb': 'Topic' },
   'projects.simulationPending': {
     pt: 'Simulação interativa — em breve.',
-    'en-us': 'Interactive simulation — coming soon.',
     'en-gb': 'Interactive simulation — coming soon.',
   },
 
-  'news.tags': { pt: 'Temas', 'en-us': 'Topics', 'en-gb': 'Topics' },
+  'news.tags': { pt: 'Temas', 'en-gb': 'Topics' },
   'news.allPosts': {
     pt: 'Todas as notícias',
-    'en-us': 'All posts',
     'en-gb': 'All posts',
   },
   'news.rss': {
     pt: 'Subscrever via RSS',
-    'en-us': 'Subscribe via RSS',
     'en-gb': 'Subscribe via RSS',
   },
 
-  'team.department': { pt: 'Departamento', 'en-us': 'Department', 'en-gb': 'Department' },
+  'team.department': { pt: 'Departamento', 'en-gb': 'Department' },
   'team.departments': {
     pt: 'Departamentos',
-    'en-us': 'Departments',
     'en-gb': 'Departments',
   },
-  'team.count': { pt: '{n} pessoas', 'en-us': '{n} people', 'en-gb': '{n} people' },
+  'team.count': { pt: '{n} pessoas', 'en-gb': '{n} people' },
   'team.scroll': {
     pt: 'Desliza para veres toda a gente',
-    'en-us': 'Swipe to see everyone',
     'en-gb': 'Swipe to see everyone',
   },
   'team.lead': {
     pt: 'Quem faz a Plink acontecer — cinco departamentos, muitas mãos e uma quantidade suspeita de boa vontade.',
-    'en-us': 'The people who make Plink happen — five departments, many hands and a suspicious amount of goodwill.',
     'en-gb': 'The people who make Plink happen — five departments, many hands and a suspicious amount of goodwill.',
   },
 
   /* Full department names (PLACEHOLDER expansions until Ricardo confirms). */
-  'dept.Direção': { pt: 'Direção', 'en-us': 'Board', 'en-gb': 'Board' },
+  'dept.Direção': { pt: 'Direção', 'en-gb': 'Board' },
   'dept.DREE': {
     pt: 'Departamento de Recursos Educativos e Eventos',
-    'en-us': 'Department of Educational Resources and Events',
     'en-gb': 'Department of Educational Resources and Events',
   },
   'dept.DP': {
     pt: 'Departamento de Projetos',
-    'en-us': 'Projects Department',
     'en-gb': 'Projects Department',
   },
   'dept.DL': {
     pt: 'Departamento de Logística',
-    'en-us': 'Logistics Department',
     'en-gb': 'Logistics Department',
   },
   'dept.DCI': {
     pt: 'Departamento de Comunicação e Informática',
-    'en-us': 'Communication and IT Department',
     'en-gb': 'Communication and IT Department',
   },
   'desc.Direção': {
     pt: 'Decide o rumo, aprova os projetos e garante que as coisas avançam.',
-    'en-us': 'Sets the direction, approves projects and keeps things moving.',
     'en-gb': 'Sets the direction, approves projects and keeps things moving.',
   },
   'desc.DREE': {
     pt: 'Cria os materiais e as formações que levam a ciência para as escolas.',
-    'en-us': 'Builds the kits and training that bring science into schools.',
     'en-gb': 'Builds the kits and training that bring science into schools.',
   },
   'desc.DP': {
     pt: 'Acompanha os projetos dos membros, da ideia à demonstração final.',
-    'en-us': 'Supports member projects from first idea to final demo.',
     'en-gb': 'Supports member projects from first idea to final demo.',
   },
   'desc.DL': {
     pt: 'Faz os eventos acontecerem: espaços, material, inscrições e logística.',
-    'en-us': 'Makes events happen: venues, materials, sign-ups and logistics.',
     'en-gb': 'Makes events happen: venues, materials, sign-ups and logistics.',
   },
   'desc.DCI': {
     pt: 'Site, redes, design e as ferramentas internas que nos mantêm organizados.',
-    'en-us': 'Website, social media, design and the internal tools that keep us organised.',
     'en-gb': 'Website, social media, design and the internal tools that keep us organised.',
   },
 
-  'join.contact': { pt: 'Contacto', 'en-us': 'Contact', 'en-gb': 'Contact' },
+  'join.contact': { pt: 'Contacto', 'en-gb': 'Contact' },
   'join.formLink': {
     pt: 'Preencher o formulário',
-    'en-us': 'Fill in the form',
     'en-gb': 'Fill in the form',
   },
   'join.emailLabel': {
     pt: 'Escreve-nos',
-    'en-us': 'Email us',
     'en-gb': 'Email us',
+  },
+  'join.benefits': {
+    pt: 'O que ganhas como sócio',
+    'en-gb': 'What you get as a member',
+  },
+  'join.steps': {
+    pt: 'Como te tornas sócio',
+    'en-gb': 'How to become a member',
+  },
+  'join.fee': { pt: 'Quota anual', 'en-gb': 'Annual fee' },
+  'join.alreadyMember': {
+    pt: 'Já és sócio? Vê os teus dados na Área de Sócio.',
+    'en-gb': 'Already a member? Check your details in the members\' area.',
+  },
+
+  'members.yourData': {
+    pt: 'Os teus dados',
+    'en-gb': 'Your details',
+  },
+  'members.number': {
+    pt: 'Número de sócio',
+    'en-gb': 'Membership number',
+  },
+  'members.since': { pt: 'Sócio desde', 'en-gb': 'Member since' },
+  'members.status': { pt: 'Quota', 'en-gb': 'Fee' },
+  'members.statusPaid': {
+    pt: 'Em dia (exemplo)',
+    'en-gb': 'Up to date (example)',
+  },
+  'members.update': {
+    pt: 'Pedir alteração de dados',
+    'en-gb': 'Request a data change',
+  },
+  'members.mockNote': {
+    pt: 'Os dados abaixo são de exemplo. Em v1 não há área autenticada: cada sócio recebe o seu boletim por email e pede alterações por email ou formulário.',
+    'en-gb': 'The details below are examples. There is no login area in v1: every member receives their statement by email and requests changes by email or form.',
+  },
+
+  'donations.give': { pt: 'Fazer uma doação', 'en-gb': 'Make a donation' },
+  'donations.buys': {
+    pt: 'O que o teu dinheiro compra',
+    'en-gb': 'What your money buys',
+  },
+  'donations.transparency': {
+    pt: 'Transparência',
+    'en-gb': 'Transparency',
+  },
+
+  'sponsors.tiers': {
+    pt: 'Níveis de apoio',
+    'en-gb': 'Support tiers',
+  },
+  'sponsors.become': {
+    pt: 'Tornar-se apoio',
+    'en-gb': 'Become a sponsor',
+  },
+  'sponsors.current': {
+    pt: 'Quem já nos apoia',
+    'en-gb': 'Who already supports us',
   },
 
   'footer.rights': {
     pt: 'Todos os direitos reservados.',
-    'en-us': 'All rights reserved.',
     'en-gb': 'All rights reserved.',
   },
 
   'notFound.title': {
     pt: 'Página não encontrada',
-    'en-us': 'Page not found',
     'en-gb': 'Page not found',
   },
   'notFound.body': {
     pt: 'O endereço que procuras não existe (ou já não existe).',
-    'en-us': 'The address you are looking for does not exist (or no longer exists).',
     'en-gb': 'The address you are looking for does not exist (or no longer exists).',
   },
-  'notFound.home': { pt: 'Ir para o início', 'en-us': 'Go home', 'en-gb': 'Go home' },
+  'notFound.home': { pt: 'Ir para o início', 'en-gb': 'Go home' },
 } satisfies Record<string, Localized>;
 
 export type UIKey = keyof typeof ui;

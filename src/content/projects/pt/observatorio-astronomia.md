@@ -1,7 +1,7 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por um projeto real.
-title: Observatório de Bairro (exemplo)
-summary: Uma rede de observação do céu nocturno feita com sensores de baixo custo e ciência cidadã.
+title: "Observatório de Bairro (exemplo)"
+summary: "Uma rede de observação do céu nocturno feita com sensores de baixo custo e ciência cidadã."
 status: idea
 tags: [astronomia, fisica]
 leads: [pt/rita-exemplo]

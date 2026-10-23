@@ -1,8 +1,8 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por uma notícia real.
-title: Chamada a escolas para o próximo ano letivo (exemplo)
+title: "Chamada a escolas para o próximo ano letivo (exemplo)"
 date: 2026-09-15
-summary: Procuramos escolas para testar os nossos materiais pedagógicos em sala de aula. Sem custos.
+summary: "Procuramos escolas para testar os nossos materiais pedagógicos em sala de aula. Sem custos."
 tags: [escolas, educacao]
 draft: false
 ---

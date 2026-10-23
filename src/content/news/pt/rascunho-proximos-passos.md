@@ -1,8 +1,8 @@
 ---
 # ENTRADA DE EXEMPLO — RASCUNHO (draft: true): nunca é publicado, listado ou incluído no RSS.
-title: Próximos passos (rascunho de exemplo)
+title: "Próximos passos (rascunho de exemplo)"
 date: 2026-10-10
-summary: Rascunho interno para testar o sistema de rascunhos — não deve aparecer em lado nenhum.
+summary: "Rascunho interno para testar o sistema de rascunhos — não deve aparecer em lado nenhum."
 tags: [interno]
 draft: true
 ---

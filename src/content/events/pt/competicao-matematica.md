@@ -1,10 +1,10 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por um evento real.
-title: Competição de Matemática Aplicada (exemplo)
+title: "Competição de Matemática Aplicada (exemplo)"
 date: 2027-03-20
 endDate: 2027-03-21
-location: Coimbra (exemplo)
-summary: Dois dias de desafios de matemática aplicada para equipas de escolas de todo o país.
+location: "Coimbra (exemplo)"
+summary: "Dois dias de desafios de matemática aplicada para equipas de escolas de todo o país."
 ---
 
 > **Conteúdo de exemplo** — substituir por texto real.

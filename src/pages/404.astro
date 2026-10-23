@@ -1,15 +1,15 @@
 ---
 /**
- * 404 — served by the host for any unknown path.
- * Neutral page (pt primary + links to the other locales), never indexed.
+ * 404 — served by the host for any unknown path. Shows the message in BOTH
+ * languages at once (a 404 can't know which locale was requested), each with
+ * a door home. Never indexed.
  */
-import { LOCALES } from '../config/site';
+import { LOCALES, HTML_LANG, type Locale } from '../config/site';
 import { t } from '../i18n';
 import { href } from '../i18n/routes';
-import { LOCALE_LABELS, HTML_LANG } from '../config/site';
 import Base from '../layouts/Base.astro';
 
-const locale = 'pt' as const;
+const locale = LOCALES[0];
 ---
 
 <Base
@@ -20,23 +20,22 @@ const locale = 'pt' as const;
   noindex
 >
   <div class="container page">
-    <p class="eyebrow">404</p>
-    <h1>{t(locale, 'notFound.title')}</h1>
-    <p class="lead">{t(locale, 'notFound.body')}</p>
-    <p class="actions">
-      <a class="button" href={href(locale, 'home')}>{t(locale, 'notFound.home')}</a>
-    </p>
-    <ul class="langs">
+    <p class="code">404</p>
+    <div class="langs">
       {
-        LOCALES.map((l) => (
-          <li>
-            <a href={href(l, 'home')} lang={HTML_LANG[l]} hreflang={l}>
-              {LOCALE_LABELS[l]}
-            </a>
-          </li>
+        LOCALES.map((l: Locale) => (
+          <section class="lang" lang={HTML_LANG[l]}>
+            <h1>{t(l, 'notFound.title')}</h1>
+            <p class="lead">{t(l, 'notFound.body')}</p>
+            <p>
+              <a class="button" href={href(l, 'home')}>
+                {t(l, 'notFound.home')}
+              </a>
+            </p>
+          </section>
         ))
       }
-    </ul>
+    </div>
   </div>
 </Base>
 
@@ -45,16 +44,25 @@ const locale = 'pt' as const;
     padding-block: var(--space-2xl);
   }
 
-  .actions {
-    margin-top: var(--space-m);
+  .code {
+    font-family: var(--font-mono);
+    font-size: var(--step-2);
+    color: var(--color-accent);
   }
 
   .langs {
-    display: flex;
-    gap: var(--space-s);
-    padding: 0;
-    margin: var(--space-l) 0 0;
-    list-style: none;
-    font-size: var(--step--1);
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    margin-top: var(--space-l);
+  }
+
+  .lang h1 {
+    font-size: var(--step-3);
+  }
+
+  .lang .lead {
+    margin-block: var(--space-s) var(--space-m);
+    color: var(--color-text-muted);
   }
 </style>

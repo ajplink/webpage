@@ -16,9 +16,11 @@ Detailed guides live in [`.agents/`](.agents/): [content model](.agents/content-
 
 ## Hard invariants (do not break without an explicit decision)
 
-- **Zero client-side JavaScript.** The only `<script>` in the output is JSON-LD.
-  CSS-only solutions (e.g. `:has()` filters, `<details>` menus) or, at most, a
-  documented progressive enhancement.
+- **Zero client-side JavaScript — one documented exception.** The only
+  `<script>` in the output is JSON-LD, plus `/theme.js` (~1 KB, no deps, no
+  cookies): the theme toggle's progressive enhancement, accepted in writing
+  here. CSS-only solutions (`:has()` filters, `<details>` menus) cover the
+  rest. Anything new must be CSS-first.
 - **No third-party requests at runtime** — no CDN fonts, no analytics, no
   embeds, no cookies.
 - **All visual values come from `src/styles/tokens.css`.** No hard-coded colours,

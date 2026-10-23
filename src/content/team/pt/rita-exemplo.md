@@ -1,8 +1,8 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por uma pessoa real.
-name: Rita Exemplo
-role: Responsável de Projetos
-photo: ../../../assets/avatars/rita-exemplo.svg
+name: "Rita Exemplo"
+role: "Responsável de Projetos"
+photo: ../../../assets/team-photos/rita-exemplo.svg
 department: DP
 order: 1
 active: true

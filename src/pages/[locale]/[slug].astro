@@ -1,7 +1,8 @@
 ---
 /**
  * Top-level pages per locale (localized slugs, see src/i18n/routes.ts):
- * about · team · events · news · projects · join · privacy
+ * about · team · events · news · projects · sponsors · join · members ·
+ * donations · privacy
  */
 import { LOCALES, type Locale } from '../../config/site';
 import { PAGE_KEYS, ROUTES, type RouteKey } from '../../i18n/routes';
@@ -10,7 +11,10 @@ import Team from '../../views/Team.astro';
 import EventsIndex from '../../views/EventsIndex.astro';
 import NewsIndex from '../../views/NewsIndex.astro';
 import ProjectsIndex from '../../views/ProjectsIndex.astro';
+import Sponsors from '../../views/Sponsors.astro';
 import Join from '../../views/Join.astro';
+import Members from '../../views/Members.astro';
+import Donations from '../../views/Donations.astro';
 import Privacy from '../../views/Privacy.astro';
 
 const VIEWS = {
@@ -19,7 +23,10 @@ const VIEWS = {
   events: EventsIndex,
   news: NewsIndex,
   projects: ProjectsIndex,
+  sponsors: Sponsors,
   join: Join,
+  members: Members,
+  donations: Donations,
   privacy: Privacy,
 } as const;
 

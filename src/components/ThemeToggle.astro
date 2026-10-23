@@ -71,7 +71,23 @@ const { locale } = Astro.props;
     padding: 0.22rem;
     color: var(--color-text-muted);
     border-radius: var(--radius-pill);
-    transition: background-color var(--duration) var(--ease);
+    transition:
+      background-color var(--duration) var(--ease),
+      transform var(--duration-slow) var(--ease);
+  }
+
+  /* playful: the sun spins, the moon tilts, both squish on press */
+  .theme-toggle:hover .icon--sun {
+    transform: rotate(30deg);
+  }
+
+  .theme-toggle:hover .icon--moon {
+    transform: rotate(-16deg) scale(1.08);
+  }
+
+  .theme-toggle:active .icon {
+    transform: scale(0.85);
+    transition-duration: 80ms;
   }
 
   /* The icon of the scheme currently in effect gets a highlight chip. */

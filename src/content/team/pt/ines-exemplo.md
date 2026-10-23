@@ -1,8 +1,8 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por uma pessoa real.
-name: Inês Exemplo
-role: Responsável de Comunicação e Informática
-photo: ../../../assets/avatars/ines-exemplo.svg
+name: "Inês Exemplo"
+role: "Responsável de Comunicação e Informática"
+photo: ../../../assets/team-photos/ines-exemplo.svg
 department: DCI
 order: 1
 active: true

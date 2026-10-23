@@ -1,0 +1,157 @@
+---
+/**
+ * Apoios — sponsor tiers (content) + placeholder sponsor marks (inline SVG
+ * placeholders until real logos arrive) + "become a sponsor" CTA.
+ */
+import { SITE, type Locale } from '../config/site';
+import { localizedEntry } from '../lib/content';
+import { t } from '../i18n';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const page = await localizedEntry('pages', locale, 'sponsors');
+if (!page) throw new Error('Missing `pages/sponsors` content entry');
+const { Content } = await render(page);
+
+/** PLACEHOLDER sponsor marks — geometric SVG logos, one hue each. */
+const placeholders = [
+  { mark: 'M4 20 12 4l8 16z', color: 'var(--palette-blue)' },
+  { mark: 'M4 12a8 8 0 0 1 16 0 8 8 0 0 1-16 0z', color: 'var(--palette-pink)' },
+  { mark: 'M4 4h16v16H4z', color: 'var(--palette-green)' },
+  { mark: 'M4 16c4-10 12-10 16 0', color: 'var(--palette-orange)' },
+  { mark: 'M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3z', color: 'var(--palette-yellow)' },
+  { mark: 'M5 5h6v6H5zM13 13h6v6h-6z', color: 'var(--palette-blue)' },
+];
+---
+
+<Base {locale} title={page.data.title} description={page.data.summary ?? ''} routeKey="sponsors">
+  <article class="container page">
+    <header class="page-head">
+      <p class="eyebrow">{t(locale, 'nav.sponsors')}</p>
+      <h1>{page.data.title}</h1>
+      {page.data.summary && <p class="lead">{page.data.summary}</p>}
+    </header>
+
+    <section class="sponsors-now" aria-labelledby="sponsors-now-title">
+      <h2 id="sponsors-now-title">{t(locale, 'sponsors.current')}</h2>
+      <ul class="logo-grid">
+        {
+          placeholders.map((sponsor, i) => (
+            <li class="panel logo-card">
+              <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+                <path d={sponsor.mark} fill="none" stroke={sponsor.color} stroke-width="1.8" stroke-linejoin="round" />
+              </svg>
+              <p class="logo-name">Logótipo {i + 1}</p>
+              <p class="placeholder">exemplo</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <div class="page-grid">
+      <Prose>
+        <Content />
+      </Prose>
+
+      <aside class="become">
+        <div class="panel become-card" style="--panel-color: var(--palette-green)">
+          <Icon name="users" size={28} />
+          <h2>{t(locale, 'sponsors.become')}</h2>
+          <p class="note">Dinheiro, material, espaço, tempo ou transporte — tudo conta.</p>
+          <a class="button" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'join.emailLabel')}</a>
+          <a class="button button--ghost" href={SITE.formUrl} rel="noopener">{t(locale, 'join.formLink')}</a>
+        </div>
+      </aside>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .page-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
+  }
+
+  .sponsors-now {
+    margin-bottom: var(--space-xl);
+  }
+
+  .sponsors-now h2 {
+    margin-bottom: var(--space-s);
+    font-size: var(--step-1);
+  }
+
+  .logo-grid {
+    display: grid;
+    gap: var(--space-s);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+  }
+
+  .logo-card {
+    display: grid;
+    gap: var(--space-3xs);
+    place-items: start;
+    padding: var(--space-s);
+  }
+
+  .logo-name {
+    font-weight: 650;
+  }
+
+  .placeholder {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-accent);
+  }
+
+  .page-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+
+  .become-card {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .become-card h2 {
+    font-size: var(--step-1);
+  }
+
+  .note {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .become-card :global(.button) {
+    justify-content: center;
+    margin-top: var(--space-3xs);
+  }
+
+  @media (max-width: 52rem) {
+    .page-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

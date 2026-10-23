@@ -13,14 +13,17 @@ type Slugs = Record<Locale, string>;
 
 export const ROUTES = {
   /** Home (empty slug → /pt/). */
-  home: { pt: '', 'en-us': '', 'en-gb': '' },
-  about: { pt: 'sobre', 'en-us': 'about', 'en-gb': 'about' },
-  team: { pt: 'equipa', 'en-us': 'team', 'en-gb': 'team' },
-  events: { pt: 'eventos', 'en-us': 'events', 'en-gb': 'events' },
-  news: { pt: 'noticias', 'en-us': 'news', 'en-gb': 'news' },
-  projects: { pt: 'projetos', 'en-us': 'projects', 'en-gb': 'projects' },
-  join: { pt: 'juntar', 'en-us': 'join', 'en-gb': 'join' },
-  privacy: { pt: 'privacidade', 'en-us': 'privacy', 'en-gb': 'privacy' },
+  home: { pt: '', 'en-gb': '' },
+  about: { pt: 'sobre', 'en-gb': 'about' },
+  team: { pt: 'equipa', 'en-gb': 'team' },
+  events: { pt: 'eventos', 'en-gb': 'events' },
+  news: { pt: 'noticias', 'en-gb': 'news' },
+  projects: { pt: 'projetos', 'en-gb': 'projects' },
+  sponsors: { pt: 'apoios', 'en-gb': 'sponsors' },
+  join: { pt: 'tornar-me-socio', 'en-gb': 'join' },
+  members: { pt: 'area-de-socio', 'en-gb': 'members' },
+  donations: { pt: 'doacoes', 'en-gb': 'donations' },
+  privacy: { pt: 'privacidade', 'en-gb': 'privacy' },
 } satisfies Record<string, Slugs>;
 
 export type RouteKey = keyof typeof ROUTES;
@@ -35,7 +38,7 @@ export const SECTION_COLLECTIONS = {
 export type SectionKey = keyof typeof SECTION_COLLECTIONS;
 
 /** Page keys that are plain (content-driven or listing) pages, no detail children. */
-export const PAGE_KEYS = ['about', 'team', 'events', 'news', 'projects', 'join', 'privacy'] as const satisfies readonly RouteKey[];
+export const PAGE_KEYS = ['about', 'team', 'events', 'news', 'projects', 'sponsors', 'join', 'members', 'donations', 'privacy'] as const satisfies readonly RouteKey[];
 
 /** URL path (with trailing slash) for a route, optionally for one entry. */
 export function href(locale: Locale, key: RouteKey, entrySlug?: string): string {

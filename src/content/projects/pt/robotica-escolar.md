@@ -1,8 +1,7 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por um projeto real.
-title: Robótica Escolar (exemplo)
-summary: Kits de robótica de baixo custo e planos de aula abertos para escolas sem laboratório.
-cover: ../../../assets/covers/projeto-robotica.png
+title: "Robótica Escolar (exemplo)"
+summary: "Kits de robótica de baixo custo e planos de aula abertos para escolas sem laboratório."
 status: active
 tags: [robotica, educacao]
 leads: [pt/miguel-exemplo]

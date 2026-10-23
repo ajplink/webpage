@@ -1,6 +1,6 @@
 ---
 # ENTRADA DE EXEMPLO — translated file (British English variant).
-title: Introducing Associação Plink (example)
+title: "Introducing Associação Plink (example)"
 date: 2026-10-01
 summary: "We are starting out with a simple idea: hands-on STEM projects made by young people, for young people."
 tags: [associacao, anuncio]

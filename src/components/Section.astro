@@ -1,23 +1,31 @@
 ---
 /**
- * Section — titled region with an optional "view all" link.
- * Wraps its content in a labelled <section> (landmark + heading association).
+ * Section — titled region with an optional "view all" link and a hand-drawn
+ * squiggle underline in the section's accent colour (the palette system:
+ * each kind of content owns a hue).
  */
+import Squiggle from './Squiggle.astro';
+
 interface Props {
   title: string;
-  /** Unique id, used for aria-labelledby. */
+  /** Unique id, used by aria-labelledby. */
   id: string;
   href?: string;
   linkLabel?: string;
+  /** Palette accent for the squiggle (any valid CSS colour). */
+  accent?: string;
 }
 
-const { title, id, href, linkLabel } = Astro.props;
+const { title, id, href, linkLabel, accent } = Astro.props;
 ---
 
-<section class="section" aria-labelledby={id}>
+<section class="section" aria-labelledby={id} style={accent ? `--section-accent: ${accent}` : undefined}>
   <div class="container">
     <div class="section-head">
-      <h2 id={id}>{title}</h2>
+      <div class="section-title">
+        <h2 id={id}>{title}</h2>
+        <Squiggle class="section-squiggle" />
+      </div>
       {href && linkLabel && <a class="link-arrow" href={href}>{linkLabel}</a>}
     </div>
     <slot />
@@ -36,7 +44,15 @@ const { title, id, href, linkLabel } = Astro.props;
     align-items: baseline;
     justify-content: space-between;
     margin-bottom: var(--space-m);
-    padding-bottom: var(--space-2xs);
-    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .section-title {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .section-title :global(.section-squiggle) {
+    width: min(12rem, 60%);
+    color: var(--section-accent, var(--color-accent));
   }
 </style>
