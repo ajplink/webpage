@@ -54,6 +54,9 @@
 
   /** Page background. */
   --color-bg: #fbfaf7;
+  /** Brand artwork colours: the wordmark ink and its yellow sparks (nome.svg). */
+  --logo-ink: #080808;
+  --logo-spark: #fed10d;
   /** Raised surfaces (cards, panels). */
   --color-surface: var(--palette-white);
   /** Main text. */
@@ -165,6 +168,9 @@
     --color-bg: #12151b;
     --color-surface: #1a1e26;
 
+    /* The wordmark ink flips to paper-white on dark */
+    --logo-ink: #f4f4f2;
+
     /* Text */
     --color-text: #eceef2;
     --color-text-muted: #a7b0be;
@@ -196,6 +202,7 @@
 :root[data-theme='dark'] {
   --color-bg: #12151b;
   --color-surface: #1a1e26;
+  --logo-ink: #f4f4f2;
   --color-text: #eceef2;
   --color-text-muted: #a7b0be;
   --color-primary: #93b4ff;

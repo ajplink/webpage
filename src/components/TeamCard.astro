@@ -1,6 +1,7 @@
 ---
 /**
- * TeamCard — person card: photo (or initials fallback), name, role, bio, links.
+ * TeamCard — person card in the department carousel: big portrait (dummy
+ * SVG portrait while the real photos are missing), name, role, bio, links.
  */
 import { Image } from 'astro:assets';
 import type { LocalizedEntry } from '../lib/content';
@@ -13,7 +14,7 @@ interface Props {
 const { member } = Astro.props;
 const { name, role, bio, photo, links } = member.data;
 
-/** Initials fallback when no photo is provided (never invent portraits). */
+/** Initials fallback when no portrait exists (never invent photos). */
 const initials = name
   .split(/\s+/)
   .filter((word) => word.length > 1)
@@ -24,29 +25,25 @@ const initials = name
 ---
 
 <Card as="li">
-  <div class="head">
-    {
-      photo ? (
-        <Image
-          class="photo"
-          src={photo}
-          alt=""
-          width={72}
-          height={72}
-          loading="lazy"
-          decoding="async"
-        />
-      ) : (
-        <span class="initials" aria-hidden="true">
-          {initials}
-        </span>
-      )
-    }
-    <div>
-      <h3 class="name">{name}</h3>
-      <p class="role">{role}</p>
-    </div>
-  </div>
+  {
+    photo ? (
+      <Image
+        class="portrait"
+        src={photo}
+        alt=""
+        width={480}
+        height={480}
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <span class="portrait initials" aria-hidden="true">
+        {initials}
+      </span>
+    )
+  }
+  <h3 class="name">{name}</h3>
+  <p class="role">{role}</p>
   <p class="bio">{bio}</p>
   {
     links && links.length > 0 && (
@@ -64,46 +61,37 @@ const initials = name
 </Card>
 
 <style>
-  .head {
-    display: flex;
-    gap: var(--space-s);
-    align-items: center;
-  }
-
-  .photo,
-  .initials {
-    width: 72px;
-    height: 72px;
-    flex: none;
-    border-radius: 50%;
-  }
-
-  .photo {
+  .portrait {
+    width: 100%;
+    aspect-ratio: 1;
     object-fit: cover;
-    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
   }
 
   .initials {
     display: grid;
     place-items: center;
     font-family: var(--font-display);
-    font-size: var(--step-1);
+    font-size: var(--step-3);
     color: var(--color-primary);
     background-color: var(--color-tint);
     border: var(--border-width) solid var(--color-border);
   }
 
   .name {
+    margin-top: var(--space-2xs);
     font-size: var(--step-1);
   }
 
   .role {
     font-size: var(--step--1);
-    color: var(--color-text-muted);
+    font-weight: 600;
+    color: var(--color-accent);
   }
 
   .bio {
     font-size: var(--step--1);
+    color: var(--color-text-muted);
   }
 
   .links {

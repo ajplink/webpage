@@ -13,6 +13,10 @@
   var KEY = 'plink-theme';
   var root = document.documentElement;
 
+  /* Flag the document as JS-capable before first paint (reveals the theme
+     toggle without a layout shift on every navigation). */
+  root.classList.add('js');
+
   /* Restore a pinned theme before first paint. */
   try {
     var saved = localStorage.getItem(KEY);
@@ -40,7 +44,6 @@
   addEventListener('DOMContentLoaded', function () {
     var buttons = document.querySelectorAll('[data-theme-toggle]');
     for (var i = 0; i < buttons.length; i++) {
-      buttons[i].hidden = false;
       buttons[i].addEventListener('click', function () {
         var next = isDark() ? 'light' : 'dark';
         root.setAttribute('data-theme', next);

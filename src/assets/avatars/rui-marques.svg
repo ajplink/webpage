@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="28" fill="#fbf2d3"/>
+  <path d="M18 200 C24 156 58 138 100 138 C142 138 176 156 182 200 Z" fill="#b01161"/>
+  <rect x="88" y="104" width="24" height="36" rx="12" fill="#9c6b47"/>
+  <ellipse cx="100" cy="86" rx="38" ry="44" fill="#9c6b47"/>
+  <circle cx="63" cy="92" r="7" fill="#9c6b47"/>
+  <circle cx="137" cy="92" r="7" fill="#9c6b47"/>
+  <circle cx="100" cy="30" r="15" fill="#b98a48"/><path d="M62 90 C62 52 80 42 100 42 C120 42 138 52 138 90 C136 68 120 60 100 60 C80 60 64 68 62 90 Z" fill="#b98a48"/>
+  <g fill="#26221f"><circle cx="85" cy="88" r="4.5"/><circle cx="115" cy="88" r="4.5"/></g>
+  <path d="M84 110 Q100 124 116 110" fill="none" stroke="#26221f" stroke-width="4.5" stroke-linecap="round"/>
+  <g fill="#e88a8a" opacity="0.45"><circle cx="72" cy="102" r="8"/><circle cx="128" cy="102" r="8"/></g>
+  <g fill="none" stroke="#3a3a3a" stroke-width="3.5"><circle cx="85" cy="88" r="13"/><circle cx="115" cy="88" r="13"/><path d="M98 88h4M72 86l-9-3M128 86l9-3"/></g>
+</svg>

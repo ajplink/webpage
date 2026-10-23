@@ -178,6 +178,65 @@ const ui = {
     'en-us': 'Departments',
     'en-gb': 'Departments',
   },
+  'team.count': { pt: '{n} pessoas', 'en-us': '{n} people', 'en-gb': '{n} people' },
+  'team.scroll': {
+    pt: 'Desliza para veres toda a gente',
+    'en-us': 'Swipe to see everyone',
+    'en-gb': 'Swipe to see everyone',
+  },
+  'team.lead': {
+    pt: 'Quem faz a Plink acontecer — cinco departamentos, muitas mãos e uma quantidade suspeita de boa vontade.',
+    'en-us': 'The people who make Plink happen — five departments, many hands and a suspicious amount of goodwill.',
+    'en-gb': 'The people who make Plink happen — five departments, many hands and a suspicious amount of goodwill.',
+  },
+
+  /* Full department names (PLACEHOLDER expansions until Ricardo confirms). */
+  'dept.Direção': { pt: 'Direção', 'en-us': 'Board', 'en-gb': 'Board' },
+  'dept.DREE': {
+    pt: 'Departamento de Recursos Educativos e Eventos',
+    'en-us': 'Department of Educational Resources and Events',
+    'en-gb': 'Department of Educational Resources and Events',
+  },
+  'dept.DP': {
+    pt: 'Departamento de Projetos',
+    'en-us': 'Projects Department',
+    'en-gb': 'Projects Department',
+  },
+  'dept.DL': {
+    pt: 'Departamento de Logística',
+    'en-us': 'Logistics Department',
+    'en-gb': 'Logistics Department',
+  },
+  'dept.DCI': {
+    pt: 'Departamento de Comunicação e Informática',
+    'en-us': 'Communication and IT Department',
+    'en-gb': 'Communication and IT Department',
+  },
+  'desc.Direção': {
+    pt: 'Decide o rumo, aprova os projetos e garante que as coisas avançam.',
+    'en-us': 'Sets the direction, approves projects and keeps things moving.',
+    'en-gb': 'Sets the direction, approves projects and keeps things moving.',
+  },
+  'desc.DREE': {
+    pt: 'Cria os materiais e as formações que levam a ciência para as escolas.',
+    'en-us': 'Builds the kits and training that bring science into schools.',
+    'en-gb': 'Builds the kits and training that bring science into schools.',
+  },
+  'desc.DP': {
+    pt: 'Acompanha os projetos dos membros, da ideia à demonstração final.',
+    'en-us': 'Supports member projects from first idea to final demo.',
+    'en-gb': 'Supports member projects from first idea to final demo.',
+  },
+  'desc.DL': {
+    pt: 'Faz os eventos acontecerem: espaços, material, inscrições e logística.',
+    'en-us': 'Makes events happen: venues, materials, sign-ups and logistics.',
+    'en-gb': 'Makes events happen: venues, materials, sign-ups and logistics.',
+  },
+  'desc.DCI': {
+    pt: 'Site, redes, design e as ferramentas internas que nos mantêm organizados.',
+    'en-us': 'Website, social media, design and the internal tools that keep us organised.',
+    'en-gb': 'Website, social media, design and the internal tools that keep us organised.',
+  },
 
   'join.contact': { pt: 'Contacto', 'en-us': 'Contact', 'en-gb': 'Contact' },
   'join.formLink': {

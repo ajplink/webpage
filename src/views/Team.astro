@@ -1,10 +1,11 @@
 ---
 /**
- * Team — people grouped by department (DREE, DP, DL, DCI, Direção).
- * Department headings carry a tiny colour dot from the brand palette.
+ * Team — one carousel per department, big portraits, full department names.
+ * The carousel is plain CSS (scroll-snap + a focusable region): arrow keys
+ * scroll it, zero JavaScript.
  */
 import type { Locale } from '../config/site';
-import { teamByDepartment } from '../lib/content';
+import { teamByDepartment, type Department } from '../lib/content';
 import { t } from '../i18n';
 import Base from '../layouts/Base.astro';
 import TeamCard from '../components/TeamCard.astro';
@@ -16,32 +17,42 @@ interface Props {
 const { locale } = Astro.props;
 const groups = await teamByDepartment(locale);
 const title = t(locale, 'nav.team');
+
+/** One accent colour per department (brand palette). */
+const DEPT_ACCENT: Record<Department, string> = {
+  'Direção': 'var(--palette-blue)',
+  DREE: 'var(--palette-green)',
+  DP: 'var(--palette-pink)',
+  DL: 'var(--palette-orange)',
+  DCI: 'var(--palette-yellow)',
+};
 ---
 
-<Base
-  {locale}
-  {title}
-  description={t(locale, 'team.departments')}
-  routeKey="team"
->
+<Base {locale} {title} description={t(locale, 'team.lead')} routeKey="team">
   <div class="container page">
     <header class="page-head">
       <p class="eyebrow">{t(locale, 'team.departments')}</p>
       <h1>{title}</h1>
+      <p class="lead">{t(locale, 'team.lead')}</p>
     </header>
 
     {
       groups.map((group) => (
         <section class="department" aria-labelledby={`dept-${group.department}`}>
-          <h2 id={`dept-${group.department}`} class="department-title">
-            <span class="dot" data-department={group.department} aria-hidden="true" />
-            {group.department}
-          </h2>
-          <ul class="grid">
+          <div class="dept-head">
+            <h2 id={`dept-${group.department}`} class="dept-title">
+              <span class="dot" style={`--dept: ${DEPT_ACCENT[group.department]}`} aria-hidden="true" />
+              {t(locale, `dept.${group.department}` as 'dept.Direção')}
+            </h2>
+            <p class="dept-desc">{t(locale, `desc.${group.department}` as 'desc.Direção')}</p>
+            <p class="dept-count">{t(locale, 'team.count').replace('{n}', String(group.members.length))}</p>
+          </div>
+          <ul class="carousel" tabindex="0" role="group" aria-label={t(locale, `dept.${group.department}` as 'dept.Direção')}>
             {group.members.map((member) => (
               <TeamCard {member} />
             ))}
           </ul>
+          <p class="scroll-hint" aria-hidden="true">{t(locale, 'team.scroll')}</p>
         </section>
       ))
     }
@@ -54,51 +65,79 @@ const title = t(locale, 'nav.team');
   }
 
   .page-head {
-    margin-bottom: var(--space-l);
+    margin-bottom: var(--space-xl);
+  }
+
+  .page-head .lead {
+    margin-top: var(--space-s);
+    color: var(--color-text-muted);
   }
 
   .department + .department {
-    margin-top: var(--space-xl);
+    margin-top: var(--space-2xl);
   }
 
-  .department-title {
-    display: flex;
-    gap: var(--space-2xs);
-    align-items: center;
+  .dept-head {
+    display: grid;
+    gap: var(--space-3xs);
     margin-bottom: var(--space-s);
   }
 
+  .dept-title {
+    display: flex;
+    gap: var(--space-2xs);
+    align-items: center;
+  }
+
+  /* The one department accent: a colour dot from the brand palette. */
   .dot {
-    width: 0.5em;
-    height: 0.5em;
-    border-radius: 50%;
-    background-color: var(--color-accent);
+    width: 0.55em;
+    height: 0.55em;
+    flex: none;
+    background-color: var(--dept, var(--color-accent));
+    border-radius: var(--radius-pill);
   }
 
-  /* Restrained use of the brand palette: one dot per department. */
-  .dot[data-department='Direção'] {
-    background-color: var(--palette-black);
+  .dept-desc {
+    max-width: var(--measure);
+    color: var(--color-text-muted);
   }
 
-  .dot[data-department='DREE'] {
-    background-color: var(--palette-blue);
+  .dept-count {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-accent);
   }
 
-  .dot[data-department='DP'] {
-    background-color: var(--palette-pink);
+  /* Horizontal card rail: drag, swipe or arrow keys (focusable region). */
+  .carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(16rem, 19rem);
+    gap: var(--space-m);
+    overflow-x: auto;
+    padding: var(--space-3xs) var(--space-2xs) var(--space-s);
+    margin-inline: calc(-1 * var(--space-2xs));
+    list-style: none;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--space-2xs);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
   }
 
-  .dot[data-department='DL'] {
-    background-color: var(--palette-green);
+  .carousel > * {
+    scroll-snap-align: start;
+    height: 100%;
   }
 
-  .dot[data-department='DCI'] {
-    background-color: var(--palette-orange);
+  .carousel:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius);
   }
 
-  @media (prefers-color-scheme: dark) {
-    .dot[data-department='Direção'] {
-      background-color: var(--color-text-muted);
-    }
+  .scroll-hint {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
   }
 </style>

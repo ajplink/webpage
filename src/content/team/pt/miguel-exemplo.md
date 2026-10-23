@@ -1,9 +1,10 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por uma pessoa real.
 name: Miguel Exemplo
-role: Responsável de Recursos Educativos (exemplo)
+role: Responsável de Recursos Educativos
+photo: ../../../assets/avatars/miguel-exemplo.svg
 department: DREE
 order: 1
 active: true
-bio: "Texto de exemplo para a ficha de um membro do departamento de recursos educativos. Interesses: materiais pedagógicos e formação de professores."
+bio: "Lidera os recursos educativos: materiais, guias e formação que as escolas pedem — e que testamos antes de prometer."
 ---

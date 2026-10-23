@@ -1,59 +1,32 @@
 ---
 /**
- * Bulb — the association's mark: a lightbulb drawn as one continuous sketch
- * stroke (same ink language as the "plink" wordmark). Used small in the
- * footer and chrome; the favicon mirrors it (public/favicon.svg).
- *
- * Colours follow the tokens like everything else.
+ * Bulb — the association's mark: Ricardo's lightbulb artwork (lampada.svg,
+ * served from /public so it is fetched once and cached). Decorative: the
+ * surrounding text always carries the name.
  */
 interface Props {
   size?: number;
   class?: string;
+  /** Eager-load (above the fold) or lazy. */
+  eager?: boolean;
 }
 
-const { size = 28, class: className } = Astro.props;
+const { size = 28, class: className, eager = false } = Astro.props;
 ---
 
-<svg
+<img
   class:list={['bulb', className]}
-  viewBox="0 0 32 32"
+  src="/lampada.svg"
   width={size}
   height={size}
-  aria-hidden="true"
-  focusable="false"
->
-  <!-- glass -->
-  <path
-    d="M16 4.5c-5 0-8.5 3.7-8.5 8.2 0 3.2 1.7 5.4 3.4 7.1 1 .9 1.6 1.8 1.8 2.8h6.6c.2-1 .8-1.9 1.8-2.8 1.7-1.7 3.4-3.9 3.4-7.1 0-4.5-3.5-8.2-8.5-8.2Z"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.9"
-    stroke-linejoin="round"></path>
-  <!-- filament -->
-  <path
-    d="M12.6 12.6c1.3-1.2 2.2.9 3.4-.2 1.2-1.1 2.1 1 3.4-.2"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.6"
-    stroke-linecap="round"></path>
-  <!-- base -->
-  <path
-    d="M12.7 22.6h6.6M13.6 25.6h4.8"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.9"
-    stroke-linecap="round"></path>
-  <!-- little spark, top right -->
-  <path
-    d="M24.2 6.6l1.5-1.5M25.8 10.4h2"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.6"
-    stroke-linecap="round"></path>
-</svg>
+  alt=""
+  loading={eager ? 'eager' : 'lazy'}
+  decoding="async"
+/>
 
 <style>
   .bulb {
-    color: var(--color-accent);
+    display: block;
+    flex: none;
   }
 </style>

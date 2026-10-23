@@ -1,9 +1,10 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por uma pessoa real.
 name: Inês Exemplo
-role: Responsável de Comunicação e Informática (exemplo)
+role: Responsável de Comunicação e Informática
+photo: ../../../assets/avatars/ines-exemplo.svg
 department: DCI
 order: 1
 active: true
-bio: Texto de exemplo para a ficha de uma membro do departamento de comunicação e informática. Mantém o site e as redes da associação.
+bio: "Mantém o site e as redes da associação a funcionar — e a dizer coisas que valem a pena."
 ---

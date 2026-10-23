@@ -23,7 +23,6 @@ const { locale } = Astro.props;
   data-label-dark={t(locale, 'theme.toDark')}
   aria-label={t(locale, 'theme.toggle')}
   aria-pressed="false"
-  hidden
 >
   <!-- sun -->
   <svg class="icon icon--sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -48,7 +47,9 @@ const { locale } = Astro.props;
 
 <style>
   .theme-toggle {
-    display: inline-flex;
+    /* Revealed only when JS can make it work (html.js is set before first
+       paint by /theme.js) — no pop-in, no layout shift on navigation. */
+    display: none;
     gap: var(--space-3xs);
     align-items: center;
     padding: var(--space-3xs);
@@ -58,9 +59,8 @@ const { locale } = Astro.props;
     border-radius: var(--radius-pill);
   }
 
-  /* No JS: no toggle (the OS preference still styles the site correctly). */
-  .theme-toggle[hidden] {
-    display: none;
+  :global(html.js) .theme-toggle {
+    display: inline-flex;
   }
 
   .theme-toggle:hover {

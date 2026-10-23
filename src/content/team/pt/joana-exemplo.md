@@ -1,11 +1,12 @@
 ---
 # ENTRADA DE EXEMPLO — substituir por uma pessoa real.
 name: Joana Exemplo
-role: Presidente (exemplo)
+role: Presidente
 department: Direção
+photo: ../../../assets/avatars/joana-exemplo.svg
 order: 1
 active: true
-bio: Texto de exemplo para a ficha de uma membro da direção. Descreve em duas frases o que a pessoa faz na associação.
+bio: "Coordena a direção e garante que as ideias viram planos com datas. Também é a razão de as reuniões acabarem a horas."
 links:
   - label: LinkedIn (exemplo)
     url: https://example.org/linkedin

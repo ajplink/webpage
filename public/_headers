@@ -17,7 +17,9 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Static images and the favicon change rarely.
+# Static brand images and the favicon change rarely.
+/lampada.svg
+  Cache-Control: public, max-age=604800
 /og-placeholder.png
   Cache-Control: public, max-age=604800
 
