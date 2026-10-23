@@ -210,18 +210,12 @@ a:hover {
   border: var(--border-bold) solid var(--color-primary);
   border-radius: var(--radius-pill);
   text-decoration: none;
-  transition:
-    background-color var(--duration) var(--ease),
-    color var(--duration) var(--ease),
-    transform var(--duration) var(--ease),
-    box-shadow var(--duration) var(--ease);
+  transition: background-color var(--duration) var(--ease);
 }
 
 .button:hover {
   color: var(--color-primary-contrast);
   background-color: color-mix(in srgb, var(--color-primary) 85%, var(--color-text));
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sticker);
 }
 
 .button--ghost {
@@ -232,7 +226,6 @@ a:hover {
 .button--ghost:hover {
   color: var(--color-primary);
   background-color: var(--color-tint);
-  box-shadow: none;
 }
 
 /** Quiet text link with a marker underline instead of a shouted arrow. */

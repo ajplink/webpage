@@ -1,0 +1,130 @@
+---
+/**
+ * Logo — the "plink" wordmark: the word written by hand in ONE continuous
+ * stroke, with three little yellow sparks as the dot of the "i".
+ *
+ * PLACEHOLDER LETTERFORMS: Ricardo supplies the final one-stroke SVG later —
+ * swap the <path> in this component and nothing else changes.
+ *
+ * `animate` runs the write-on effect (the pen draws the word in front of the
+ * user, then the sparks appear). CSS-only, once per page load, and fully
+ * skipped under prefers-reduced-motion (the end state is the default state).
+ */
+interface Props {
+  /** Draw the wordmark in front of the user (hero moment). */
+  animate?: boolean;
+  /** Rendered width in px (height follows the viewBox ratio). */
+  width?: number;
+  class?: string;
+}
+
+const { animate = false, width = 180, class: className } = Astro.props;
+const height = Math.round((width / 340) * 160);
+---
+
+<svg
+  class:list={['wordmark', animate && 'wordmark--draw', className]}
+  viewBox="0 0 340 160"
+  width={width}
+  height={height}
+  aria-hidden="true"
+  focusable="false"
+>
+  <!-- the word "plink", one stroke: p → l → i → n → k -->
+  <path
+    class="wordmark-stroke"
+    pathLength="1"
+    d="M36,56
+       C32,76 28,102 26,124
+       C25,136 33,138 37,128
+       C41,112 44,88 44,62
+       C48,52 62,48 72,56
+       C80,64 78,78 66,84
+       C58,88 48,90 44,87
+       C52,94 66,97 80,88
+       C88,74 98,44 104,26
+       C107,18 112,20 110,30
+       C107,48 102,72 100,92
+       C104,98 112,96 118,90
+       C124,78 130,64 133,56
+       C135,52 138,54 137,62
+       C135,74 133,86 132,94
+       C136,99 142,96 148,90
+       C154,80 158,66 161,58
+       C166,50 178,50 181,58
+       C183,68 183,82 183,92
+       C187,82 191,66 196,58
+       C201,50 212,52 214,62
+       C216,72 215,84 215,92
+       C219,98 226,95 232,88
+       C242,72 254,44 260,26
+       C263,18 269,20 267,32
+       C263,52 258,74 256,92
+       C254,80 257,72 260,64
+       C266,56 274,58 272,66
+       C270,70 266,72 264,74
+       C270,78 280,84 290,90
+       C296,93 304,92 310,86"
+    fill="none"
+    stroke="var(--color-accent)"
+    stroke-width="6.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
+
+  <!-- the dot of the i: three little sparks, in yellow -->
+  <g class="wordmark-sparks">
+    <path d="M128,44 L123,37" fill="none" stroke="var(--palette-yellow)" stroke-width="4.5" stroke-linecap="round"
+    ></path>
+    <path d="M136,41 L136,33" fill="none" stroke="var(--palette-yellow)" stroke-width="4.5" stroke-linecap="round"
+    ></path>
+    <path d="M144,44 L149,37" fill="none" stroke="var(--palette-yellow)" stroke-width="4.5" stroke-linecap="round"
+    ></path>
+  </g>
+</svg>
+
+<style>
+  .wordmark {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Static default = the finished word. The animation only replays it. */
+  .wordmark-stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  .wordmark--draw .wordmark-stroke {
+    animation: write var(--draw-duration) var(--ease) both;
+  }
+
+  .wordmark--draw .wordmark-sparks {
+    animation: spark 380ms var(--ease) both;
+    animation-delay: calc(var(--draw-duration) * 0.86);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes write {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  @keyframes spark {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    70% {
+      transform: scale(1.18);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
