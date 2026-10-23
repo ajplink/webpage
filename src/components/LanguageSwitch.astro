@@ -1,12 +1,14 @@
 ---
 /**
- * LanguageSwitch — links to the same page in the other locales.
- * All three locales always exist for every route (content may fall back),
- * so every switcher entry is a real, working link.
+ * LanguageSwitch — flag dropdown linking to the same page in other locales.
+ * CSS-only (`<details>`), keyboard accessible, zero JavaScript. All three
+ * locales always exist for every route (content may fall back), so every
+ * entry is a real, working link.
  */
 import { LOCALES, LOCALE_LABELS, HTML_LANG, type Locale } from '../config/site';
 import { alternates, type RouteKey } from '../i18n/routes';
 import { t } from '../i18n';
+import Flag from './Flag.astro';
 
 interface Props {
   locale: Locale;
@@ -18,8 +20,21 @@ const { locale, routeKey, entrySlug } = Astro.props;
 const alt = alternates(routeKey, entrySlug);
 ---
 
-<div class="langswitch">
-  <ul aria-label={t(locale, 'a11y.language')}>
+<details class="lang">
+  <summary aria-label={t(locale, 'a11y.language')}>
+    <Flag {locale} />
+    <span class="lang-label">{LOCALE_LABELS[locale]}</span>
+    <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+      <path
+        d="M6 9l6 6 6-6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
+  </summary>
+  <ul>
     {
       LOCALES.map((l) => (
         <li>
@@ -29,40 +44,82 @@ const alt = alternates(routeKey, entrySlug);
             hreflang={l}
             aria-current={l === locale ? 'true' : undefined}
           >
-            {LOCALE_LABELS[l]}
+            <Flag locale={l} />
+            <span>{LOCALE_LABELS[l]}</span>
           </a>
         </li>
       ))
     }
   </ul>
-</div>
+</details>
 
 <style>
-  .langswitch ul {
-    display: flex;
-    gap: var(--space-2xs);
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  .lang {
+    position: relative;
     font-size: var(--step--1);
   }
 
-  .langswitch a {
+  .lang summary {
+    display: inline-flex;
+    gap: var(--space-2xs);
+    align-items: center;
     padding: var(--space-3xs) var(--space-2xs);
-    color: var(--color-text-muted);
-    text-decoration: none;
-    border-radius: var(--radius);
+    font-weight: 600;
+    color: var(--color-text);
+    cursor: pointer;
+    list-style: none;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-pill);
   }
 
-  .langswitch a:hover {
-    color: var(--color-primary);
+  .lang summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang summary:hover {
+    border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+  }
+
+  .chevron {
+    color: var(--color-text-muted);
+    transition: transform var(--duration) var(--ease);
+  }
+
+  .lang[open] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .lang ul {
+    position: absolute;
+    right: 0;
+    z-index: 6;
+    min-width: 10rem;
+    padding: var(--space-3xs);
+    margin-top: var(--space-3xs);
+    list-style: none;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .lang a {
+    display: flex;
+    gap: var(--space-2xs);
+    align-items: center;
+    padding: var(--space-2xs) var(--space-2xs);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--radius-s);
+  }
+
+  .lang a:hover {
     background-color: var(--color-tint);
   }
 
-  .langswitch a[aria-current='true'] {
-    font-weight: 700;
-    color: var(--color-text);
-    box-shadow: inset 0 -2px 0 0 var(--color-accent);
+  .lang a[aria-current='true'] {
+    color: var(--color-primary);
+    background-color: var(--color-tint);
   }
 </style>

@@ -41,6 +41,22 @@ const ui = {
     'en-gb': 'Menu',
   },
 
+  'theme.toggle': {
+    pt: 'Alternar tema claro/escuro',
+    'en-us': 'Toggle light/dark theme',
+    'en-gb': 'Toggle light/dark theme',
+  },
+  'theme.toLight': {
+    pt: 'Mudar para tema claro',
+    'en-us': 'Switch to light theme',
+    'en-gb': 'Switch to light theme',
+  },
+  'theme.toDark': {
+    pt: 'Mudar para tema escuro',
+    'en-us': 'Switch to dark theme',
+    'en-gb': 'Switch to dark theme',
+  },
+
   'nav.about': { pt: 'Sobre', 'en-us': 'About', 'en-gb': 'About' },
   'nav.team': { pt: 'Equipa', 'en-us': 'Team', 'en-gb': 'Team' },
   'nav.events': { pt: 'Eventos', 'en-us': 'Events', 'en-gb': 'Events' },

@@ -24,6 +24,10 @@
 /favicon.svg
   Cache-Control: public, max-age=604800
 
+# Theme bootstrap (tiny, versioned by hand when it changes).
+/theme.js
+  Cache-Control: public, max-age=86400
+
 # ---------------------------------------------------------------------------
 # FUTURE: interactive simulations (/simulacoes/*) will need cross-origin
 # isolation for WebAssembly threads / SharedArrayBuffer. When that route is

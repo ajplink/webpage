@@ -107,7 +107,8 @@ export const SITE = {
   features: {
     /** Per-locale RSS feed of news at /<locale>/rss.xml/. */
     rss: true,
-    /** Dark colour scheme via prefers-color-scheme (never a JS toggle). */
+    /** Dark colour scheme: OS preference by default, optionally pinned by the
+        header toggle via /theme.js (documented progressive enhancement). */
     darkMode: true,
     /** Interactive simulations on project pages (/simulacoes/ routes). Off in v1. */
     simulations: false,

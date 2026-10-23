@@ -10,6 +10,7 @@ import { SITE, type Locale } from '../config/site';
 import { href, type RouteKey } from '../i18n/routes';
 import { t } from '../i18n';
 import LanguageSwitch from './LanguageSwitch.astro';
+import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
   locale: Locale;
@@ -69,6 +70,7 @@ function isSection(key: RouteKey): boolean {
 
     <div class="header-tools">
       <LanguageSwitch locale={locale} routeKey={current} entrySlug={entrySlug} />
+      <ThemeToggle {locale} />
     </div>
 
     <details class="nav-mobile">
@@ -96,6 +98,7 @@ function isSection(key: RouteKey): boolean {
           }
         </ul>
         <LanguageSwitch locale={locale} routeKey={current} entrySlug={entrySlug} />
+        <ThemeToggle {locale} />
       </nav>
     </details>
   </div>
@@ -169,6 +172,8 @@ function isSection(key: RouteKey): boolean {
   .nav-desktop,
   .header-tools {
     display: none;
+    gap: var(--space-2xs);
+    align-items: center;
   }
 
   .nav-mobile {
@@ -227,9 +232,12 @@ function isSection(key: RouteKey): boolean {
   }
 
   @media (min-width: 48rem) {
-    .nav-desktop,
-    .header-tools {
+    .nav-desktop {
       display: block;
+    }
+
+    .header-tools {
+      display: flex;
     }
 
     .nav-mobile {

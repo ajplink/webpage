@@ -38,6 +38,10 @@ const { locale, title, description, routeKey, entrySlug, image, type, noindex } 
     <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#12151b" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Theme bootstrap: the one documented progressive enhancement (AGENTS.md).
+         Applies a pinned light/dark scheme before first paint; without JS the
+         OS preference decides. -->
+    <script is:inline src="/theme.js"></script>
     <link rel="sitemap" href="/sitemap-index.xml" />
     <SEO
       {locale}

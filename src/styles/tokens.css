@@ -6,8 +6,16 @@
  * and optionally the two font stacks in block 3 — everything else derives
  * from them.
  *
- * Light/dark are both defined here via `prefers-color-scheme` (no JS toggle
- * in v1). All colour pairs are WCAG AA verified — re-run `npm run contrast`
+ * Theme handling: the OS setting (`prefers-color-scheme`) decides by default.
+ * A user may override it with the header toggle, which sets `data-theme` on
+ * <html> (tiny external /theme.js — the one documented progressive
+ * enhancement; see AGENTS.md). The three states:
+ *
+ *   no attribute            → follows the OS
+ *   [data-theme='light']    → always light
+ *   [data-theme='dark']     → always dark
+ *
+ * All colour pairs are WCAG AA verified — re-run `npm run contrast`
  * after changing any colour (measured ratios are noted in the comments).
  */
 
@@ -15,19 +23,21 @@
   /* ======================================================================
      1. BRAND PALETTE — change these seven values to rebrand the association.
         Colours: blue, pink, yellow, green, orange + black and white.
-        (Yellow is decorative-only: 1.85:1 on the light background, so it may
-        never carry small text — see the department chips for a safe use.)
+        These five are the brand's working colours, not just decoration:
+        each department and content type owns one (see the .pop-* marks in
+        global.css). Yellow is decorative-only on light backgrounds (1.85:1),
+        so it may never carry small text on those.
      ====================================================================== */
 
-  /** Primary brand blue — links, buttons, key accents. */
+  /** Primary brand blue — links, buttons, key accents (Direção / events). */
   --palette-blue: #1d4ed8;
-  /** Brand pink — the single UI accent (badges, motifs, highlights). */
+  /** Brand pink — the signature accent (membership / the "plink" ink). */
   --palette-pink: #b01161;
   /** Brand yellow — decorative only (never small text on light backgrounds). */
   --palette-yellow: #e8b302;
-  /** Brand green — decorative + department accents. */
+  /** Brand green — projects and growth. */
   --palette-green: #0f7a4d;
-  /** Brand orange — decorative + department accents. */
+  /** Brand orange — news, energy, warm highlights. */
   --palette-orange: #c2451d;
   /** Near-black used for text and for the dark background. */
   --palette-black: #1a1d23;
@@ -54,7 +64,7 @@
   --color-primary: var(--palette-blue);
   /** Text/icons on top of --color-primary. */
   --color-primary-contrast: var(--palette-white);
-  /** The single accent (status badges, motifs). */
+  /** The signature accent (status badges, motifs, the ink layer). */
   --color-accent: var(--palette-pink);
   /** Borders and hairlines (used instead of shadows). */
   --color-border: #e7e4de;
@@ -83,6 +93,8 @@
   --step-3: clamp(1.95rem, 1.56rem + 1.95vw, 2.33rem);
   --step-4: clamp(2.44rem, 1.81rem + 3.15vw, 2.91rem);
   --step-5: clamp(3.05rem, 2.06rem + 4.95vw, 3.64rem);
+  /** Display step for the hero wordmark: bigger than everything else. */
+  --step-6: clamp(4rem, 2.4rem + 8vw, 7.5rem);
 
   /** Line heights. */
   --leading-tight: 1.12;
@@ -109,31 +121,46 @@
   --measure: 65ch;
   /** Maximum width of the page container. */
   --container: 72rem;
-  /** Corner radius: subtle, barely there. */
-  --radius: 0.2rem;
+  /** Wide container for carousels and full-bleed bands. */
+  --container-wide: 84rem;
+
+  /** Shape language: soft, hand-drawn, never square. */
+  --radius-s: 0.5rem;
+  --radius: 1.15rem;
+  --radius-m: 1.75rem;
+  --radius-l: 2.5rem;
+  --radius-pill: 999px;
+
   /** Rare, barely visible lift (cards use borders, not shadows). */
   --shadow: 0 1px 2px rgb(26 29 35 / 0.06);
+  /** Flat "sticker" offset — no blur. Used sparingly (hero, primary CTA). */
+  --shadow-sticker: 0.22rem 0.22rem 0 0 var(--color-accent);
   /** Hairline width used for borders and rules. */
   --border-width: 1px;
+  /** Emphatic border for outlined cards and hand-drawn frames. */
+  --border-bold: 2px;
 
   /* ======================================================================
      5. MOTION — short durations, calm easing; disabled under reduced motion
-        (see global.css).
+        (see global.css). The wordmark draw is the one long moment.
      ====================================================================== */
 
   --duration: 160ms;
+  --duration-slow: 320ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
+  /** Duration of the one-stroke "plink" wordmark drawing itself. */
+  --draw-duration: 1.6s;
 }
 
 /* ======================================================================
-   DARK SCHEME — same semantics, dark surfaces. Triggered automatically by
-   the operating-system setting (prefers-color-scheme: dark).
+   DARK SCHEME — same semantics, dark surfaces. Applied when the OS says
+   dark and the user has not forced light, and when the user forces dark.
    Measured contrast ratios (dark scheme):
      text/bg 15.74 · muted/bg 8.35 · muted/surface 7.63 · primary/bg 8.89
      on-primary 8.85 · accent/bg 9.45
    ====================================================================== */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     /* Background layers */
     --color-bg: #12151b;
     --color-surface: #1a1e26;
@@ -152,10 +179,36 @@
     --color-focus: #93b4ff;
     --color-tint: #232935;
 
-    /* Decorative palette lifts slightly so it reads on dark surfaces */
+    /* Decorative palette lifts so it reads on dark surfaces */
+    --palette-blue: #7ea2ff;
+    --palette-pink: #ff9cc9;
     --palette-yellow: #f2c230;
+    --palette-green: #4dd08c;
+    --palette-orange: #ff9466;
+    --palette-black: #12151b;
 
     /* Shadows are invisible on dark backgrounds; borders carry the structure */
     --shadow: none;
   }
+}
+
+/* User-forced dark: identical values (kept in sync with the block above). */
+:root[data-theme='dark'] {
+  --color-bg: #12151b;
+  --color-surface: #1a1e26;
+  --color-text: #eceef2;
+  --color-text-muted: #a7b0be;
+  --color-primary: #93b4ff;
+  --color-primary-contrast: #0e1526;
+  --color-accent: #ff9cc9;
+  --color-border: #2c323c;
+  --color-focus: #93b4ff;
+  --color-tint: #232935;
+  --palette-blue: #7ea2ff;
+  --palette-pink: #ff9cc9;
+  --palette-yellow: #f2c230;
+  --palette-green: #4dd08c;
+  --palette-orange: #ff9466;
+  --palette-black: #12151b;
+  --shadow: none;
 }
