@@ -10,6 +10,7 @@ import type { Locale } from '../config/site';
 import { projectLeads, projects } from '../lib/content';
 import { t } from '../i18n';
 import Base from '../layouts/Base.astro';
+import Squiggle from '../components/Squiggle.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 
 interface Props {
@@ -53,6 +54,7 @@ const filterCss = [
   <div class="container page projects">
     <header class="page-head">
       <h1>{title}</h1>
+      <Squiggle class="head-squiggle" />
     </header>
 
     <div class="filters" role="group" aria-label={t(locale, 'projects.filters')}>
@@ -109,6 +111,12 @@ const filterCss = [
 
   .page-head {
     margin-bottom: var(--space-l);
+  }
+
+  .page-head :global(.head-squiggle) {
+    width: min(16rem, 55%);
+    margin-top: var(--space-2xs);
+    --squiggle-color: var(--palette-green);
   }
 
   .filters {

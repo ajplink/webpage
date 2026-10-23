@@ -8,6 +8,7 @@ import { eventStatus } from '../lib/content';
 import { formatDateRange, t } from '../i18n';
 import { href } from '../i18n/routes';
 import Card from './Card.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
@@ -21,8 +22,9 @@ const dateText = formatDateRange(locale, date, endDate);
 const isoDate = date.toISOString().slice(0, 10);
 ---
 
-<Card as="li">
+<Card as="li" accent="var(--palette-blue)">
   <p class="date">
+    <Icon name="calendar" size={16} />
     <time datetime={isoDate}>{dateText}</time>
     {status === 'cancelled' && <span class="badge badge--accent">{t(locale, 'events.cancelled')}</span>}
     {status === 'past' && <span class="badge">{t(locale, 'events.past')}</span>}
@@ -30,7 +32,7 @@ const isoDate = date.toISOString().slice(0, 10);
   <h3 class="title">
     <a href={href(locale, 'events', event.slug)}>{title}</a>
   </h3>
-  <p class="location">{location}</p>
+  <p class="location"><Icon name="pin" size={16} /> {location}</p>
   <p class="summary">{summary}</p>
   <a class="link-arrow details" href={href(locale, 'events', event.slug)}>
     {t(locale, 'common.details')}
@@ -38,6 +40,11 @@ const isoDate = date.toISOString().slice(0, 10);
 </Card>
 
 <style>
+  .date :global(.icon),
+  .location :global(.icon) {
+    color: var(--palette-blue);
+  }
+
   .date {
     display: flex;
     flex-wrap: wrap;
@@ -62,6 +69,9 @@ const isoDate = date.toISOString().slice(0, 10);
   }
 
   .location {
+    display: flex;
+    gap: var(--space-3xs);
+    align-items: center;
     font-size: var(--step--1);
     color: var(--color-text-muted);
   }

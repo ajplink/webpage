@@ -6,6 +6,7 @@ import { SITE, type Locale } from '../config/site';
 import { publishedNews } from '../lib/content';
 import { t } from '../i18n';
 import Base from '../layouts/Base.astro';
+import Squiggle from '../components/Squiggle.astro';
 import NewsItem from '../components/NewsItem.astro';
 
 interface Props {
@@ -21,6 +22,7 @@ const title = t(locale, 'nav.news');
   <div class="container page">
     <header class="page-head">
       <h1>{title}</h1>
+      <Squiggle class="head-squiggle" />
       {
         SITE.features.rss && (
           <a class="link-arrow rss" href={`/${locale}/rss.xml`}>

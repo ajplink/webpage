@@ -9,13 +9,20 @@ interface Props {
   dataAttrs?: Record<string, string>;
   /** Duplicate of another card (marquee clone): hidden from assistive tech. */
   ariaHidden?: boolean;
+  /** Palette accent for this kind of content (paints the card's top rule). */
+  accent?: string;
 }
 
-const { as = 'article', dataAttrs = {}, ariaHidden } = Astro.props;
+const { as = 'article', dataAttrs = {}, ariaHidden, accent } = Astro.props;
 const Tag = as;
 ---
 
-<Tag class="card" {...dataAttrs} aria-hidden={ariaHidden ? 'true' : undefined}><slot /></Tag>
+<Tag
+  class="card"
+  {...dataAttrs}
+  aria-hidden={ariaHidden ? 'true' : undefined}
+  style={accent ? `--card-accent: ${accent}` : undefined}
+><slot /></Tag>
 
 <style>
   .card {
@@ -26,6 +33,7 @@ const Tag = as;
     padding: var(--space-s);
     background-color: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
+    border-top: 3px solid var(--card-accent, var(--color-border));
     border-radius: var(--radius);
     transition: border-color var(--duration) var(--ease);
     list-style: none;

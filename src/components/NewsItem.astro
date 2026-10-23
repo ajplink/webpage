@@ -7,6 +7,7 @@ import type { LocalizedEntry } from '../lib/content';
 import { formatDate, t } from '../i18n';
 import { href } from '../i18n/routes';
 import Card from './Card.astro';
+import Icon from './Icon.astro';
 import Tag from './Tag.astro';
 
 interface Props {
@@ -18,8 +19,9 @@ const { locale, item } = Astro.props;
 const { title, summary, date, tags } = item.data;
 ---
 
-<Card as="li">
+<Card as="li" accent="var(--palette-orange)">
   <p class="date">
+    <Icon name="megaphone" size={16} />
     <time datetime={date.toISOString().slice(0, 10)}>{formatDate(locale, date)}</time>
   </p>
   <h3 class="title">
@@ -41,9 +43,16 @@ const { title, summary, date, tags } = item.data;
 
 <style>
   .date {
+    display: flex;
+    gap: var(--space-3xs);
+    align-items: center;
     font-family: var(--font-mono);
     font-size: var(--step--1);
     color: var(--color-text-muted);
+  }
+
+  .date :global(.icon) {
+    color: var(--palette-orange);
   }
 
   .title {
