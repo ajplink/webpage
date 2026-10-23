@@ -11,6 +11,7 @@ import { href } from '../i18n/routes';
 import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
+import PlaceholderLink from '../components/PlaceholderLink.astro';
 import Tag from '../components/Tag.astro';
 import SimulationSlot from '../components/SimulationSlot.astro';
 
@@ -86,9 +87,7 @@ const statusBadgeClass =
                 <ul class="meta-list">
                   {links.map((link) => (
                     <li>
-                      <a href={link.url} rel="noopener">
-                        {link.label}
-                      </a>
+                      <PlaceholderLink {locale} href={link.url} label={link.label} />
                     </li>
                   ))}
                 </ul>

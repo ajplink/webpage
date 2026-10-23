@@ -10,6 +10,7 @@ import { href } from '../i18n/routes';
 import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
+import PlaceholderLink from '../components/PlaceholderLink.astro';
 
 interface Props {
   locale: Locale;
@@ -46,9 +47,12 @@ const { Content } = await render(entry);
       {
         status === 'upcoming' && registrationUrl && (
           <p>
-            <a class="button" href={registrationUrl}>
-              {t(locale, 'events.register')}
-            </a>
+            <PlaceholderLink
+              class="button"
+              {locale}
+              href={registrationUrl}
+              label={t(locale, 'events.register')}
+            />
           </p>
         )
       }

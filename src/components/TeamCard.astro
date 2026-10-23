@@ -5,15 +5,19 @@
  */
 import { Image } from 'astro:assets';
 import type { LocalizedEntry } from '../lib/content';
+import type { Locale } from '../config/site';
 import Card from './Card.astro';
+import PlaceholderLink from './PlaceholderLink.astro';
 
 interface Props {
   member: LocalizedEntry<'team'>;
+  /** UI locale (for interface labels). */
+  locale?: Locale;
   /** Marquee clone of another card: hidden from assistive tech. */
   clone?: boolean;
 }
 
-const { member, clone } = Astro.props;
+const { member, locale = 'pt', clone } = Astro.props;
 const { name, role, bio, photo, links } = member.data;
 
 /** Initials fallback when no portrait exists (never invent photos). */
@@ -52,9 +56,7 @@ const initials = name
       <ul class="links">
         {links.map((link) => (
           <li>
-            <a href={link.url} rel="me noopener">
-              {link.label}
-            </a>
+            <PlaceholderLink {locale} href={link.url} label={link.label} rel="me noopener" />
           </li>
         ))}
       </ul>

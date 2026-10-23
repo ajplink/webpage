@@ -46,10 +46,10 @@ const depts = bodies(DEPARTMENTS);
             <div class="carousel">
               <ul class="carousel-track" style={`--items: ${group.members.length}`}>
                 {group.members.map((member) => (
-                  <TeamCard {member} />
+                  <TeamCard {member} {locale} />
                 ))}
                 {group.members.map((member) => (
-                  <TeamCard {member} clone />
+                  <TeamCard {member} {locale} clone />
                 ))}
               </ul>
             </div>
@@ -67,10 +67,10 @@ const depts = bodies(DEPARTMENTS);
             <div class="carousel">
               <ul class="carousel-track" style={`--items: ${group.members.length}`}>
                 {group.members.map((member) => (
-                  <TeamCard {member} />
+                  <TeamCard {member} {locale} />
                 ))}
                 {group.members.map((member) => (
-                  <TeamCard {member} clone />
+                  <TeamCard {member} {locale} clone />
                 ))}
               </ul>
             </div>

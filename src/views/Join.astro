@@ -13,6 +13,7 @@ import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
 import Icon from '../components/Icon.astro';
 import Squiggle from '../components/Squiggle.astro';
+import MemberForm from '../components/MemberForm.astro';
 
 interface Props {
   locale: Locale;
@@ -45,7 +46,6 @@ const { Content } = await render(page);
           <p class="fee-note">Estudantes: [valor] € · <span class="placeholder">PLACEHOLDER</span></p>
           <Squiggle />
           <div class="join-actions">
-            <a class="button" href={SITE.formUrl} rel="noopener">{t(locale, 'join.formLink')}</a>
             <a class="button button--ghost" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'join.emailLabel')}</a>
           </div>
           <p class="quiet">
@@ -54,6 +54,11 @@ const { Content } = await render(page);
         </div>
       </aside>
     </div>
+
+    <section class="join-form" aria-labelledby="join-form-title">
+      <h2 id="join-form-title">{t(locale, 'form.title')}</h2>
+      <MemberForm {locale} />
+    </section>
   </article>
 </Base>
 
@@ -120,6 +125,16 @@ const { Content } = await render(page);
   .quiet {
     font-size: var(--step--1);
     color: var(--color-text-muted);
+  }
+
+  .join-form {
+    max-width: 52rem;
+    margin-top: var(--space-2xl);
+  }
+
+  .join-form h2 {
+    margin-bottom: var(--space-m);
+    font-size: var(--step-2);
   }
 
   @media (max-width: 52rem) {

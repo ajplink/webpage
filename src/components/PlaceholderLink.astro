@@ -1,0 +1,49 @@
+---
+/**
+ * PlaceholderLink — THE template for links that still point at example.com /
+ * example.org. Renders them all the same way and marks them visibly as
+ * examples until the real URL lands (then the chip disappears by itself:
+ * the component greps the href for example.org/com).
+ *
+ * Use this for every external link rendered by views; content frontmatter
+ * URLs (`registrationUrl`, `links`) flow through here too.
+ */
+import { t } from '../i18n';
+import type { Locale } from '../config/site';
+
+interface Props {
+  href: string;
+  label: string;
+  locale: Locale;
+  class?: string;
+  rel?: string;
+}
+
+const { href, label, locale, class: className, rel = 'noopener' } = Astro.props;
+const isPlaceholder = /example\.(org|com)/.test(href);
+---
+
+<a
+  class:list={['plink', className]}
+  {href}
+  {rel}
+  data-placeholder={isPlaceholder ? 'true' : undefined}
+  title={isPlaceholder ? `${t(locale, 'common.example')} — example.com` : undefined}
+>
+  {label}
+  {isPlaceholder && <span class="chip">{t(locale, 'common.example')}</span>}
+</a>
+
+<style>
+  .chip {
+    display: inline-block;
+    margin-left: var(--space-2xs);
+    padding: 0 var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: 0.72em;
+    vertical-align: middle;
+    color: var(--color-accent);
+    border: var(--border-width) solid var(--color-accent);
+    border-radius: var(--radius-pill);
+  }
+</style>

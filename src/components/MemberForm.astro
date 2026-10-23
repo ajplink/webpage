@@ -1,0 +1,234 @@
+---
+/**
+ * MemberForm — the membership application form, ready to fill.
+ *
+ * SUBMISSION: posts to `SITE.formUrl`, the one PLACEHOLDER endpoint. When
+ * the real endpoint exists it is one line in src/config/site.ts — or add
+ * `data-netlify="true"` to this <form> on Netlify and it works unchanged.
+ * Native HTML validation only (zero JavaScript); the CSP already allows the
+ * form action (public/_headers).
+ */
+import { SITE, type Locale } from '../config/site';
+import { DEPARTMENTS } from '../lib/content';
+import { href } from '../i18n/routes';
+import { t } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const availability = [
+  'form.availabilityEvents',
+  'form.availabilityWorkshops',
+  'form.availabilityDesign',
+  'form.availabilityDev',
+  'form.availabilityTranslations',
+  'form.availabilityAnything',
+] as const;
+
+const found = [
+  'form.foundSchool',
+  'form.foundFriends',
+  'form.foundSocial',
+  'form.foundEvent',
+  'form.foundOther',
+] as const;
+---
+
+<form class="member-form" action={SITE.formUrl} method="post">
+  <p class="form-note">{t(locale, 'form.note')}</p>
+
+  <div class="field-grid">
+    <p class="field">
+      <label for="nome">{t(locale, 'form.name')}</label>
+      <input id="nome" name="nome" type="text" required autocomplete="name" />
+    </p>
+    <p class="field">
+      <label for="nascimento">{t(locale, 'form.birth')}</label>
+      <input id="nascimento" name="nascimento" type="date" autocomplete="bday" />
+    </p>
+    <p class="field">
+      <label for="email">{t(locale, 'form.email')}</label>
+      <input id="email" name="email" type="email" required autocomplete="email" />
+    </p>
+    <p class="field">
+      <label for="telefone">{t(locale, 'form.phone')}</label>
+      <input id="telefone" name="telefone" type="tel" autocomplete="tel" />
+    </p>
+    <p class="field">
+      <label for="cidade">{t(locale, 'form.city')}</label>
+      <input id="cidade" name="cidade" type="text" autocomplete="address-level2" />
+    </p>
+    <p class="field">
+      <label for="conhecemos">{t(locale, 'form.found')}</label>
+      <select id="conhecemos" name="conhecemos">
+        {found.map((key) => <option value={t(locale, key)}>{t(locale, key)}</option>)}
+      </select>
+    </p>
+  </div>
+
+  <fieldset>
+    <legend>{t(locale, 'form.memberType')}</legend>
+    <div class="choices">
+      {
+        (['form.typeStudent', 'form.typePro', 'form.typeSupporter'] as const).map((key, i) => (
+          <label class="choice">
+            <input type="radio" name="tipo" value={t(locale, key)} required checked={i === 0} />
+            <span>{t(locale, key)}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{t(locale, 'form.interests')}</legend>
+    <div class="choices">
+      {
+        DEPARTMENTS.map((department) => (
+          <label class="choice">
+            <input type="checkbox" name="interesses" value={department} />
+            <span>{t(locale, `dept.${department}` as 'dept.Direção')}</span>
+          </label>
+        ))
+      }
+      <label class="choice">
+        <input type="checkbox" name="interesses" value={t(locale, 'form.undecided')} />
+        <span>{t(locale, 'form.undecided')}</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{t(locale, 'form.availability')}</legend>
+    <div class="choices">
+      {
+        availability.map((key) => (
+          <label class="choice">
+            <input type="checkbox" name="ajuda" value={t(locale, key)} />
+            <span>{t(locale, key)}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <p class="field">
+    <label for="notas">{t(locale, 'form.notes')}</label>
+    <textarea id="notas" name="notas" rows="4"></textarea>
+  </p>
+
+  <p class="consent">
+    <label class="choice">
+      <input type="checkbox" name="consentimento" value="sim" required />
+      <span>
+        {t(locale, 'form.consent')} (<a href={href(locale, 'privacy')}>{t(locale, 'nav.privacy')}</a>)
+      </span>
+    </label>
+  </p>
+
+  <p class="actions">
+    <button class="button" type="submit">{t(locale, 'form.submit')}</button>
+  </p>
+</form>
+
+<style>
+  .member-form {
+    display: grid;
+    gap: var(--space-m);
+    padding: var(--space-m);
+    background-color: var(--color-surface);
+    border: var(--border-bold) solid var(--palette-pink);
+    border-radius: var(--radius);
+  }
+
+  .form-note {
+    color: var(--color-text-muted);
+  }
+
+  .field-grid {
+    display: grid;
+    gap: var(--space-s);
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  label,
+  legend {
+    font-size: var(--step--1);
+    font-weight: 650;
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='date'],
+  select,
+  textarea {
+    width: 100%;
+    padding: var(--space-2xs) var(--space-xs);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-s);
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    border-color: var(--color-focus);
+    outline: 2px solid var(--color-focus);
+    outline-offset: 1px;
+  }
+
+  fieldset {
+    padding: var(--space-s);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-s);
+  }
+
+  legend {
+    padding-inline: var(--space-2xs);
+    color: var(--color-accent);
+  }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+    margin-top: var(--space-3xs);
+  }
+
+  .choice {
+    display: inline-flex;
+    gap: var(--space-3xs);
+    align-items: center;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .choice input {
+    accent-color: var(--color-primary);
+  }
+
+  .consent {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .consent .choice {
+    align-items: flex-start;
+  }
+
+  .actions :global(.button) {
+    cursor: pointer;
+    font: inherit;
+    font-weight: 650;
+  }
+</style>

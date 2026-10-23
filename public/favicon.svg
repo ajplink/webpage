@@ -1,5 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="1562 1579 480 480">
-  <!-- Associação Plink — the three yellow ticks of the wordmark (favicon exception,
-       mirrors src/components/Logo.astro's sparks: --logo-spark #fed10d). -->
+  <!-- Associacao Plink: the three yellow ticks of the wordmark (favicon exception). -->
   <path d="M1816.6 1946c-15-4.6-21-23.6-12.7-40.6 8-16.3 75-74.8 99.6-87 46.7-23.1 81 14.3 46.6 50.9-9.3 9.9-13.5 13.1-48.6 37.7-54.7 38.2-67.6 44.2-84.9 39m-63.1-44.9c-20-9-21.6-39.4-4.5-82.6l5.5-14.5c2-5.7 10-23.6 17-38.5 22.7-47.7 63-62.8 79.9-30 10 19.5 6.3 34.6-20.4 83a823 823 0 0 0-13.4 25c-22.5 46.6-44.6 66.5-64.1 57.6m-63.5-13c-23-14.7-39-53.3-46.6-111.6l-2-14.8c-7-52.7 26.6-88.8 59-63.4 15.6 12.3 19 27.9 18.3 86.6-.8 79.1-10.7 114.7-28.7 103.2" fill="#fed10d"/>
 </svg>
