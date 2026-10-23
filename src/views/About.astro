@@ -11,6 +11,7 @@ import { t } from '../i18n';
 import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
+import Playground from '../components/Playground.astro';
 
 interface Props {
   locale: Locale;
@@ -35,6 +36,8 @@ const { Content } = await render(page);
     <Prose>
       <Content />
     </Prose>
+
+    <Playground {locale} />
 
     <section class="departments" aria-labelledby="dept-map">
       <h2 id="dept-map">{t(locale, 'team.departments')}</h2>

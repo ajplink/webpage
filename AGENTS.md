@@ -16,11 +16,16 @@ Detailed guides live in [`.agents/`](.agents/): [content model](.agents/content-
 
 ## Hard invariants (do not break without an explicit decision)
 
-- **Zero client-side JavaScript — one documented exception.** The only
-  `<script>` in the output is JSON-LD, plus `/theme.js` (~1 KB, no deps, no
-  cookies): the theme toggle's progressive enhancement, accepted in writing
-  here. CSS-only solutions (`:has()` filters, `<details>` menus) cover the
-  rest. Anything new must be CSS-first.
+- **Zero client-side JavaScript — two documented exceptions.** The only
+  `<script>` in the output is JSON-LD, plus two dependency-free files,
+  accepted in writing here:
+  - `/theme.js` (~1 KB): pins light/dark (the theme toggle's enhancement);
+  - `/about-play.js`: the About page's playable experiments (Newton's
+    cradle + mixing flasks, vanilla canvas — chosen over p5.js for size and
+    speed). Both degrade to a complete page without JS, and both are
+    self-hosted (`script-src 'self'` holds).
+  CSS-only solutions (`:has()` filters, `<details>` menus) cover the rest.
+  Anything new must be CSS-first.
 - **No third-party requests at runtime** — no CDN fonts, no analytics, no
   embeds, no cookies.
 - **All visual values come from `src/styles/tokens.css`.** No hard-coded colours,

@@ -120,8 +120,15 @@ const depts = bodies(DEPARTMENTS);
 
   .carousel-track > :global(*) {
     width: min(19rem, 72vw);
+    height: 30rem;
     flex: none;
     margin-right: var(--space-m);
+    overflow: hidden;
+  }
+
+  /* every portrait fills the same frame */
+  .carousel-track > :global(*) > :global(img) {
+    aspect-ratio: 1;
   }
 
   .carousel:hover .carousel-track,

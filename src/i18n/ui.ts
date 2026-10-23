@@ -338,6 +338,29 @@ const ui = {
   },
   'form.submit': { pt: 'Enviar candidatura', 'en-gb': 'Send application' },
 
+  'play.title': {
+    pt: 'Brincar com as ideias',
+    'en-gb': 'Play with the ideas',
+  },
+  'play.cradle': { pt: 'Valores em movimento', 'en-gb': 'Values in motion' },
+  'play.cradleHint': {
+    pt: 'Arrasta uma bola e solta — a física faz o resto.',
+    'en-gb': 'Drag a ball and let go — physics does the rest.',
+  },
+  'play.flasks': {
+    pt: 'Misturar departamentos',
+    'en-gb': 'Mixing departments',
+  },
+  'play.flasksHint': {
+    pt: 'Arrasta um frasco sobre outro para misturar as cores.',
+    'en-gb': 'Drag one flask over another to mix the colours.',
+  },
+  'play.valueDoing': { pt: 'Aprender fazendo', 'en-gb': 'Learning by doing' },
+  'play.valueAccess': { pt: 'Acesso para todos', 'en-gb': 'Access for all' },
+  'play.valueOpen': { pt: 'Ciência aberta', 'en-gb': 'Open science' },
+  'play.valueCommunity': { pt: 'Comunidade', 'en-gb': 'Community' },
+  'play.valueCuriosity': { pt: 'Curiosidade', 'en-gb': 'Curiosity' },
+
   'footer.rights': {
     pt: 'Todos os direitos reservados.',
     'en-gb': 'All rights reserved.',

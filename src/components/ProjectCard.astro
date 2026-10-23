@@ -33,15 +33,15 @@ const statusBadgeClass =
   accent="var(--palette-green)"
   dataAttrs={{ 'data-status': status, 'data-tags': tags.join(' ') }}
 >
-  <p class="status">
-    <Icon name="rocket" size={16} class="status-icon" />
-    <span class={statusBadgeClass}>{statusLabel}</span>
-    {hasSimulation && <span class="badge">{t(locale, 'projects.simulationPending')}</span>}
-  </p>
   <h3 class="title">
     <a href={href(locale, 'projects', project.slug)}>{title}</a>
   </h3>
   <p class="summary">{summary}</p>
+  <p class="meta">
+    <Icon name="rocket" size={16} />
+    <span class={statusBadgeClass}>{statusLabel}</span>
+    {hasSimulation && <span class="badge">{t(locale, 'projects.simulationPending')}</span>}
+  </p>
   {
     leads.length > 0 && (
       <p class="leads">
@@ -63,6 +63,21 @@ const statusBadgeClass =
 </Card>
 
 <style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-2xs);
+    align-items: center;
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .meta :global(.icon) {
+    color: var(--color-accent);
+  }
+
   .status :global(.icon) {
     color: var(--palette-green);
   }

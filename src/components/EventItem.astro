@@ -23,16 +23,16 @@ const isoDate = date.toISOString().slice(0, 10);
 ---
 
 <Card as="li" accent="var(--palette-blue)">
-  <p class="date">
-    <Icon name="calendar" size={16} />
-    <time datetime={isoDate}>{dateText}</time>
-    {status === 'cancelled' && <span class="badge badge--accent">{t(locale, 'events.cancelled')}</span>}
-    {status === 'past' && <span class="badge">{t(locale, 'events.past')}</span>}
-  </p>
   <h3 class="title">
     <a href={href(locale, 'events', event.slug)}>{title}</a>
   </h3>
-  <p class="location"><Icon name="pin" size={16} /> {location}</p>
+  <p class="meta">
+    <Icon name="calendar" size={16} />
+    <time datetime={isoDate}>{dateText}</time>
+    · <Icon name="pin" size={16} /> {location}
+    {status === 'cancelled' && <span class="badge badge--accent">{t(locale, 'events.cancelled')}</span>}
+    {status === 'past' && <span class="badge">{t(locale, 'events.past')}</span>}
+  </p>
   <p class="summary">{summary}</p>
   <a class="link-arrow details" href={href(locale, 'events', event.slug)}>
     {t(locale, 'common.details')}
@@ -40,6 +40,21 @@ const isoDate = date.toISOString().slice(0, 10);
 </Card>
 
 <style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-2xs);
+    align-items: center;
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .meta :global(.icon) {
+    color: var(--color-accent);
+  }
+
   .date :global(.icon),
   .location :global(.icon) {
     color: var(--palette-blue);
