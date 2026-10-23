@@ -151,7 +151,12 @@
   --duration: 160ms;
   --duration-slow: 320ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
-  /** Duration of the one-stroke "plink" wordmark drawing itself. */
+  /* ======================================================================
+     5a. TUNING KNOB (Ricardo): how long the wordmark takes to write itself.
+     Every part of the animation scales with it. Put it at 10s–30s to watch
+     the pen pathing in slow motion, then back to ~1.6s for the real feel.
+     ====================================================================== */
+
   --draw-duration: 1.6s;
 }
 

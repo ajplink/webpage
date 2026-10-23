@@ -1,12 +1,13 @@
 ---
 /**
- * Logo — the "plink" wordmark, Ricardo's own artwork (nome.svg, traced into
- * two filled paths: the ink word + the yellow sparks over the i).
+ * Logo — the "plink" wordmark (Ricardo's artwork, nome.svg: the ink word +
+ * the three yellow sparks on the i).
  *
- * `animate` replays the word being written in front of the user: a mask
- * follows the writing route (p -> l -> i -> n -> k) and reveals the ink as
- * the pen passes. CSS-only, once per page load; prefers-reduced-motion sees
- * the finished word immediately (the end state is the default state).
+ * `animate` draws the word EXACTLY as it is written: one continuous path
+ * (the skeleton of the artwork, derived by scripts/penpath.py) sweeps like a
+ * pen and the ink appears behind it; the marker tip rides the same path;
+ * the three sparks blink in when the word lands. CSS-only, once per page
+ * load; prefers-reduced-motion sees the finished word immediately.
  */
 interface Props {
   /** Draw the wordmark in front of the user (hero moment). */
@@ -28,39 +29,114 @@ const height = Math.round((width / 3083) * 1503);
   aria-hidden="true"
   focusable="false"
 >
-  {
-    animate && (
-      <defs>
-    <!-- the pen route: a fat stroke sweeps the writing order and reveals the
-         ink as it passes (dashes in thousandths of the path length — small
-         normalized values rasterise unreliably). -->
+  {animate && (
+  <defs>
+    <!-- THE writing path: one continuous stroke, how the word is written -->
+    <path id="pen-route" class="pen-route" pathLength="1000" d="M1031,1871 L1052,1877 L1069,1886 L1085,1899 L1099,1916 L1108,1933 L1114,1950 L1118,1971 L1120,1991
+      L1120,2012 L1120,2032 L1117,2053 L1112,2073 L1106,2094 L1100,2111 L1092,2128 L1082,2145 L1071,2162
+      L1059,2179 L1046,2197 L1031,2213 L1016,2229 L1005,2244 L989,2256 L969,2261 L949,2265 L928,2272
+      L908,2277 L887,2279 L867,2282 L846,2282 L827,2280 L816,2265 L815,2245 L815,2224 L813,2203 L815,2183
+      L815,2162 L814,2142 L818,2121 L822,2101 L823,2080 L827,2060 L831,2039 L835,2019 L840,1998 L845,1978
+      L855,1960 L870,1949 L887,1941 L904,1930 L921,1916 L935,1903 L952,1890 L969,1881 L987,1876 L1004,1873
+      L1025,1875 L1049,1882 L1072,1892 L1044,1894 L1013,1893 L980,1895 L954,1899 L937,1904 L922,1914
+      L908,1926 L888,1937 L864,1944 L846,1942 L838,1968 L833,2006 L829,2029 L825,2052 L822,2074 L818,2093
+      L810,2122 L801,2143 L784,2153 L767,2159 L750,2168 L733,2183 L719,2194 L702,2208 L685,2221 L668,2232
+      L651,2243 L634,2253 L617,2263 L599,2273 L582,2281 L565,2290 L548,2297 L531,2303 L511,2307 L536,2295
+      L571,2280 L592,2270 L613,2259 L634,2248 L654,2237 L672,2226 L689,2216 L718,2199 L744,2192 L768,2199
+      L787,2219 L801,2246 L808,2271 L811,2289 L812,2309 L812,2330 L812,2351 L812,2371 L812,2392 L812,2412
+      L812,2433 L812,2453 L812,2474 L813,2494 L815,2515 L815,2536 L815,2556 L816,2577 L818,2597 L819,2618
+      L821,2638 L842,2613 L853,2588 L869,2556 L889,2517 L911,2475 L935,2432 L959,2392 L980,2357 L998,2329
+      L1013,2309 L1032,2287 L1051,2279 L1072,2279 L1093,2278 L1113,2275 L1134,2270 L1154,2264 L1172,2257
+      L1189,2250 L1206,2241 L1223,2231 L1240,2221 L1257,2210 L1274,2199 L1291,2187 L1309,2174 L1326,2160
+      L1343,2148 L1360,2139 L1377,2129 L1384,2111 L1384,2090 L1385,2070 L1393,2051 L1408,2041 L1424,2032
+      L1437,2018 L1447,2001 L1457,1984 L1465,1967 L1474,1950 L1482,1933 L1490,1916 L1498,1899 L1505,1882
+      L1512,1865 L1519,1847 L1526,1830 L1533,1813 L1539,1796 L1545,1779 L1551,1758 L1556,1738 L1562,1717
+      L1566,1697 L1571,1676 L1576,1656 L1580,1635 L1584,1615 L1588,1594 L1592,1573 L1595,1553 L1597,1532
+      L1599,1512 L1601,1491 L1603,1471 L1605,1450 L1606,1430 L1607,1409 L1607,1389 L1606,1368 L1604,1348
+      L1601,1327 L1597,1306 L1590,1286 L1582,1269 L1568,1256 L1548,1250 L1528,1256 L1513,1269 L1501,1286
+      L1491,1303 L1483,1320 L1475,1337 L1467,1354 L1461,1371 L1455,1389 L1449,1406 L1443,1426 L1437,1447
+      L1433,1467 L1428,1488 L1424,1508 L1420,1529 L1417,1550 L1413,1570 L1409,1591 L1406,1611 L1403,1632
+      L1400,1652 L1397,1673 L1395,1693 L1393,1714 L1391,1734 L1388,1755 L1387,1775 L1385,1796 L1384,1817
+      L1383,1837 L1381,1858 L1380,1878 L1380,1899 L1379,1919 L1377,1940 L1377,1960 L1377,1981 L1377,2001
+      L1378,2022 L1395,2031 L1419,2016 L1439,1993 L1459,1965 L1476,1937 L1487,1917 L1495,1899 L1505,1873
+      L1517,1844 L1528,1812 L1538,1779 L1541,1743 L1539,1721 L1535,1695 L1527,1666 L1517,1633 L1506,1597
+      L1494,1560 L1483,1523 L1475,1487 L1471,1453 L1470,1424 L1474,1398 L1483,1376 L1494,1357 L1508,1341
+      L1523,1327 L1537,1316 L1560,1298 L1569,1280 L1550,1275 L1530,1290 L1520,1309 L1508,1339 L1496,1382
+      L1482,1440 L1468,1512 L1454,1594 L1440,1682 L1427,1770 L1415,1851 L1406,1923 L1399,1982 L1394,2028
+      L1391,2063 L1389,2089 L1388,2108 L1389,2133 L1392,2151 L1397,2169 L1402,2190 L1408,2210 L1413,2227
+      L1421,2245 L1431,2262 L1444,2279 L1456,2292 L1473,2306 L1490,2314 L1511,2319 L1531,2320 L1552,2316
+      L1569,2309 L1586,2297 L1600,2285 L1613,2272 L1625,2258 L1637,2241 L1646,2224 L1655,2207 L1663,2190
+      L1671,2173 L1677,2156 L1685,2139 L1697,2123 L1712,2109 L1721,2094 L1725,2073 L1727,2053 L1729,2033
+      L1730,2055 L1732,2079 L1735,2102 L1741,2125 L1748,2145 L1754,2166 L1760,2186 L1767,2203 L1774,2221
+      L1783,2238 L1793,2255 L1806,2272 L1820,2289 L1836,2304 L1853,2315 L1870,2321 L1891,2324 L1911,2321
+      L1929,2314 L1946,2302 L1959,2289 L1972,2275 L1985,2258 L1996,2241 L2005,2224 L2013,2207 L2021,2190
+      L2028,2173 L2035,2156 L2042,2138 L2049,2121 L2057,2104 L2064,2087 L2072,2070 L2081,2053 L2091,2036
+      L2103,2019 L2116,2002 L2131,1985 L2148,1972 L2165,1964 L2186,1958 L2206,1958 L2227,1962 L2243,1970
+      L2258,1985 L2268,2001 L2275,2019 L2280,2039 L2284,2060 L2294,2075 L2312,2074 L2328,2064 L2341,2049
+      L2352,2032 L2363,2015 L2376,1998 L2388,1984 L2401,1971 L2415,1959 L2432,1947 L2449,1937 L2466,1928
+      L2484,1921 L2504,1917 L2525,1918 L2545,1923 L2562,1934 L2575,1947 L2588,1964 L2597,1981 L2603,1998
+      L2609,2019 L2613,2039 L2616,2060 L2620,2080 L2624,2101 L2627,2121 L2630,2142 L2633,2162 L2637,2183
+      L2642,2203 L2648,2224 L2654,2241 L2662,2258 L2672,2275 L2684,2292 L2696,2306 L2713,2319 L2730,2327
+      L2751,2333 L2771,2337 L2792,2337 L2812,2334 L2833,2328 L2850,2321 L2867,2311 L2884,2301 L2901,2291
+      L2919,2285 L2939,2278 L2956,2266 L2963,2248 L2966,2227 L2973,2209 L2987,2197 L3003,2185 L3014,2169
+      L3023,2152 L3032,2135 L3042,2118 L3054,2101 L3064,2084 L3076,2066 L3088,2049 L3100,2032 L3114,2015
+      L3128,1998 L3140,1984 L3152,1971 L3165,1957 L3179,1944 L3196,1932 L3217,1927 L3237,1925 L3258,1923
+      L3278,1923 L3299,1924 L3319,1929 L3336,1937 L3351,1951 L3360,1967 L3364,1988 L3364,2008 L3360,2029
+      L3352,2046 L3342,2063 L3330,2080 L3315,2097 L3303,2111 L3288,2128 L3276,2145 L3261,2156 L3241,2158
+      L3221,2151 L3202,2140 L3182,2139 L3162,2142 L3145,2148 L3128,2157 L3110,2169 L3095,2184 L3084,2200
+      L3078,2220 L3080,2239 L3100,2240 L3121,2236 L3138,2229 L3155,2221 L3172,2211 L3189,2201 L3205,2189
+      L3219,2174 L3241,2170 L3266,2174 L3287,2183 L3305,2196 L3319,2209 L3333,2221 L3347,2234 L3360,2246
+      L3374,2258 L3391,2272 L3408,2283 L3426,2292 L3443,2300 L3460,2307 L3477,2313 L3497,2319 L3518,2323
+      L3538,2322 L3519,2319 L3498,2316 L3475,2310 L3451,2301 L3429,2292 L3412,2283 L3396,2273 L3379,2259
+      L3359,2242 L3336,2223 L3316,2205 L3300,2191 L3285,2174 L3281,2153 L3293,2132 L3305,2114 L3317,2097
+      L3331,2078 L3318,2094 L3302,2110 L3279,2129 L3249,2150 L3232,2161 L3215,2170 L3197,2178 L3166,2186
+      L3139,2186 L3116,2184 L3095,2185 L3074,2183 L3056,2172 L3048,2150 L3050,2122 L3061,2094 L3075,2068
+      L3091,2045 L3106,2024 L3120,2007 L3134,1993 L3152,1979 L3180,1966 L3198,1960 L3219,1954 L3241,1950
+      L3263,1947 L3283,1945 L3314,1943 L3297,1918 L3266,1901 L3237,1887 L3217,1881 L3200,1889 L3196,1909
+      L3202,1883 L3209,1862 L3218,1841 L3224,1824 L3230,1806 L3236,1789 L3242,1772 L3248,1752 L3254,1731
+      L3259,1710 L3264,1690 L3267,1669 L3269,1649 L3271,1628 L3274,1608 L3275,1587 L3275,1567 L3275,1546
+      L3273,1526 L3271,1505 L3268,1484 L3266,1464 L3262,1443 L3259,1423 L3255,1402 L3250,1382 L3244,1361
+      L3237,1344 L3229,1327 L3220,1310 L3208,1294 L3192,1282 L3172,1277 L3152,1278 L3131,1285 L3114,1297
+      L3100,1310 L3087,1324 L3073,1341 L3062,1358 L3052,1375 L3044,1392 L3036,1409 L3030,1426 L3024,1443
+      L3017,1464 L3012,1484 L3006,1505 L3000,1526 L2995,1546 L2991,1567 L2987,1587 L2983,1608 L2980,1628
+      L2977,1649 L2974,1669 L2971,1690 L2969,1710 L2967,1731 L2965,1752 L2963,1772 L2961,1793 L2960,1813
+      L2958,1834 L2956,1854 L2955,1875 L2953,1895 L2953,1916 L2952,1936 L2950,1957 L2949,1977 L2949,1998
+      L2949,2019 L2949,2039 L2949,2060 L2949,2080 L2949,2101 L2949,2121 L2949,2142 L2949,2162 L2952,2182
+      L2971,2187 L2987,2176 L3009,2155 L3032,2127 L3043,2112 L3054,2097 L3074,2067 L3085,2052 L3097,2034
+      L3110,2015 L3124,1994 L3139,1970 L3155,1946 L3169,1922 L3183,1898 L3196,1875 L3206,1853 L3215,1832
+      L3223,1812 L3230,1792 L3236,1771 L3241,1748 L3245,1722 L3248,1692 L3250,1658 L3251,1618 L3251,1575
+      L3249,1530 L3246,1486 L3241,1443 L3234,1406 L3226,1374 L3217,1349 L3206,1330 L3194,1316 L3167,1302
+      L3140,1299 L3118,1304 L3100,1314 L3086,1328 L3073,1344 L3063,1360 L3051,1378 L3042,1397 L3034,1414
+      L3016,1446 L3001,1471 L2978,1505 L2948,1547 L2909,1596 L2864,1650 L2814,1707 L2764,1762 L2717,1814
+      L2676,1859 L2645,1897 L2623,1929 L2610,1957 L2605,1984 L2605,2011 L2610,2041 L2617,2073 L2626,2107
+      L2636,2142 L2648,2176 L2660,2207 L2675,2235 L2692,2259 L2711,2277 L2734,2292 L2760,2302 L2789,2309
+      L2819,2314 L2849,2316 L2877,2317 L2901,2317 L2920,2316 L2945,2312 L2959,2299 L2962,2280 L2968,2257
+      L2973,2239 L2970,2264 L2966,2291 L2962,2316 L2952,2338 L2920,2341 L2900,2338 L2876,2334 L2847,2327
+      L2816,2319 L2783,2309 L2752,2297 L2721,2280 L2692,2260 L2664,2234 L2635,2203 L2606,2167 L2576,2129
+      L2547,2090 L2518,2054 L2492,2025 L2468,2002 L2448,1988 L2430,1982 L2399,1990 L2384,2000 L2369,2013
+      L2355,2027 L2341,2041 L2320,2064 L2306,2078 L2296,2095 L2294,2114 L2292,2135 L2292,2156 L2292,2176
+      L2292,2197 L2291,2217 L2289,2238 L2288,2258 L2285,2277 L2278,2248 L2275,2226 L2269,2198 L2262,2165
+      L2251,2131 L2238,2097 L2222,2067 L2205,2043 L2186,2026 L2166,2017 L2148,2015 L2115,2027 L2089,2053
+      L2079,2067 L2061,2098 L2046,2127 L2035,2153 L2025,2175 L2016,2194 L2007,2213 L1995,2234 L1983,2254
+      L1972,2272 L1960,2286 L1936,2301 L1913,2307 L1887,2309 L1863,2308 L1844,2304 L1826,2294 L1810,2276
+      L1797,2256 L1783,2231 L1769,2202 L1756,2173 L1746,2149 L1736,2131 L1720,2120 L1697,2130 L1681,2151
+      L1671,2169 L1662,2187 L1652,2206 L1642,2225 L1633,2242 L1622,2260 L1611,2276 L1597,2289 L1575,2298
+      L1552,2302 L1524,2304 L1496,2303 L1474,2299 L1454,2289 L1439,2273 L1429,2258 L1417,2238 L1402,2218
+      L1380,2200 L1352,2191 L1319,2192 L1287,2200 L1259,2212 L1236,2221 L1214,2222 L1188,2214 L1157,2197
+      L1140,2187 L1124,2178 L1097,2168 L1078,2168 L1060,2180 L1044,2197 L1031,2217 L1020,2236 L998,2248
+      L966,2246 L941,2241 L912,2235 L879,2228 L845,2221 L811,2216 L780,2212 L753,2210 L731,2210 L700,2214
+      L682,2222 L664,2233 L645,2246 L626,2257 L602,2267 L566,2282 L544,2291 L519,2300 L493,2310 L493,2310" />
     <mask id="write-pen" maskUnits="userSpaceOnUse" x="0" y="0" width="4200" height="4200">
-      <path
-        class="wordmark-pen"
-        pathLength="1000"
-        d="M760,1900 C740,2100 715,2400 700,2560 C692,2640 745,2650 775,2590 C805,2400 815,2100 825,1900
-          C880,1830 990,1840 1030,1930 C1065,2030 1035,2270 965,2350 C905,2415 845,2430 805,2415
-          C880,2500 1020,2530 1150,2495 C1230,2330 1370,1650 1440,1330 C1465,1255 1525,1270 1512,1360
-          C1495,1600 1440,2150 1420,2440 C1445,2505 1530,2510 1610,2480 C1680,2270 1760,2010 1810,1900
-          C1840,1845 1890,1865 1880,1950 C1865,2130 1850,2350 1848,2470 C1885,2515 1965,2510 2040,2475
-          C2110,2280 2150,2020 2185,1910 C2240,1830 2345,1845 2352,1955 C2358,2130 2355,2330 2352,2455
-          C2395,2300 2445,2020 2505,1915 C2575,1835 2685,1870 2688,1990 C2691,2160 2685,2330 2682,2455
-          C2725,2515 2820,2515 2900,2478 C2985,2280 3075,1650 3145,1335 C3175,1258 3245,1280 3232,1385
-          C3215,1620 3160,2120 3138,2445 C3128,2280 3150,2130 3195,2040 C3265,1955 3355,1985 3335,2085
-          C3325,2135 3290,2175 3265,2195 C3345,2245 3435,2325 3505,2385 C3540,2415 3585,2405 3620,2360"
-        fill="none"
-        stroke="#fff"
-        stroke-width="700"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+      <use href="#pen-route" class="wordmark-pen" stroke="#fff" stroke-width="240" stroke-linecap="round" stroke-linejoin="round" />
+      <!-- settle: specks the pen missed fade in at the very end (100% coverage) -->
+      <rect class="wordmark-settle" x="0" y="0" width="4200" height="4200" fill="#fff" />
     </mask>
-      </defs>
-    )
-  }
+  </defs>
+  )}
+
   <g class="wordmark-art" mask={animate ? 'url(#write-pen)' : undefined}>
     <path class="logo-ink" d="M821
-      2717c-10.8-2.3-20-11.4-26-25.7-8.4-19.4-12.4-112.4-11.8-269.8.5-141.2-.6-231.3-2.8-233.5-.9-.9-2.7.2-7.3
+      2717c-10.8-2.3-20-12.4-26-25.7-8.4-19.4-12.4-112.4-11.8-269.8.5-141.2-.6-231.3-2.8-233.5-.9-.9-2.7.2-7.3
       4.2a706 706 0 0 1-85.1 67 854 854 0 0 1-65.5 39.7 587 587 0 0 1-100 41.6c-22.1
       6.4-42.4-14.7-38.6-40.2 1.7-11.7 1.6-11.6 25.1-19.5 27.4-9.2 27.5-9.3 35.5-12.6 25-10.5 58.9-27.8
       77-39.3 34-21.7 44.9-29.3 74-51.6a555 555 0 0 0 72-69.8c15.3-17.5 13.7-12.2 17.5-59.5a948 948 0 0 1
@@ -123,16 +199,78 @@ const height = Math.round((width / 3083) * 1503);
       583 583 0 0 0-5.4 25.5c-1 4.4-2.6 13.2-3.7 19.5-1 6.3-2.6 14.7-3.3 18.5-1.8 8.7-3.5 19.1-4.6 27l-2.5
       16c-.8 5.5-2 13.8-2.5 18.5s-1.4 11.7-2 15.5a2361 2361 0 0 0-12.4 117.5 3142 3142 0 0 0-10.6
       155.7c-1.1 18.3-1.4 93.7-.4 97.8q1.8 6.7 8.2-4.3" />
-    <g class="wordmark-sparks">
-      <path class="logo-spark" d="M1816.6 1946c-15-4.6-21-23.6-12.7-40.6 8-16.3 75-74.8 99.6-87 46.7-23.1 81 14.3 46.6 50.9-9.3
+  </g>
+
+  <!-- the marker tip riding the same path -->
+  {animate && <use href="#pen-route" class="wordmark-nib" />}
+
+  <!-- the dot of the i: three sparks, in yellow -->
+  <g class="wordmark-sparks">
+    <path class="logo-spark" d="M1816.6 1946c-15-4.6-21-23.6-12.7-40.6 8-16.3 75-74.8 99.6-87 46.7-23.1 81 14.3 46.6 50.9-9.3
       9.9-13.5 13.1-48.6 37.7-54.7 38.2-67.6 44.2-84.9
       39m-63.1-44.9c-20-9-21.6-39.4-4.5-82.6l5.5-14.5c2-5.7 10-23.6 17-38.5 22.7-47.7 63-62.8 79.9-30 10
       19.5 6.3 34.6-20.4 83a823 823 0 0 0-13.4 25c-22.5 46.6-44.6 66.5-64.1
       57.6m-63.5-13c-23-14.7-39-53.3-46.6-111.6l-2-14.8c-7-52.7 26.6-88.8 59-63.4 15.6 12.3 19 27.9 18.3
       86.6-.8 79.1-10.7 114.7-28.7 103.2" />
-    </g>
   </g>
 </svg>
+
+{
+  animate && import.meta.env.DEV && (
+    <div class="scrub">
+      <label for="word-scrub">trace the writing</label>
+      <input id="word-scrub" type="range" min="0" max="100" value="0" data-word-scrub />
+    </div>
+  )
+}
+
+{
+  animate && import.meta.env.DEV && (
+    <script is:inline>
+      // dev-only scrubber: drag to trace the writing path frame by frame
+      (() => {
+        const init = () => {
+          const range = document.querySelector('[data-word-scrub]');
+          const svg = document.querySelector('.wordmark--draw');
+          if (!range || !svg) return;
+          const pen = svg.querySelector('.wordmark-pen');
+          const nib = svg.querySelector('.wordmark-nib');
+          const settle = svg.querySelector('.wordmark-settle');
+          const sparks = svg.querySelector('.wordmark-sparks');
+          range.addEventListener('input', () => {
+            const p = range.value / 100;
+            for (const el of [pen, nib, settle, sparks]) if (el) el.style.animation = 'none';
+            pen.style.strokeDashoffset = String((1 - p) * 1000);
+            nib.style.strokeDashoffset = String(-p * 1000);
+            nib.style.opacity = p > 0.01 && p < 0.99 ? '1' : '0';
+            settle.style.opacity = p >= 0.85 ? '1' : '0';
+            sparks.style.opacity = p >= 0.88 ? '1' : '0';
+            sparks.style.transform = 'none';
+          });
+        };
+        document.readyState === 'loading'
+          ? document.addEventListener('DOMContentLoaded', init)
+          : init();
+      })();
+    </script>
+  )
+}
+
+<style>
+  .scrub {
+    display: flex;
+    gap: var(--space-2xs);
+    align-items: center;
+    margin-top: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  .scrub input {
+    flex: 1;
+    accent-color: var(--color-accent);
+  }
+</style>
 
 <style>
   .wordmark {
@@ -149,6 +287,10 @@ const height = Math.round((width / 3083) * 1503);
     fill: var(--logo-spark);
   }
 
+  .pen-route {
+    fill: none;
+  }
+
   /* Static default = the finished word. The animation only replays it. */
   .wordmark-pen {
     stroke-dasharray: 1000;
@@ -162,23 +304,66 @@ const height = Math.round((width / 3083) * 1503);
     }
   }
 
-  /* the three sparks on the i blink in when the word is done */
+  /* any missed speck settles in during the last beat */
+  .wordmark-settle {
+    opacity: 0;
+  }
+
+  .wordmark--draw .wordmark-settle {
+    animation: settle calc(var(--draw-duration) * 0.18) linear both;
+    animation-delay: calc(var(--draw-duration) * 0.85);
+  }
+
+  @keyframes settle {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* the marker tip: a fat round dash sliding along the very same path */
+  .wordmark-nib {
+    fill: none;
+    stroke: var(--palette-yellow);
+    stroke-width: 190;
+    stroke-linecap: round;
+    stroke-dasharray: 1 999;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+
+  .wordmark--draw .wordmark-nib {
+    animation: nib var(--draw-duration) var(--ease) both;
+  }
+
+  @keyframes nib {
+    0% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+
+    6% {
+      opacity: 1;
+    }
+
+    80% {
+      opacity: 1;
+    }
+
+    to {
+      stroke-dashoffset: -1000;
+      opacity: 0;
+    }
+  }
+
+  /* the three sparks blink in when the word is done */
   .wordmark-sparks {
     transform-box: fill-box;
     transform-origin: center;
   }
 
   .wordmark--draw .wordmark-sparks {
-    animation: spark-blink 520ms var(--ease) both;
+    animation: spark-blink calc(var(--draw-duration) * 0.32) var(--ease) both;
     animation-delay: calc(var(--draw-duration) * 0.88);
-  }
-
-  /* Reduced motion: no writing, no blink — straight to the finished word. */
-  @media (prefers-reduced-motion: reduce) {
-    .wordmark--draw .wordmark-pen,
-    .wordmark--draw .wordmark-sparks {
-      animation: none;
-    }
   }
 
   @keyframes spark-blink {
@@ -210,6 +395,18 @@ const height = Math.round((width / 3083) * 1503);
     to {
       opacity: 1;
       transform: none;
+    }
+  }
+
+  /* Reduced motion: no writing, no blink, no tip — the finished word. */
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark--draw .wordmark-pen,
+    .wordmark--draw .wordmark-sparks {
+      animation: none;
+    }
+
+    .wordmark-nib {
+      display: none;
     }
   }
 </style>
