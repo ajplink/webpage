@@ -4,7 +4,7 @@
  * the prose from the `pages` collection (entry slug: `about`), then the
  * department map (data from ui.ts / lib) with a door to the team page.
  */
-import { SITE, type Locale } from '../config/site';
+import { type Locale } from '../config/site';
 import { localizedEntry, DEPARTMENTS, DEPT_ACCENT, type Department } from '../lib/content';
 import { href } from '../i18n/routes';
 import { t } from '../i18n';
@@ -26,7 +26,6 @@ const { Content } = await render(page);
   <article class="container page">
     <header class="page-head">
       <div>
-        <p class="eyebrow">{SITE.name}</p>
         <h1>{page.data.title}</h1>
         {page.data.summary && <p class="lead">{page.data.summary}</p>}
       </div>

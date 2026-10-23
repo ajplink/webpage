@@ -33,7 +33,6 @@ const demo = {
 <Base {locale} title={page.data.title} description={page.data.summary ?? ''} routeKey="members">
   <article class="container page">
     <header class="page-head">
-      <p class="eyebrow">{t(locale, 'nav.members')}</p>
       <h1>{page.data.title}</h1>
       {page.data.summary && <p class="lead">{page.data.summary}</p>}
     </header>

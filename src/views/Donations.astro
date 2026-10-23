@@ -25,7 +25,6 @@ const { Content } = await render(page);
 <Base {locale} title={page.data.title} description={page.data.summary ?? ''} routeKey="donations">
   <article class="container page">
     <header class="page-head">
-      <p class="eyebrow">{t(locale, 'nav.donations')}</p>
       <h1>{page.data.title}</h1>
       {page.data.summary && <p class="lead">{page.data.summary}</p>}
     </header>

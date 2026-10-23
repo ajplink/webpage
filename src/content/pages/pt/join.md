@@ -23,7 +23,7 @@ summary: "Uma quota por ano, uma palavra nas decisões e acesso a tudo o que a a
 
 ## Quota anual
 
-A quota é de **[valor] € por ano**, com valor reduzido para estudantes. *(PLACEHOLDER)*
+A quota é de **1 € por ano** — a mesma para todos.
 Cobre seguros, material consumível e o café das reuniões — o café é levado muito a sério.
 
 ## E se não quiser ser sócio?

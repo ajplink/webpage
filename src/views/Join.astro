@@ -28,7 +28,6 @@ const { Content } = await render(page);
 <Base {locale} title={page.data.title} description={page.data.summary ?? ''} routeKey="join">
   <article class="container page">
     <header class="page-head">
-      <p class="eyebrow">{t(locale, 'nav.join')}</p>
       <h1>{page.data.title}</h1>
       {page.data.summary && <p class="lead">{page.data.summary}</p>}
     </header>
@@ -42,8 +41,8 @@ const { Content } = await render(page);
         <div class="panel join-card" style="--panel-color: var(--palette-pink)">
           <Icon name="star" size={28} />
           <h2>{t(locale, 'join.fee')}</h2>
-          <p class="fee">[valor] € <span>/ ano</span></p>
-          <p class="fee-note">Estudantes: [valor] € · <span class="placeholder">PLACEHOLDER</span></p>
+          <p class="fee">1 € <span>/ ano</span></p>
+          <p class="fee-note">A mesma quota para todos.</p>
           <Squiggle />
           <div class="join-actions">
             <a class="button button--ghost" href={`mailto:${SITE.contactEmail}`}>{t(locale, 'join.emailLabel')}</a>
