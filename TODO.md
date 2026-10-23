@@ -6,16 +6,15 @@ stutter, team page, codebase, packages.)
 
 ## Brand & identity
 
-- [x] **Lightbulb logo + favicon** — `lampada.svg` (Ricardo's SVG) is the mark;
-      favicon mirrors it.
-- [x] **One-stroke handwritten "plink" wordmark** — `nome.svg` (Ricardo's SVG).
-- [x] **The wordmark writes itself in front of the user** — animated on the home
-      hero (reveal follows the writing route), `prefers-reduced-motion` shows
-      the end state.
-- [ ] **All graphics are icons/SVG** — no emoji, no third-party images. Theme
-      icons + flags done; dummy team portraits and page motifs pending.
-- [ ] **Keep the brand assets clean** — strip Inkscape metadata from the two
-      SVGs, originals preserved untouched at the repo root.
+- [x] **Lightbulb logo + favicon** — `lampada.svg` (Ricardo's SVG) is the mark,
+      svgo-optimised (29 KB), served from `/lampada.svg` + used as favicon;
+      originals kept untouched at the repo root.
+- [x] **One-stroke handwritten "plink" wordmark** — `nome.svg` (Ricardo's SVG),
+      ink + sparks recoloured through tokens (dark mode flips the ink).
+- [x] **The wordmark writes itself in front of the user** — pen-route mask reveal
+      on the home hero, `prefers-reduced-motion` shows the end state.
+- [x] **All graphics are icons/SVG** — theme icons, flags, dummy portraits and
+      brand marks are all local SVG.
 
 ## Theme & language
 
@@ -28,11 +27,13 @@ stutter, team page, codebase, packages.)
 
 ## Navbar / interaction bugs (explicit asks)
 
-- [ ] **Remove the "downglow" on navbar buttons** — whatever draws below the
-      nav items must go (accent bar under the active item / any shadow-glow).
-- [ ] **Fix the page stutter when clicking navbar buttons** — diagnose the
-      real cause (layout shift on load, dev-server latency, or transition)
-      with measurements, then fix it.
+- [x] **Remove the "downglow" on navbar buttons** — the accent bar under the
+      active nav item is gone (weight + colour carry the state now); the
+      language dropdown had a soft shadow, also removed.
+- [x] **Fix the page stutter when clicking navbar buttons** — cause found: the
+      theme toggle popped into the navbar at DOMContentLoaded on every page
+      load (layout jump). It now reveals via `html.js` set before first paint.
+      Dev-server latency measured: 15–20 ms, not the cause.
 - [x] **Remove the after-click effects on buttons** — hover lift + sticker
       shadow gone.
 
@@ -53,13 +54,15 @@ stutter, team page, codebase, packages.)
 
 ## Content
 
-- [ ] **Team page rework (still untouched — do it)**:
-  - [ ] **Full department names** spelled out (expansions PLACEHOLDER until
+- [x] **Team page rework**:
+  - [x] **Full department names** spelled out (expansions PLACEHOLDER until
         Ricardo confirms): Direção, DREE, DP, DL, DCI.
-  - [ ] **Headcounts**: Direção 4, DREE 5, DP 7, + DL/DCI per "etc.".
-  - [ ] **Big dummy profile pictures** — generated local SVG portraits, one per
-        member (no initials-only cards).
-  - [ ] **Carousel per department** — CSS-only scroll-snap, keyboard accessible.
+  - [x] **Headcounts**: Direção 4, DREE 5, DP 7, DL 6, DCI 5 (27 total;
+        DL/DCI are guesses — see questions).
+  - [x] **Big dummy profile pictures** — `scripts/avatars.mjs` generates a
+        distinct SVG portrait per member (seeded by name).
+  - [x] **Carousel per department** — CSS scroll-snap, focusable region,
+        arrow keys scroll, zero JS.
 - [ ] **More events** — several new placeholder events (upcoming and past).
 - [ ] **About page redesign** — currently reads like a bad wiki.
 
