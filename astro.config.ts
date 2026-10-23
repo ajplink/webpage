@@ -11,7 +11,7 @@ export default defineConfig({
   site: SITE.url,
   output: 'static',
   // Directory-style output: every URL ends with "/" (canonical URLs follow the same rule).
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   i18n: {
     defaultLocale: DEFAULT_LOCALE,
     locales: [...LOCALES],
