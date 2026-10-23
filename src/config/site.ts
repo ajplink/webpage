@@ -53,11 +53,11 @@ export const SITE = {
   /** Site name used in titles, headers and JSON-LD. */
   name: 'Associação Plink',
   /** Full legal designation. PLACEHOLDER. */
-  legalName: 'Associação Plink — Associação de Juventude', // PLACEHOLDER
+  legalName: 'Associação Plink', // PLACEHOLDER
   /** Portuguese legal/fiscal number (NIPC). PLACEHOLDER. */
   legalId: 'NIPC 000 000 000', // PLACEHOLDER
   /** Registered address, shown on the privacy/legal page. PLACEHOLDER. */
-  address: 'Rua de Exemplo 00, 0000-000 Lisboa, Portugal', // PLACEHOLDER
+  address: 'Aveiro, Portugal', // PLACEHOLDER
 
   tagline: {
     pt: 'Projetos STEM pedagógicos, feitos por e para jovens.',
@@ -78,8 +78,8 @@ export const SITE = {
 
   /** Social profiles (JSON-LD `sameAs`). PLACEHOLDER URLs. */
   social: [
-    { label: 'Instagram', url: 'https://example.org/instagram' },
-    { label: 'LinkedIn', url: 'https://example.org/linkedin' },
+    { label: 'Instagram', url: 'https://www.instagram.com/associacao.plink/' },
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/associa%C3%A7%C3%A3o-plink-b56260433/' },
   ],
 
   /* --------------------------------------------------------- navigation */
