@@ -50,7 +50,7 @@ const height = Math.round((width / 3083) * 1503);
           C3325,2135 3290,2175 3265,2195 C3345,2245 3435,2325 3505,2385 C3540,2415 3585,2405 3620,2360"
         fill="none"
         stroke="#fff"
-        stroke-width="1000"
+        stroke-width="700"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
@@ -153,7 +153,7 @@ const height = Math.round((width / 3083) * 1503);
   .wordmark-pen {
     stroke-dasharray: 1000;
     stroke-dashoffset: 0;
-    animation: write calc(var(--draw-duration) * 1.25) var(--ease) both;
+    animation: write var(--draw-duration) var(--ease) both;
   }
 
   @keyframes write {
@@ -169,8 +169,8 @@ const height = Math.round((width / 3083) * 1503);
   }
 
   .wordmark--draw .wordmark-sparks {
-    animation: spark-blink 700ms var(--ease) both;
-    animation-delay: calc(var(--draw-duration) * 1.2);
+    animation: spark-blink 520ms var(--ease) both;
+    animation-delay: calc(var(--draw-duration) * 0.88);
   }
 
   /* Reduced motion: no writing, no blink — straight to the finished word. */

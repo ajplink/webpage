@@ -5,7 +5,8 @@ that runs pedagogical STEM projects for young people and supports educators.
 Built with **Astro** (static output), **TypeScript strict**, content collections,
 and plain CSS. **Zero client-side JavaScript.**
 
-- Languages: **pt-PT** (default) · **en-US** · **en-GB** — `/pt/`, `/en-us/`, `/en-gb/`
+- Languages: **pt-PT** (default) · **en-GB** — `/pt/`, `/en-gb/` (en-US was
+  retired in Oct 2026; its content lives under `archive/`)
   (the Portuguese home is additionally served at `/`).
 - Content is Markdown/MDX files: adding content never requires touching code
   (see [CONTRIBUTING.md](CONTRIBUTING.md), in Portuguese).
@@ -95,11 +96,9 @@ Measured on `npm run preview` + Lighthouse (mobile emulation, simulated throttli
 | `/pt/projetos/` | 100 | 100 | 100 | 100 |
 | `/pt/noticias/` | 100 | 100 | 100 | 100 |
 | `/pt/noticias/apresentacao-plink/` | 100 | 100 | 100 | 100 |
-| `/en-us/` | 100 | 100 | 100 | 100 |
 
-Page weight (home, transfer sizes): HTML 4.2 KB + CSS 3.4 KB (gzip) + Inter
-Variable 47 KB + Fraunces Variable 36 KB (woff2, Latin subsets) = **≈ 90 KB**,
-inside the 150 KB budget. Images are excluded from the budget and are emitted
+Page weight (home, transfer sizes): HTML + CSS (gzip) + Bricolage Grotesque
+Variable (woff2, Latin subsets) stay well inside the 150 KB budget. Images are excluded from the budget and are emitted
 by Astro as AVIF/WebP with explicit dimensions.
 
 Reproduce (Lighthouse is intentionally not a project dependency):
@@ -131,9 +130,9 @@ placeholder `https://plink.example`).
 
 ## Decisions worth reviewing
 
-1. **"US/BR EN" was interpreted as US + British English** (`en-us`, `en-gb`),
-   with `en-gb → en-us → pt` fallback. Adding `pt-BR` later is one line in
-   `LOCALES` + one folder per collection.
+1. **Two locales: `pt` + `en-gb`** (`en-gb → pt` fallback). en-US was retired
+   at Ricardo's request — the content was archived, not deleted. Adding a
+   locale later is one line in `LOCALES` + one folder per collection.
 2. **Event status is derived from dates** (`upcoming`/`past`), never typed;
    `cancelled` is the only hand-set status (frontmatter `cancelled: true`).
 3. **`/pt/…` is canonical; `/` mirrors the home only** (other pt pages are not

@@ -12,7 +12,7 @@ npm run contrast     # WCAG AA for all token pairs, light + dark
 ## Content changes
 
 - New/edited files must pass schema validation (the build fails otherwise).
-- Check both locales of a page: `/pt/…` and `/en-us/…` (fallback is expected
+- Check both locales of a page: `/pt/…` and `/en-gb/…` (fallback is expected
   where no translation exists — that is not a bug).
 - Drafts must NOT appear anywhere (list pages, RSS `/<locale>/rss.xml`, sitemap).
 

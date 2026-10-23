@@ -1,31 +1,45 @@
 # TODO — Plink site rework
 
-## Ricardo's batches (23 Oct) — work in this order
+## Ricardo's batches (23 Oct) — status
 
-- [x] **Navbar wordmark broken** — cause: the ink/spark paths were swapped
-      (word drew in invisible yellow). Fixed.
-- [x] **Team page: remove the useless headers, circles and "these people make
-      this happen" talk** — names are self-explanatory.
-- [x] **Home: the self-writing wordmark not showing while it writes** — same
-      swapped-path bug, fixed; reveal verified progressive.
-- [x] **Footer**: remove the footerText line, keep it small, social media as
-      icons (no YouTube), links horizontal.
-- [x] **Change the font** — open-source preferred.
-- [x] **Use more of the width of the page**.
-- [x] **404 page speaks only one language** — make it trilingual-bilingual.
-- [x] **HTML blobs in built pages** — generated output (Astro compression):
-      left alone as instructed.
-- [x] **Repo organisation**: logo SVGs out of the root into assets/, folder
-      for team photos.
-- [x] **Remove the lamp logo from the navbar** — keep only the written one.
-- [x] **Wordmark words black or white** (pure, per scheme).
-- [x] **Revolver motif** — the square lamp logo has 4 circles; scrolling down
-      should step through them like a revolver (scroll-driven animation).
-- [x] **Animate the theme and language buttons** (micro-interactions).
-- [x] **Remove US English — two languages are enough** (pt + en-gb); retire
-      en-us content to an archive folder (nothing is deleted).
-- [ ] **"The site still feels very boring"** — overall energy pass (revolver
-      motif, animations, motion on scroll where it earns its place).
+- [x] **Wordmark writes properly** — root cause of the cut view: `<mask>`
+      default region clips the artwork in Chrome AND Firefox; explicit region
+      fixed it. Verified: writes 0→100% by 1.1 s, ticks blink in at 1.4 s.
+- [x] **Lights on faster, tighter writing** (final tune: pen stroke 700,
+      sparks at 0.88× of the write).
+- [x] **Favicon = the three yellow ticks** of the wordmark.
+- [x] **Revolver idea — removed** (misunderstood; the component is parked in
+      `archive/revolver-component.astro`, nothing deleted).
+- [x] **Team = Órgãos Sociais** (Direção, Conselho Fiscal, Mesa da Assembleia)
+      + departments with the real names (DREE = Relações Educativas e
+      Empresariais, DCI = Comunicação e Imagem, DL/DP confirmed).
+- [x] **Carousels auto-scroll** (CSS marquee, pauses on hover/focus, manual
+      scroll under reduced motion).
+- [x] **Team page stripped** to names and people.
+- [x] **Footer**: small, horizontal, icon socials (no YouTube), no tagline.
+- [x] **Font**: Bricolage Grotesque Variable (OFL, single family).
+- [x] **Wider page** (container 84rem).
+- [x] **404 in both languages**.
+- [x] **Two locales only** — en-US retired, content archived under `archive/`.
+- [x] **Repo organised** — `src/assets/logo/source/` (Ricardo's SVGs),
+      `src/assets/team-photos/` (portraits + future real photos).
+- [x] **HTML blobs** — generated output, left alone as instructed.
+- [x] **Docs synced** (README, CONTRIBUTING, .agents/*).
+
+### Decisions taken while Ricardo was away
+
+- Conselho Fiscal = 3 people, Mesa da Assembleia = 3 (counts not given;
+  change in `src/content/team/pt/`).
+- Department name expansions as stated by Ricardo; descriptions updated to
+  match (DREE now talks about schools + business relations).
+- Sparks "blink in" = quick three-step blink, once, at the end of the write.
+
+### Still open (need Ricardo)
+
+- DL (6) and DCI (5) headcounts — my guesses.
+- Área de Sócio data source in v1 (mock + email path today).
+- Real IBAN / MB WAY (placeholders today).
+- Real team photos → drop into `src/assets/team-photos/` and set `photo:`.
 
 ---
 

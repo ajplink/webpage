@@ -17,7 +17,7 @@ src/content/<coleção>/<idioma>/<slug>.md
 | `projects` | `src/content/projects/` | Projetos dos membros            |
 | `pages`  | `src/content/pages/`    | Textos das páginas Sobre/Juntar/Privacidade |
 
-Idiomas disponíveis: `pt` (obrigatório), `en-us`, `en-gb`.
+Idiomas disponíveis: `pt` (obrigatório), `en-gb`.
 O **`<slug>` tem de ser igual em todos os idiomas** (é o que liga as versões).
 
 Depois de guardar o ficheiro, o site volta a ser gerado com `npm run build`.
@@ -138,7 +138,7 @@ pasta do idioma (mantendo o `<slug>`) e traduza **apenas os campos de texto**:
 | `date`, `endDate`, `tags`, `status`, `leads`, `order`, `active`, `photo`, `cover`, `links`, `cancelled`, `hasSimulation`, `registrationUrl`, `draft` | não | vêm sempre do ficheiro `pt` |
 | corpo do documento   | sim       | cada idioma tem o seu corpo                          |
 
-Exemplo — `src/content/news/en-us/robotica-de-verao.md`:
+Exemplo — `src/content/news/en-gb/robotica-de-verao.md`:
 
 ```markdown
 ---
@@ -153,7 +153,7 @@ Body in English…
 ```
 
 Se não existir tradução, **não faz mal**: o site usa o texto português e a página
-continua a existir em `/en-us/…` e `/en-gb/…`. Pode traduzir pouco a pouco.
+continua a existir em `/en-gb/…`. Pode traduzir pouco a pouco.
 
 ## Imagens
 

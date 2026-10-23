@@ -39,8 +39,9 @@ so it flips to paper-white in the dark scheme. Shape language lives in
 - Yellow is decorative-only (1.85:1 on the light background) — never use it for
   small text.
 - Cards use **borders, not shadows** (`--shadow` exists for rare, tiny lift).
-- Max two type families (currently Fraunces display + Inter body, both
-  self-hosted Latin subsets via `@fontsource-variable`, `font-display: swap`).
+- One type family: **Bricolage Grotesque Variable** (OFL) for display and
+  body, self-hosted Latin subset via `@fontsource-variable`, `font-display:
+  swap` (plus a system monospace stack for small data labels).
 - Shared primitives live in `global.css` (`.container`, `.prose`, `.badge`,
   `.grid`, `.button`, `.panel`, `.band`, `.eyebrow`, `.lead`, `.skip-link`);
   component-specific rules stay scoped inside their `.astro` file.
