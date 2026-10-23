@@ -26,7 +26,7 @@ const link = z.object({
 });
 
 const team = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/team' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
   schema: ({ image }) =>
     z.object({
       /** Full name (not translated). */
@@ -49,7 +49,7 @@ const team = defineCollection({
 });
 
 const events = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/events' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -72,7 +72,7 @@ const events = defineCollection({
 });
 
 const news = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/news' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/news' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -87,7 +87,7 @@ const news = defineCollection({
 });
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -105,7 +105,7 @@ const projects = defineCollection({
 });
 
 const pages = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pages' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: z.object({
     title: z.string(),
     /** Optional lead paragraph shown under the page title. */

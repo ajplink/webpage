@@ -12,6 +12,7 @@ import { t } from '../i18n';
 import LanguageSwitch from './LanguageSwitch.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import Logo from './Logo.astro';
+import Bulb from './Bulb.astro';
 
 interface Props {
   locale: Locale;
@@ -41,8 +42,8 @@ function isSection(key: RouteKey): boolean {
 <header class="header">
   <div class="container header-bar">
     <a class="brand" href={href(locale, 'home')} aria-label={SITE.name}>
-      <Logo width={132} />
-      <span class="brand-kind">associação</span>
+      <Bulb size={26} />
+      <Logo width={116} />
     </a>
 
     <nav class="nav-desktop" aria-label={t(locale, 'a11y.mainNav')}>
@@ -121,13 +122,6 @@ function isSection(key: RouteKey): boolean {
     align-items: center;
     color: var(--color-text);
     text-decoration: none;
-  }
-
-  .brand-kind {
-    padding-left: var(--space-2xs);
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
-    border-left: var(--border-width) solid var(--color-border);
   }
 
   .nav-desktop ul {

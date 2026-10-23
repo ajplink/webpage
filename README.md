@@ -26,7 +26,6 @@ npm run contrast   # WCAG contrast check of the design tokens
 | Package | Why |
 | --- | --- |
 | `astro` | Static site framework (fixed by the brief). Static output, no server. |
-| `@astrojs/mdx` | MDX bodies for news/projects/events content. |
 | `@astrojs/sitemap` | `sitemap-index.xml` with hreflang alternates per locale. |
 | `@astrojs/rss` | Per-locale news feed at `/<locale>/rss.xml`. |
 | `@fontsource-variable/inter`, `@fontsource-variable/fraunces` | Self-hosted variable fonts (Latin subset fetched at runtime via `unicode-range`), OFL-licensed, no CDN. |

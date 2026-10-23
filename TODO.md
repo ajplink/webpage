@@ -4,27 +4,30 @@ Dump captured from Ricardo. Check items off as they land; every item is a promis
 
 ## Brand & identity
 
-- [ ] **Lightbulb logo** — the mark is a lightbulb (replaces the current "ripple" mark
-      everywhere: header, footer, favicon, OG image).
-- [ ] **One-stroke handwritten "plink" wordmark** — logo is the word "plink" written
-      in a single continuous stroke, as an SVG path.
-- [ ] **The wordmark writes itself in front of the user** — SVG stroke-draw animation
-      on first paint (hero + header), `prefers-reduced-motion` respected (static
-      end-state for those users).
+- [x] **Lightbulb logo** — favicon is the lightbulb (`public/favicon.svg`, mirrors
+      `src/components/Bulb.astro`); ripple mark retired.
+- [ ] **One-stroke handwritten "plink" wordmark** — working placeholder letterforms
+      in `src/components/Logo.astro` (one path + three yellow sparks as the i-dot);
+      **Ricardo sends the proper SVG — swap the path and done.**
+- [x] **The wordmark writes itself in front of the user** — stroke-draw animation on
+      the home hero, sparks pop at the end, `prefers-reduced-motion` shows the
+      end state.
 - [ ] **All graphics are icons/SVG** — every visual asset (toggle icons, flags, UI
       icons, decorative motifs, dummy portraits) is inline or local SVG. No emoji,
-      no third-party images.
+      no third-party images. (theme icons + flags done)
 
 ## Theme & language
 
-- [ ] **Light + dark mode with a manual toggle** — sun/moon (or similar) SVG icons in
-      the header; choice persists across pages; falls back to `prefers-color-scheme`
-      with no JS. Tiny external `theme.js` (CSP-safe: `script-src 'self'`) as the
-      one documented progressive enhancement — record the decision in AGENTS.md.
-- [ ] **Dark scheme parity** — dark tokens extended to cover the new decorative
-      colours; `npm run contrast` green in both schemes.
-- [ ] **Language switcher becomes a dropdown with flags** — `details`-based dropdown
+- [x] **Light + dark mode with a manual toggle** — sun/moon SVG pill in the header;
+      choice persists across pages; falls back to `prefers-color-scheme` with no
+      JS. Tiny external `theme.js` (CSP-safe: `script-src 'self'`) as the one
+      documented progressive enhancement.
+- [x] **Dark scheme parity** — dark tokens extended to cover the palette colours;
+      `npm run contrast` green in both schemes.
+- [x] **Language switcher becomes a dropdown with flags** — `details`-based dropdown
       (still zero JS), flag SVG per locale (PT / US / UK), current language shown.
+- [x] **No click/hover gimmicks on buttons** — the hover lift + sticker shadow are
+      gone; buttons just change colour.
 
 ## Sócios (membership)
 

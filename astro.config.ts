@@ -2,7 +2,6 @@
 // Non-visual site parameters live in src/config/site.ts (single source of truth);
 // visual parameters live in src/styles/tokens.css.
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { SITE, LOCALES, DEFAULT_LOCALE, HTML_LANG } from './src/config/site';
 
@@ -22,7 +21,6 @@ export default defineConfig({
     },
   },
   integrations: [
-    mdx(),
     sitemap({
       // hreflang alternates for the three locales, keyed by URL path prefix.
       i18n: {
