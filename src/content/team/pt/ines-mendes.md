@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+# PESSOA REAL — foto real (InêsMendes.jpeg).
 name: "Inês Mendes"
-role: "Secretária"
+role: "Colaboradora"
+department: DCI
 photo: ../../../assets/team-photos/InêsMendes.jpeg
-department: Direção
-order: 4
-active: false
-bio: "Actas, prazos e papelada sem drama. É a razão de sabermos o que foi decidido na última reunião."
+order: 3
+active: true
+bio: "Colabora no Departamento de Comunicação e Imagem."
 ---
