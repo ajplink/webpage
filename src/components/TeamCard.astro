@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { member, locale = 'pt', clone } = Astro.props;
-const { name, role, bio, photo, links } = member.data;
+const { name, role, photo, links } = member.data;
 
 /** Initials fallback when no portrait exists (never invent photos). */
 const initials = name
@@ -50,7 +50,6 @@ const initials = name
   }
   <h3 class="name">{name}</h3>
   <p class="role">{role}</p>
-  <p class="bio">{bio}</p>
   {
     links && links.length > 0 && (
       <ul class="links">
@@ -93,10 +92,6 @@ const initials = name
     color: var(--color-accent);
   }
 
-  .bio {
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
-  }
 
   .links {
     display: flex;

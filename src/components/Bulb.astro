@@ -1,16 +1,16 @@
 ---
 /**
- * Bulb — the association's mascot: the lightbulb from Ricardo's mascote.png,
- * redrawn as clean vector art (hand-authored paths, not a trace). Also the
- * theme switch: the bulb turns the light on (light mode) and off (dark mode).
+ * Bulb — the association's mascot: Ricardo's lightbulb, redrawn as clean
+ * vector art (hand-authored shapes, not a trace). The theme switch too:
+ * clicking it turns the light ON (light mode) and OFF (dark mode).
  *
- * Colours: the mascot's yellow (#fff570) and ink; the favicon mirrors this
- * file (favicon exception — kept in sync by hand).
+ * Colours: the mascot's yellow (#fff570) and ink. The favicon mirrors this
+ * file (favicon exception — keep in sync by hand).
  */
 interface Props {
   size?: number;
   class?: string;
-  /** Standalone decorative mark (footer etc.) — not interactive. */
+  /** Standalone decorative mark (footer, about header) — always lit. */
   plain?: boolean;
 }
 
@@ -19,44 +19,58 @@ const { size = 40, class: className, plain = false } = Astro.props;
 
 <svg
   class:list={['bulb', plain && 'bulb--plain', className]}
-  viewBox="0 0 120 232"
+  viewBox="0 0 140 244"
   width={size}
-  height={Math.round((size / 120) * 232)}
+  height={Math.round((size / 140) * 244)}
   aria-hidden="true"
   focusable="false"
 >
-  <!-- the glow, only when the light is on -->
+  <!-- the light: a soft halo and short rays, only when it is on -->
   <g class="bulb-glow">
-    <path d="M60 2v12M18 18l8 9M102 18l-8 9M4 74h12M104 74h12" stroke="#fed10d"
-      stroke-width="7" stroke-linecap="round"></path>
+    <circle cx="70" cy="86" r="62" fill="var(--palette-yellow)" opacity="0.16"></circle>
+    <g stroke="var(--palette-yellow)" stroke-width="7" stroke-linecap="round">
+      <path d="M70 8v14"></path>
+      <path d="M22 24l10 11"></path>
+      <path d="M118 24l-10 11"></path>
+      <path d="M6 82h13"></path>
+      <path d="M121 82h13"></path>
+    </g>
   </g>
 
   <!-- the glass -->
   <path
     class="bulb-glass"
-    d="M60 22c-27 0-49 21-49 47 0 18 9 30 18 40 6 7 9 12 10 19h42c1-7 4-12 10-19 9-10 18-22 18-40 0-26-22-47-49-47z"
+    d="M70 30c-26 0-46 20-46 45 0 17 8 28 17 37 6 6 9 11 10 17h38c1-6 4-11 10-17 9-9 17-20 17-37 0-25-20-45-46-45z"
     fill="#fff570"
-    stroke="#111111"
+    stroke="#141414"
     stroke-width="8"
     stroke-linejoin="round"></path>
 
-  <!-- the filament -->
+  <!-- the shine -->
+  <path d="M42 58c3-11 12-19 23-21-9 6-14 13-16 23-2 8-7 9-7-2z" fill="#fffbc3"></path>
+
+  <!-- the filament: a small heart, because of course -->
   <path
-    d="M43 74c4-6 8 3 12-2s8 3 12-2 8 3 12-2"
+    d="M70 92c-8-7-16-11-16-19 0-5 4-8 8-8 3 0 6 2 8 5 2-3 5-5 8-5 4 0 8 3 8 8 0 8-8 12-16 19z"
     fill="none"
-    stroke="#111111"
+    stroke="#141414"
+    stroke-width="5.5"
+    stroke-linejoin="round"></path>
+
+  <!-- the neck -->
+  <rect x="44" y="124" width="52" height="15" rx="7.5" fill="#141414"></rect>
+
+  <!-- the screw base -->
+  <path d="M50 139h40v30c0 8-6 14-14 14h-12c-8 0-14-6-14-14z" fill="#141414"></path>
+  <path
+    d="M55 150c4 2 8 2 12 0s8-2 12 0M55 162c4 2 8 2 12 0s8-2 12 0"
+    fill="none"
+    stroke="#fff570"
     stroke-width="5"
     stroke-linecap="round"></path>
 
-  <!-- the collar -->
-  <rect x="32" y="126" width="56" height="16" rx="8" fill="#111111"></rect>
-
-  <!-- the screw base -->
-  <path d="M38 142h44v34c0 8-6 14-14 14H52c-8 0-14-6-14-14z" fill="#111111"></path>
-  <path d="M42 152h36M42 164h30" stroke="#fff570" stroke-width="5" stroke-linecap="round"></path>
-
   <!-- the tip -->
-  <path d="M50 190h20c4 0 7 3 7 7v6c0 5-4 9-9 9h-16c-5 0-9-4-9-9v-6c0-4 3-7 7-7z" fill="#111111"
+  <path d="M58 183h24c5 0 9 4 9 9v4c0 6-5 10-11 10h-20c-6 0-11-4-11-10v-4c0-5 4-9 9-9z" fill="#141414"
   ></path>
 </svg>
 
@@ -66,32 +80,28 @@ const { size = 40, class: className, plain = false } = Astro.props;
   }
 
   .bulb-glow {
-    opacity: 0;
-    transition: opacity var(--duration-slow) var(--ease);
-  }
-
-  /* light on (light mode): a warm, glowing bulb */
-  :global(html:not([data-theme='dark'])) .bulb-glow,
-  :global(html[data-theme='light']) .bulb-glow {
     opacity: 1;
+    transition: opacity var(--duration-slow) var(--ease);
+    transform-box: fill-box;
+    transform-origin: center;
   }
 
+  /* light OFF (dark mode): a resting bulb */
   @media (prefers-color-scheme: dark) {
     :global(html:not([data-theme='light'])) .bulb-glow {
       opacity: 0;
     }
 
     :global(html:not([data-theme='light'])) .bulb-glass {
-      fill: #4a4536;
+      fill: #55503f;
     }
   }
 
-  /* light off (dark mode): a resting bulb */
-  :global(html[data-theme='dark']) .bulb-glass {
-    fill: #4a4536;
+  :global(html[data-theme='dark']) .bulb-glow {
+    opacity: 0;
   }
 
-  .bulb--plain .bulb-glow {
-    opacity: 1;
+  :global(html[data-theme='dark']) .bulb-glass {
+    fill: #55503f;
   }
 </style>

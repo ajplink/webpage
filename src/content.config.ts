@@ -37,8 +37,8 @@ const team = defineCollection({
       department: z.enum(['Direção', 'Conselho Fiscal', 'Mesa da Assembleia', 'DREE', 'DP', 'DL', 'DCI']),
       /** Optional photo (src/assets/...). Falls back to initials when absent. */
       photo: image().optional(),
-      /** Short bio shown on the team card (one or two sentences). */
-      bio: z.string(),
+      /** Short bio (kept as data; the cards show name + role only). */
+      bio: z.string().optional(),
       /** Optional personal/professional links. */
       links: z.array(link).optional(),
       /** Sort order within a department (ascending). Defaults to file order. */
