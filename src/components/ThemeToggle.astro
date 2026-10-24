@@ -1,11 +1,16 @@
 ---
 /**
- * ThemeToggle — a light switch for the site: flip it up for light mode,
- * down for dark. Hidden until /theme.js reveals it: without JavaScript the
- * OS preference decides the scheme (see AGENTS.md).
+ * ThemeToggle — "acender / apagar": the association's bulb IS the switch.
+ * Lit in light mode (yellow glass, soft glow), off in dark mode. Hidden until
+ * /theme.js reveals it: without JavaScript the OS preference decides the
+ * scheme (see AGENTS.md).
+ *
+ * Alternatives considered (see TODO.md): a sun/moon slider pill, a sun↔moon
+ * morph icon, a physical rocker switch.
  */
 import { t } from '../i18n';
 import type { Locale } from '../config/site';
+import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
@@ -23,62 +28,51 @@ const { locale } = Astro.props;
   aria-label={t(locale, 'theme.toggle')}
   aria-pressed="false"
 >
-  <svg class="switch" viewBox="0 0 64 92" width="30" height="43" aria-hidden="true" focusable="false">
-    <!-- the plate -->
-    <rect x="6" y="4" width="52" height="84" rx="14" fill="var(--color-surface)"
-      stroke="var(--color-text)" stroke-width="5"></rect>
-    <!-- the rocker -->
-    <rect x="17" y="16" width="30" height="60" rx="13" fill="var(--color-tint)"
-      stroke="var(--color-text)" stroke-width="4"></rect>
-    <!-- the knob: up = light on, down = light off -->
-    <rect class="knob" x="21" y="21" width="22" height="24" rx="10" fill="#fff570"
-      stroke="var(--color-text)" stroke-width="3.5"></rect>
-    <!-- the little marks -->
-    <path d="M32 70v5" stroke="var(--color-text)" stroke-width="3.5" stroke-linecap="round"></path>
-    <circle cx="32" cy="25" r="0"></circle>
-  </svg>
+  <Icon name="bulb" size={28} />
 </button>
 
 <style>
   .theme-toggle {
     display: none;
-    padding: var(--space-3xs);
+    padding: var(--space-3xs) var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--color-text);
     cursor: pointer;
-    background-color: transparent;
-    border: var(--border-width) solid transparent;
-    border-radius: var(--radius-s);
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    transition: border-color var(--duration) var(--ease);
   }
 
   :global(html.js) .theme-toggle {
     display: inline-flex;
+    /* lights ON (light mode): a lit bulb with a soft glow */
+    --icon-fill: var(--palette-yellow);
+    --bulb-glow: drop-shadow(0 0 0.3rem color-mix(in srgb, var(--palette-yellow) 55%, transparent));
   }
 
   .theme-toggle:hover {
-    border-color: var(--color-border);
+    border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
   }
 
-  .knob {
-    transition: transform var(--duration-slow) var(--ease), fill var(--duration-slow) var(--ease);
+  .theme-toggle :global(.icon) {
+    width: 1.8em;
+    height: 1.8em;
+    filter: var(--bulb-glow, none);
   }
 
-  /* light mode: the switch is up and the knob glows */
-  :global(html[data-theme='light']) .knob,
-  :global(html:not([data-theme='dark'])) .knob {
-    transform: translateY(0);
-    fill: #fff570;
-  }
-
-  /* dark mode: the switch is down and the knob rests */
-  :global(html[data-theme='dark']) .knob,
-  :global(html[data-theme='dark']) .switch .knob {
-    transform: translateY(26px);
-    fill: #55503f;
-  }
-
+  /* lights OFF (dark mode): a resting bulb, no glow */
   @media (prefers-color-scheme: dark) {
-    :global(html:not([data-theme='light'])) .knob {
-      transform: translateY(26px);
-      fill: #55503f;
+    :global(html:not([data-theme='light'])) .theme-toggle {
+      --icon-fill: none;
+      --bulb-glow: none;
+      color: var(--color-text-muted);
     }
+  }
+
+  :global(html[data-theme='dark']) .theme-toggle {
+    --icon-fill: none;
+    --bulb-glow: none;
+    color: var(--color-text-muted);
   }
 </style>

@@ -43,6 +43,37 @@
 
 ---
 
+## Ricardo's batch (24 Oct)
+
+- [ ] **Favicon = the three strokes** — the wordmark's three yellow strokes
+      again (as in commit `8670031`); the lightbulb favicon I drew is gone.
+- [ ] **Newton's cradle: icons inside the balls** — the caption legend is
+      replaced by each value's icon drawn on its own ball. Bigger: it takes
+      the width left beside the prose. Seamless: no card chrome, the canvas
+      sits straight on the page background.
+- [ ] **Light/dark switch — proposals for Ricardo**:
+      1. **A lâmpada** (chosen) — the mascot bulb, lit (yellow) in light mode,
+         off in dark: “turning the lights on/off”. Brand-native, one glyph.
+      2. **Sol e lua num slider** — pill with a sun at one end, a moon at the
+         other, knob slides between them. Clearest of the conventional ones.
+      3. **Sol↔lua morph** — one icon button, the sun folds into a crescent.
+      4. **Interruptor de luz** (rocker) — physical wall switch, playful.
+- [ ] **Language selector — proposals for Ricardo**:
+      1. **Segmented PT | EN** (chosen) — both languages visible at once,
+         active segment filled; one click, no menu, same control in mobile nav.
+      2. **Dropdown with full names** — “Português / English” rows, bigger
+         flags, tick on the current one.
+      3. **Globe + code** — globe glyph + “PT” pill, dropdown behind it.
+- [ ] **One consistent icon system** — the whole set redrawn on one grid
+      (24×24, 2px stroke, round caps/joins), shapes owned by
+      `src/lib/icons.ts` (single source of truth for `Icon.astro` *and* the
+      cradle's in-ball glyphs). Home cards get a mark chip per kind of
+      content (events = ticket, news = newspaper, projects = flask), section
+      heads carry the same chip, and the header menu, chevron and footer
+      socials stop being hand-rolled one-off SVGs.
+
+---
+
 ## Original dump + first follow-ups
 
 ## Brand & identity

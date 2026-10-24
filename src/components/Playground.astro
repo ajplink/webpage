@@ -1,11 +1,14 @@
 ---
 /**
- * Playground — the Newton's cradle that sits next to the "what we do" text:
- * five pendulums carrying the association's values, with real impact
- * physics (drag a ball and let go). Vanilla canvas (/about-play.js).
+ * Playground — the Newton's cradle next to the "what we do" text: five
+ * pendulums carrying the association's values, each ball wearing its value's
+ * glyph (the same shapes as the value cards below), with real impact physics
+ * (drag a ball and let go). Vanilla canvas (/about-play.js), no card chrome:
+ * the simulation sits straight on the page.
  */
 import type { Locale } from '../config/site';
 import { t } from '../i18n';
+import { ICON_PATHS, type IconName } from '../lib/icons';
 
 interface Props {
   locale: Locale;
@@ -13,21 +16,21 @@ interface Props {
 
 const { locale } = Astro.props;
 
-const values = [
-  t(locale, 'play.valueDoing'),
-  t(locale, 'play.valueAccess'),
-  t(locale, 'play.valueOpen'),
-  t(locale, 'play.valueCommunity'),
-  t(locale, 'play.valueCuriosity'),
-].join('|');
+const values: { key: string; icon: IconName }[] = [
+  { key: 'play.valueDoing', icon: 'rocket' },
+  { key: 'play.valueAccess', icon: 'users' },
+  { key: 'play.valueOpen', icon: 'book' },
+  { key: 'play.valueCommunity', icon: 'heart' },
+  { key: 'play.valueCuriosity', icon: 'spark' },
+];
+
+const labels = values.map((v) => t(locale, v.key as 'play.valueDoing'));
+const glyphs = values.map((v) => ICON_PATHS[v.icon]).join('|');
+const described = `${t(locale, 'play.cradle')} — ${labels.join(' · ')}. ${t(locale, 'play.cradleHint')}`;
 ---
 
 <figure class="cradle">
-  <canvas data-cradle data-labels={values} height="380" role="img" aria-label={t(locale, 'play.cradle')}></canvas>
-  <figcaption>
-    <strong>{t(locale, 'play.cradle')}</strong>
-    <span>{t(locale, 'play.cradleHint')}</span>
-  </figcaption>
+  <canvas data-cradle data-icons={glyphs} role="img" aria-label={described}></canvas>
 </figure>
 
 <script is:inline src="/about-play.js"></script>
@@ -35,33 +38,21 @@ const values = [
 <style>
   .cradle {
     display: grid;
-    gap: var(--space-2xs);
     position: sticky;
-    top: var(--space-s);
+    top: var(--space-m);
+    margin: 0;
   }
 
   canvas {
     width: 100%;
-    height: 23rem;
+    height: auto;
+    min-height: 16rem;
+    aspect-ratio: 2.2 / 1;
     touch-action: none;
-    background-color: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
     cursor: grab;
   }
 
   canvas:active {
     cursor: grabbing;
-  }
-
-  figcaption {
-    display: grid;
-    gap: var(--space-3xs);
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
-  }
-
-  figcaption strong {
-    color: var(--color-text);
   }
 </style>

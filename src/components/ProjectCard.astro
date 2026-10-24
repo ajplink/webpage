@@ -10,7 +10,6 @@ import type { LocalizedEntry } from '../lib/content';
 import { t } from '../i18n';
 import { href } from '../i18n/routes';
 import Card from './Card.astro';
-import Icon from './Icon.astro';
 import Tag from './Tag.astro';
 
 interface Props {
@@ -31,6 +30,7 @@ const statusBadgeClass =
 <Card
   as="li"
   accent="var(--palette-green)"
+  icon="flask"
   dataAttrs={{ 'data-status': status, 'data-tags': tags.join(' ') }}
 >
   <h3 class="title">
@@ -38,7 +38,6 @@ const statusBadgeClass =
   </h3>
   <p class="summary">{summary}</p>
   <p class="meta">
-    <Icon name="rocket" size={16} />
     <span class={statusBadgeClass}>{statusLabel}</span>
     {hasSimulation && <span class="badge">{t(locale, 'projects.simulationPending')}</span>}
   </p>

@@ -92,7 +92,8 @@ const { Content } = await render(page);
   .about-flow {
     display: grid;
     gap: var(--space-xl);
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    /* the prose keeps its measure; the cradle takes the rest of the width */
+    grid-template-columns: minmax(0, 38rem) minmax(0, 1fr);
     align-items: start;
   }
 
@@ -132,7 +133,7 @@ const { Content } = await render(page);
     color: var(--color-text-muted);
   }
 
-  @media (max-width: 56rem) {
+  @media (max-width: 64rem) {
     .about-flow {
       grid-template-columns: 1fr;
     }

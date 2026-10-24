@@ -180,7 +180,7 @@ const ui = {
     'en-gb': 'Fiscal Council',
   },
   'dept.Mesa da Assembleia': {
-    pt: 'Mesa da Assembleia',
+    pt: 'Mesa da Assembleia Geral',
     'en-gb': 'General Assembly Board',
   },
   'dept.DREE': {

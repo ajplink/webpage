@@ -5,6 +5,10 @@
  * without this file; it only adds the experiment. Vanilla canvas 2D, no
  * dependencies, one requestAnimationFrame loop, parked off-screen.
  *
+ * Each ball wears its value's glyph — the path data comes in on `data-icons`
+ * (sourced from src/lib/icons.ts by Playground.astro), so the cradle speaks
+ * the same icon language as the rest of the site.
+ *
  * Physics: n pendulums (gravity + small damping) with IMPACTS modelled
  * properly — on contact the HORIZONTAL velocity components of the equal
  * masses are swapped (elastic collision), and the balls are separated so
@@ -50,21 +54,38 @@
     constructor(canvas, colors) {
       this.canvas = canvas;
       this.colors = colors;
-      this.labels = (canvas.dataset.labels || '').split('|');
-      this.n = this.labels.length;
+      /* one glyph per ball (path data from src/lib/icons.ts) */
+      this.icons = (canvas.dataset.icons || '')
+        .split('|')
+        .map((d) => (d ? new Path2D(d) : null));
+      this.n = this.icons.length;
       this.theta = new Float64Array(this.n);
       this.omega = new Float64Array(this.n);
       this.drag = -1;
-      this.theta[0] = -1.05; // the classic opening move
+      this.opening = true; // the classic opening move, sized to the swing room
       for (const ev of ['pointerdown', 'pointermove', 'pointerup', 'pointercancel']) {
         canvas.addEventListener(ev, (e) => this[ev.replace('pointer', '').replace('cancel', 'up')](e));
       }
     }
 
+    /**
+     * Layout: the balls fill the width minus a swing budget on each side
+     * (2.4r — a ball may travel a bit more than its own diameter), and the
+     * strings are between 2.2r and 3.2r so the drawing fills the canvas
+     * without ever pushing the floor out of it.
+     */
     geom(w, h) {
-      const r = Math.min(w / (this.n * 2.7), h / 5.2);
-      const len = Math.min(h * 0.5, w * 0.46);
-      return { r, len, cx: w / 2, cy: h * 0.14 };
+      const r = Math.min(w / ((this.n - 1) * 2.04 + 6.8), h / 5.6);
+      const len = Math.min(3.2 * r, Math.max(2.2 * r, h * 0.88 - 1.85 * r));
+      const cy = Math.max(8, (h - (len + 1.85 * r)) / 2);
+      return { r, len, cx: w / 2, cy };
+    }
+
+    /** How far a ball may swing before it reaches the canvas edge (radians). */
+    swing(w, h) {
+      const { r, len } = this.geom(w, h);
+      const room = Math.max(0.1 * r, w / 2 - ((this.n - 1) / 2) * 2.04 * r - r - 2);
+      return Math.min(1.05, Math.asin(Math.min(1, room / len)));
     }
 
     anchor(i, w, h) {
@@ -105,14 +126,14 @@
     move(e) {
       if (this.drag < 0) return;
       const { w, h } = fit(this.canvas);
-      const { cx, cy } = this.geom(w, h);
+      const { cy } = this.geom(w, h);
+      const max = this.swing(w, h);
       const a = this.anchor(this.drag, w, h);
       const r = this.canvas.getBoundingClientRect();
       const p = { x: e.clientX - r.left, y: e.clientY - r.top };
-      const next = Math.max(-1.35, Math.min(1.35, Math.atan2(p.x - a.x, Math.max(1, p.y - cy))));
+      const next = Math.max(-max, Math.min(max, Math.atan2(p.x - a.x, Math.max(1, p.y - cy))));
       this.omega[this.drag] = (next - this.theta[this.drag]) * 14;
       this.theta[this.drag] = next;
-      void cx;
     }
 
     up() {
@@ -122,6 +143,11 @@
     step(dt) {
       const { w, h } = fit(this.canvas);
       const { r, len } = this.geom(w, h);
+      if (this.opening) {
+        // the classic opening move: the left ball starts pulled back
+        this.theta[0] = -0.85 * this.swing(w, h);
+        this.opening = false;
+      }
       const sub = 6;
       for (let s = 0; s < sub; s++) {
         const t = dt / sub;
@@ -159,8 +185,8 @@
       const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
       ctx.clearRect(0, 0, w, h);
       const barY = cy - 4;
-      const span = w * 0.34;
-      const floor = cy + len + r * 1.5;
+      const span = ((this.n - 1) / 2) * 2.04 * r + r * 1.15;
+      const floor = cy + len + r * 1.35;
 
       // the floor
       const shadow = ctx.createLinearGradient(0, floor - 10, 0, floor + 10);
@@ -219,21 +245,25 @@
         ctx.beginPath();
         ctx.ellipse(b.x - r * 0.32, b.y - r * 0.42, r * 0.2, r * 0.12, -0.7, 0, Math.PI * 2);
         ctx.fill();
-      }
 
-      // legend
-      const legendY = floor + 18;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      for (let i = 0; i < this.n; i++) {
-        const x = cx + (i - (this.n - 1) / 2) * (span * 2.05 / this.n);
-        ctx.fillStyle = `rgb(${this.colors[i % this.colors.length].join(',')})`;
-        ctx.beginPath();
-        ctx.arc(x, legendY + 6, 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = css('--color-text');
-        ctx.font = `500 ${Math.max(10, r * 0.4)}px system-ui, sans-serif`;
-        ctx.fillText(this.labels[i] || '', x, legendY + 16);
+        // the value's glyph, stamped on the ball (dark underlay keeps it
+        // readable on every palette colour)
+        const glyph = this.icons[i];
+        if (glyph) {
+          const s = (r * 1.15) / 24;
+          ctx.save();
+          ctx.translate(b.x - 12 * s, b.y - 12 * s);
+          ctx.scale(s, s);
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          ctx.lineWidth = 2.6;
+          ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+          ctx.stroke(glyph);
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = 'rgba(255,255,255,0.96)';
+          ctx.stroke(glyph);
+          ctx.restore();
+        }
       }
     }
   }

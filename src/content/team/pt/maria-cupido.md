@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real (MariaCupido.jpeg); do MAG. Departamento por confirmar.
+# PESSOA REAL — foto real (MariaCupido.jpeg); MAG = Mesa da Assembleia Geral.
 name: "Maria Cupido"
-role: "Colaboradora"
-department: DREE
+role: "1.ª Secretária"
+department: Mesa da Assembleia
 photo: ../../../assets/team-photos/MariaCupido.jpeg
 order: 2
 active: true
-bio: "Colabora no Departamento de Relações Educativas e Empresariais, vinda do MAG."
+bio: "Secretária da Mesa da Assembleia Geral."
 ---

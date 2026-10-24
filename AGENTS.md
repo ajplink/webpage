@@ -31,8 +31,9 @@ Detailed guides live in [`.agents/`](.agents/): [content model](.agents/content-
 - **No third-party requests at runtime** — no CDN fonts, no analytics, no
   embeds, no cookies.
 - **All visual values come from `src/styles/tokens.css`.** No hard-coded colours,
-  sizes or fonts in components (exception: `<meta name="theme-color">` and the
-  favicon mirror `--color-bg`/palette values — keep them in sync).
+  sizes or fonts in components (exception: `<meta name="theme-color">` mirrors
+  `--color-bg`, and the favicon mirrors the wordmark's `--logo-spark` yellow —
+  keep them in sync).
 - **All non-visual parameters come from `src/config/site.ts`** (identity,
   locales, nav, contact, feature flags).
 - **Content is data**: one file per item per locale folder; schema-validated by

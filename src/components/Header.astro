@@ -11,6 +11,7 @@ import { href, type RouteKey } from '../i18n/routes';
 import { t } from '../i18n';
 import LanguageSwitch from './LanguageSwitch.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 
 interface Props {
@@ -70,9 +71,7 @@ function isSection(key: RouteKey): boolean {
 
     <details class="nav-mobile">
       <summary>
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-          <path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="1.5"></path>
-        </svg>
+        <Icon name="menu" size={20} />
         {t(locale, 'a11y.menu')}
       </summary>
       <nav class="nav-mobile-panel" aria-label={t(locale, 'a11y.mobileNav')}>
@@ -180,8 +179,11 @@ function isSection(key: RouteKey): boolean {
 
   .nav-mobile-panel {
     position: absolute;
+    /* Chrome sizes abspos boxes inside <details> against its ::details-content
+       (as wide as the summary), so the sheet gets an explicit width instead of
+       left/right: it still spans the container, right-aligned to its edge. */
     right: 0;
-    left: 0;
+    width: calc(100vw - 2 * var(--space-s));
     z-index: 5;
     padding: var(--space-s);
     background-color: var(--color-bg);

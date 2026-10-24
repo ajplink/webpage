@@ -25,8 +25,8 @@ const values = [
   {
     values.map((v) => (
       <li class="value" style={`--value-color: ${v.color}`}>
-        <span class="value-mark">
-          <Icon name={v.icon} size={38} />
+        <span class="mark" style={`--mark-color: ${v.color}; --mark-size: 3.2rem`}>
+          <Icon name={v.icon} size={32} />
         </span>
         <h3>{t(locale, v.key)}</h3>
       </li>
@@ -52,18 +52,6 @@ const values = [
     background-color: color-mix(in srgb, var(--value-color) 12%, var(--color-surface));
     border: var(--border-width) solid color-mix(in srgb, var(--value-color) 35%, transparent);
     border-radius: var(--radius-l);
-  }
-
-  .value-mark {
-    display: grid;
-    place-items: center;
-    width: 3.2rem;
-    height: 3.2rem;
-    flex: none;
-    color: #fff;
-    background-color: var(--value-color);
-    border-radius: var(--radius-pill);
-    transform: rotate(-6deg);
   }
 
   .value h3 {

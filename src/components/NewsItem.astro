@@ -19,12 +19,12 @@ const { locale, item } = Astro.props;
 const { title, summary, date, tags } = item.data;
 ---
 
-<Card as="li" accent="var(--palette-orange)">
+<Card as="li" accent="var(--palette-orange)" icon="newspaper">
   <h3 class="title">
     <a href={href(locale, 'news', item.slug)}>{title}</a>
   </h3>
   <p class="summary">{summary}</p>
-  <p class="meta"><Icon name="megaphone" size={16} /> <time datetime={date.toISOString().slice(0, 10)}>{formatDate(locale, date)}</time></p>
+  <p class="meta"><Icon name="calendar" size={16} /> <time datetime={date.toISOString().slice(0, 10)}>{formatDate(locale, date)}</time></p>
   {
     tags.length > 0 && (
       <ul class="tags" aria-label={t(locale, 'news.tags')}>

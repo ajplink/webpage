@@ -2,8 +2,10 @@
 /**
  * Section — titled region with an optional "view all" link and a hand-drawn
  * squiggle underline in the section's accent colour (the palette system:
- * each kind of content owns a hue).
+ * each kind of content owns a hue and a glyph — the mark chip).
  */
+import type { IconName } from '../lib/icons';
+import Icon from './Icon.astro';
 import Squiggle from './Squiggle.astro';
 
 interface Props {
@@ -14,16 +16,21 @@ interface Props {
   linkLabel?: string;
   /** Palette accent for the squiggle (any valid CSS colour). */
   accent?: string;
+  /** Glyph for this kind of content (drawn in the mark chip). */
+  icon?: IconName;
 }
 
-const { title, id, href, linkLabel, accent } = Astro.props;
+const { title, id, href, linkLabel, accent, icon } = Astro.props;
 ---
 
 <section class="section" aria-labelledby={id} style={accent ? `--section-accent: ${accent}` : undefined}>
   <div class="container">
     <div class="section-head">
       <div class="section-title">
-        <h2 id={id}>{title}</h2>
+        <div class="section-heading">
+          {icon && <span class="mark"><Icon name={icon} size={24} /></span>}
+          <h2 id={id}>{title}</h2>
+        </div>
         <Squiggle class="section-squiggle" />
       </div>
       {href && linkLabel && <a class="link-arrow" href={href}>{linkLabel}</a>}
@@ -49,6 +56,16 @@ const { title, id, href, linkLabel, accent } = Astro.props;
   .section-title {
     display: grid;
     gap: var(--space-3xs);
+  }
+
+  .section-heading {
+    display: flex;
+    gap: var(--space-2xs);
+    align-items: center;
+  }
+
+  .mark {
+    --mark-color: var(--section-accent, var(--color-accent));
   }
 
   .section-title :global(.section-squiggle) {

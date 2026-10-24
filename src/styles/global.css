@@ -196,6 +196,31 @@ a:hover {
   border: 0;
 }
 
+/* ------------------------------------------------------- scroll reveals */
+/* Only when JS is around to lift them back (html.js): without it, everything
+   is simply visible. Small rise, quick — the content leads. */
+
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 420ms var(--ease),
+    transform 420ms var(--ease);
+}
+
+html.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ------------------------------------------------------------ UI elements */
 
 .button {
@@ -283,6 +308,25 @@ a:hover {
   color: var(--color-accent);
   background-color: transparent;
   padding-inline: 0;
+}
+
+/* ------------------------------------------------------------------ marks */
+
+/**
+ * Icon chip: one glyph per kind of content, painted in that kind's palette
+ * hue. Used by cards (Card.astro), section heads (Section.astro) and the
+ * value chips on the About page — one treatment everywhere.
+ */
+.mark {
+  display: grid;
+  place-items: center;
+  width: var(--mark-size, 2.6rem);
+  height: var(--mark-size, 2.6rem);
+  flex: none;
+  color: var(--color-bg);
+  background-color: var(--mark-color, var(--color-accent));
+  border-radius: var(--radius-pill);
+  transform: rotate(-5deg);
 }
 
 /* ------------------------------------------------------------------ prose */
