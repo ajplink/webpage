@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+# PESSOA REAL — foto real (MariaCupido.jpeg); do MAG. Departamento por confirmar.
 name: "Maria Cupido"
-role: "Workshops"
-photo: ../../../assets/team-photos/MAG-MariaCupido.jpeg
-department: DL
-order: 3
-active: false
-bio: "Coordena oficinas e garante que há material para todos — e ainda sobra cola quente."
+role: "Colaboradora"
+department: DREE
+photo: ../../../assets/team-photos/MariaCupido.jpeg
+order: 2
+active: true
+bio: "Colabora no Departamento de Relações Educativas e Empresariais, vinda do MAG."
 ---

@@ -1,0 +1,210 @@
+---
+/**
+ * LineRobot — the little line-follower that runs down the left side of the
+ * page on its curvy tape of floor marks, weaving around the association's
+ * STEM world: a rock, the lamp mascot in lab goggles, a circuit panel it
+ * switches on, a plant and a flask.
+ *
+ * Pure CSS motion: the page scroll IS the timeline. The robot rides an
+ * offset-path curve; the circuits and LEDs wake up as it passes. No
+ * JavaScript, static rail without scroll-timeline support, no motion under
+ * prefers-reduced-motion.
+ */
+
+/** the route the robot follows (SVG user units) */
+const route =
+  'M70,26 C46,96 34,150 56,196 C78,242 114,266 106,330 C99,388 58,404 56,462 C54,520 96,538 102,596 C108,652 58,672 62,730 C66,784 88,806 76,876';
+---
+
+<div class="robot-rail" aria-hidden="true">
+  <svg class="scene" viewBox="0 0 140 900" preserveAspectRatio="xMidYMid meet" focusable="false">
+    <!-- the marks on the floor -->
+    <path class="tape" d={route}></path>
+
+    <!-- a rock (geology) -->
+    <g class="prop" transform="translate(22 150)">
+      <path d="M2 44 L14 8 L44 0 L64 18 L58 44 Z" fill="var(--color-text-muted)" opacity="0.85"></path>
+      <path d="M14 8 L30 24 L2 44 M30 24 L44 0 M30 24 L58 44" stroke="var(--color-bg)" stroke-width="2.5"
+        fill="none"></path>
+    </g>
+
+    <!-- the lamp mascot in lab goggles (chemistry) -->
+    <g class="prop" transform="translate(88 292) scale(0.62)">
+      <path d="M36 34c-16 0-28 12-28 27 0 10 5 17 10 22 4 4 6 7 6 11h24c0-4 2-7 6-11 5-5 10-12 10-22 0-15-12-27-28-27z"
+        fill="#fff570" stroke="var(--color-text)" stroke-width="5"></path>
+      <!-- goggles -->
+      <path d="M12 52h48" stroke="var(--color-text)" stroke-width="5"></path>
+      <circle cx="24" cy="54" r="9" fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="4"></circle>
+      <circle cx="48" cy="54" r="9" fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="4"></circle>
+      <path d="M28 66c3 2 6 2 9 0" stroke="var(--color-text)" stroke-width="3.4" fill="none"
+        stroke-linecap="round"></path>
+      <path d="M36 94v6M22 100h28" stroke="var(--color-text)" stroke-width="5" stroke-linecap="round"></path>
+    </g>
+
+    <!-- a circuit panel with buttons (electronics) -->
+    <g class="prop" transform="translate(14 452)">
+      <rect x="0" y="0" width="62" height="86" rx="12" fill="var(--color-surface)"
+        stroke="var(--color-text)" stroke-width="4"></rect>
+      <!-- the traces that light up -->
+      <g class="circuit">
+        <path d="M12 20h26v14h12" stroke="var(--palette-green)" stroke-width="4" fill="none"
+          stroke-linecap="round"></path>
+        <path d="M12 48h18v16h20" stroke="var(--palette-blue)" stroke-width="4" fill="none"
+          stroke-linecap="round"></path>
+      </g>
+      <!-- the buttons -->
+      <circle cx="16" cy="20" r="7" fill="var(--palette-pink)" stroke="var(--color-text)" stroke-width="3"></circle>
+      <circle cx="16" cy="48" r="7" fill="var(--palette-yellow)" stroke="var(--color-text)" stroke-width="3"></circle>
+      <!-- the LEDs -->
+      <circle class="led led-1" cx="52" cy="34" r="6"></circle>
+      <circle class="led led-2" cx="52" cy="64" r="6"></circle>
+    </g>
+
+    <!-- a plant (biology) -->
+    <g class="prop" transform="translate(86 600)">
+      <path d="M22 76V32" stroke="var(--palette-green)" stroke-width="5" stroke-linecap="round"></path>
+      <path d="M22 46c-14-2-18-12-16-22 10-2 18 4 20 12M22 40c12-6 14-18 10-26-10 2-15 10-15 18"
+        fill="var(--palette-green)" stroke="var(--color-text)" stroke-width="3"></path>
+      <path d="M12 76h20l-3 14H15z" fill="var(--palette-orange)" stroke="var(--color-text)" stroke-width="3"></path>
+    </g>
+
+    <!-- a flask (chemistry again, because labs are like that) -->
+    <g class="prop" transform="translate(30 738)">
+      <path d="M22 6v20L10 52c-2 5 1 9 6 9h20c5 0 8-4 6-9L30 26V6" fill="var(--color-surface)"
+        stroke="var(--color-text)" stroke-width="4" stroke-linejoin="round"></path>
+      <path d="M14 42h24l4 10c2 5-1 9-6 9H16c-5 0-8-4-6-9z" fill="var(--palette-pink)" opacity="0.85"></path>
+      <path d="M18 6h16" stroke="var(--color-text)" stroke-width="5" stroke-linecap="round"></path>
+    </g>
+
+    <!-- the little robot, riding the route -->
+    <g class="robot">
+      <!-- antenna -->
+      <path d="M0-26v7" stroke="var(--color-text)" stroke-width="3.4" stroke-linecap="round"></path>
+      <circle cx="0" cy="-30" r="4" fill="var(--palette-pink)"></circle>
+      <!-- body -->
+      <rect x="-24" y="-18" width="48" height="26" rx="10" fill="#fff570" stroke="var(--color-text)"
+        stroke-width="3.6"></rect>
+      <!-- face -->
+      <circle cx="-10" cy="-6" r="3.2" fill="var(--color-text)"></circle>
+      <circle cx="10" cy="-6" r="3.2" fill="var(--color-text)"></circle>
+      <path d="M-6 2c2 2 4 2 6 0s4-2 6 0" stroke="var(--color-text)" stroke-width="2.4" fill="none"
+        stroke-linecap="round"></path>
+      <!-- wheels -->
+      <circle cx="-13" cy="12" r="7" fill="var(--color-text)"></circle>
+      <circle cx="13" cy="12" r="7" fill="var(--color-text)"></circle>
+      <circle cx="-13" cy="12" r="2.4" fill="#fff570"></circle>
+      <circle cx="13" cy="12" r="2.4" fill="#fff570"></circle>
+      <!-- the line sensor -->
+      <path d="M-16 9h32" stroke="var(--color-text)" stroke-width="3" stroke-linecap="round"></path>
+      <circle cx="-8" cy="9" r="2.2" fill="var(--palette-blue)"></circle>
+      <circle cx="8" cy="9" r="2.2" fill="var(--palette-blue)"></circle>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .robot-rail {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: max(0.2rem, calc((100vw - var(--container)) / 4 - 2.4rem));
+    z-index: 3;
+    width: 8rem;
+    pointer-events: none;
+  }
+
+  .scene {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* the marks on the floor */
+  .tape {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 5;
+    stroke-dasharray: 3 16;
+    stroke-linecap: round;
+  }
+
+  /* the robot rides the curve with the scroll */
+  .robot {
+    offset-path: path('M70,26 C46,96 34,150 56,196 C78,242 114,266 106,330 C99,388 58,404 56,462 C54,520 96,538 102,596 C108,652 58,672 62,730 C66,784 88,806 76,876');
+    offset-rotate: 0deg;
+    offset-distance: 0%;
+    animation-name: ride;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll();
+    animation-range: 0% 100%;
+  }
+
+  /* the circuits wake up as the robot presses the buttons */
+  .led {
+    fill: var(--color-tint);
+    stroke: var(--color-text);
+    stroke-width: 3;
+    animation-name: light;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll();
+    animation-range: 52% 58%;
+  }
+
+  .led-2 {
+    animation-range: 58% 64%;
+  }
+
+  .circuit {
+    opacity: 0.35;
+    animation-name: hum;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll();
+    animation-range: 50% 66%;
+  }
+
+  @keyframes ride {
+    from {
+      offset-distance: 0%;
+    }
+
+    to {
+      offset-distance: 100%;
+    }
+  }
+
+  @keyframes light {
+    from {
+      fill: var(--color-tint);
+    }
+
+    to {
+      fill: var(--palette-green);
+    }
+  }
+
+  @keyframes hum {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* small screens have no room for a rail */
+  @media (max-width: 64rem) {
+    .robot-rail {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .robot,
+    .led,
+    .circuit {
+      animation: none;
+    }
+  }
+</style>
