@@ -1,12 +1,11 @@
 ---
 /**
- * ThemeToggle — the mascot lightbulb turns the site's light ON (light mode)
- * and OFF (dark mode). Hidden until /theme.js reveals it: without JavaScript
- * the OS preference decides the scheme (see AGENTS.md).
+ * ThemeToggle — a light switch for the site: flip it up for light mode,
+ * down for dark. Hidden until /theme.js reveals it: without JavaScript the
+ * OS preference decides the scheme (see AGENTS.md).
  */
 import { t } from '../i18n';
 import type { Locale } from '../config/site';
-import Bulb from './Bulb.astro';
 
 interface Props {
   locale: Locale;
@@ -24,7 +23,20 @@ const { locale } = Astro.props;
   aria-label={t(locale, 'theme.toggle')}
   aria-pressed="false"
 >
-  <Bulb size={34} />
+  <svg class="switch" viewBox="0 0 64 92" width="30" height="43" aria-hidden="true" focusable="false">
+    <!-- the plate -->
+    <rect x="6" y="4" width="52" height="84" rx="14" fill="var(--color-surface)"
+      stroke="var(--color-text)" stroke-width="5"></rect>
+    <!-- the rocker -->
+    <rect x="17" y="16" width="30" height="60" rx="13" fill="var(--color-tint)"
+      stroke="var(--color-text)" stroke-width="4"></rect>
+    <!-- the knob: up = light on, down = light off -->
+    <rect class="knob" x="21" y="21" width="22" height="24" rx="10" fill="#fff570"
+      stroke="var(--color-text)" stroke-width="3.5"></rect>
+    <!-- the little marks -->
+    <path d="M32 70v5" stroke="var(--color-text)" stroke-width="3.5" stroke-linecap="round"></path>
+    <circle cx="32" cy="25" r="0"></circle>
+  </svg>
 </button>
 
 <style>
@@ -34,7 +46,7 @@ const { locale } = Astro.props;
     cursor: pointer;
     background-color: transparent;
     border: var(--border-width) solid transparent;
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-s);
   }
 
   :global(html.js) .theme-toggle {
@@ -45,7 +57,28 @@ const { locale } = Astro.props;
     border-color: var(--color-border);
   }
 
-  .theme-toggle:active {
-    transform: scale(0.92);
+  .knob {
+    transition: transform var(--duration-slow) var(--ease), fill var(--duration-slow) var(--ease);
+  }
+
+  /* light mode: the switch is up and the knob glows */
+  :global(html[data-theme='light']) .knob,
+  :global(html:not([data-theme='dark'])) .knob {
+    transform: translateY(0);
+    fill: #fff570;
+  }
+
+  /* dark mode: the switch is down and the knob rests */
+  :global(html[data-theme='dark']) .knob,
+  :global(html[data-theme='dark']) .switch .knob {
+    transform: translateY(26px);
+    fill: #55503f;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(html:not([data-theme='light'])) .knob {
+      transform: translateY(26px);
+      fill: #55503f;
+    }
   }
 </style>

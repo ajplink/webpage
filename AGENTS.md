@@ -20,10 +20,12 @@ Detailed guides live in [`.agents/`](.agents/): [content model](.agents/content-
   `<script>` in the output is JSON-LD, plus two dependency-free files,
   accepted in writing here:
   - `/theme.js` (~1 KB): pins light/dark (the theme toggle's enhancement);
-  - `/about-play.js`: the About page's playable experiments (Newton's
-    cradle + mixing flasks, vanilla canvas — chosen over p5.js for size and
-    speed). Both degrade to a complete page without JS, and both are
-    self-hosted (`script-src 'self'` holds).
+  - `/about-play.js`: the About page's Newton's cradle (vanilla canvas —
+    chosen over p5.js for size and speed);
+  - `/robot.js` (~15 lines): publishes `--scroll` so the line-follower robot
+    accompanies the scroll in browsers without CSS scroll timelines.
+  All three degrade to a complete page without JS, and all are self-hosted
+  (`script-src 'self'` holds).
   CSS-only solutions (`:has()` filters, `<details>` menus) cover the rest.
   Anything new must be CSS-first.
 - **No third-party requests at runtime** — no CDN fonts, no analytics, no

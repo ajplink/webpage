@@ -6,7 +6,7 @@
 import { SITE, type Locale } from '../config/site';
 import { href } from '../i18n/routes';
 import { t } from '../i18n';
-import Bulb from './Bulb.astro';
+import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -22,10 +22,9 @@ const SOCIAL_ICON = { Instagram: 'instagram', LinkedIn: 'linkedin' } as const;
 
 <footer class="footer">
   <div class="container footer-row">
-    <p class="footer-brand">
-      <Bulb size={22} />
-      <span>{SITE.name}</span>
-    </p>
+    <a class="footer-brand" href={href(locale, 'home')} aria-label={SITE.name}>
+      <Logo width={110} />
+    </a>
 
     <nav aria-label={t(locale, 'a11y.footerNav')}>
       <ul class="footer-links">
@@ -74,11 +73,10 @@ const SOCIAL_ICON = { Instagram: 'instagram', LinkedIn: 'linkedin' } as const;
   }
 
   .footer-brand {
-    display: flex;
-    gap: var(--space-2xs);
+    display: inline-flex;
     align-items: center;
-    font-weight: 650;
     color: var(--color-text);
+    text-decoration: none;
   }
 
   .footer-links {

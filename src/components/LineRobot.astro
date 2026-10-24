@@ -127,17 +127,23 @@ const route =
     stroke-linecap: round;
   }
 
-  /* the robot rides the curve with the scroll */
+  /* the robot rides the curve with the scroll: --scroll (robot.js) is the
+     portable mechanism; the CSS timeline replaces it where supported */
   .robot {
     offset-path: path('M70,26 C46,96 34,150 56,196 C78,242 114,266 106,330 C99,388 58,404 56,462 C54,520 96,538 102,596 C108,652 58,672 62,730 C66,784 88,806 76,876');
     offset-rotate: 0deg;
-    offset-distance: 0%;
-    animation-name: ride;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: scroll();
-    animation-range: 0% 100%;
+    offset-distance: calc(var(--scroll, 0) * 100%);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .robot {
+      animation-name: ride;
+      animation-duration: 1s;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll();
+      animation-range: 0% 100%;
+    }
   }
 
   /* the circuits wake up as the robot presses the buttons */
@@ -145,26 +151,18 @@ const route =
     fill: var(--color-tint);
     stroke: var(--color-text);
     stroke-width: 3;
-    animation-name: light;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: scroll();
-    animation-range: 52% 58%;
+  }
+
+  .led-1 {
+    fill: color-mix(in srgb, var(--palette-green) calc(clamp(0, (var(--scroll, 0) - 0.5) * 12, 1) * 100%), var(--color-tint));
   }
 
   .led-2 {
-    animation-range: 58% 64%;
+    fill: color-mix(in srgb, var(--palette-green) calc(clamp(0, (var(--scroll, 0) - 0.58) * 12, 1) * 100%), var(--color-tint));
   }
 
   .circuit {
-    opacity: 0.35;
-    animation-name: hum;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: scroll();
-    animation-range: 50% 66%;
+    opacity: calc(0.35 + 0.65 * clamp(0, (var(--scroll, 0) - 0.5) * 8, 1));
   }
 
   @keyframes ride {
@@ -177,22 +175,6 @@ const route =
     }
   }
 
-  @keyframes light {
-    from {
-      fill: var(--color-tint);
-    }
-
-    to {
-      fill: var(--palette-green);
-    }
-  }
-
-  @keyframes hum {
-    to {
-      opacity: 1;
-    }
-  }
-
   /* small screens have no room for a rail */
   @media (max-width: 64rem) {
     .robot-rail {
@@ -200,11 +182,5 @@ const route =
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .robot,
-    .led,
-    .circuit {
-      animation: none;
-    }
-  }
+
 </style>
