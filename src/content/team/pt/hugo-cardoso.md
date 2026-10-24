@@ -3,7 +3,6 @@
 name: "Hugo Cardoso"
 role: "Escolas e parcerias"
 department: DREE
-photo: ../../../assets/team-photos/hugo-cardoso.svg
 order: 5
 active: true
 bio: "Faz a ponte entre a associação e as escolas — e volta sempre com boas histórias."

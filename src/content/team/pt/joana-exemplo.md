@@ -3,7 +3,6 @@
 name: "Joana Exemplo"
 role: "Presidente"
 department: Direção
-photo: ../../../assets/team-photos/joana-exemplo.svg
 order: 1
 active: true
 bio: "Coordena a direção e garante que as ideias viram planos com datas. Também é a razão de as reuniões acabarem a horas."

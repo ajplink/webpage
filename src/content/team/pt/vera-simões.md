@@ -3,7 +3,6 @@
 name: "Vera Simões"
 role: "Redes sociais"
 department: DCI
-photo: ../../../assets/team-photos/vera-simões.svg
 order: 4
 active: true
 bio: "Conta o que fazemos sem exagerar nos filtros. Quase sempre."

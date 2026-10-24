@@ -3,7 +3,6 @@
 name: "Marta Reis"
 role: "Projetos de ciência"
 department: DP
-photo: ../../../assets/team-photos/marta-reis.svg
 order: 3
 active: true
 bio: "Mentora de projetos escolares e especialista em fazer a pergunta que falta."

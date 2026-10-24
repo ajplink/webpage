@@ -1,9 +1,9 @@
 ---
-# ENTRADA DE EXEMPLO — conteúdo de exemplo, substituir por uma pessoa real.
-name: "Pedro Salgado"
+# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+name: "Salvador Modesto"
 role: "Formação de educadores"
+photo: ../../../assets/team-photos/SalvadorModesto.jpeg
 department: DREE
-photo: ../../../assets/team-photos/pedro-salgado.svg
 order: 3
 active: true
 bio: "Dá formação a professores e jura que ninguém nasce a saber soldar. Ainda."

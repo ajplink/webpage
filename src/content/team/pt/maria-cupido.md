@@ -1,9 +1,9 @@
 ---
-# ENTRADA DE EXEMPLO — conteúdo de exemplo, substituir por uma pessoa real.
-name: "Mariana Braga"
+# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+name: "Maria Cupido"
 role: "Workshops"
+photo: ../../../assets/team-photos/MAG-MariaCupido.jpeg
 department: DL
-photo: ../../../assets/team-photos/mariana-braga.svg
 order: 3
 active: true
 bio: "Coordena oficinas e garante que há material para todos — e ainda sobra cola quente."

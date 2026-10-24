@@ -3,7 +3,6 @@
 name: "Diana Cruz"
 role: "Vogal"
 department: Conselho Fiscal
-photo: ../../../assets/team-photos/diana-cruz.svg
 order: 3
 active: true
 bio: "Confere relatórios e prazos, e garante que o Conselho Fiscal cumpre o seu papel a sério."

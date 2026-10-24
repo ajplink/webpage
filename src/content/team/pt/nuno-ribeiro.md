@@ -3,7 +3,6 @@
 name: "Nuno Ribeiro"
 role: "Transporte e logística"
 department: DL
-photo: ../../../assets/team-photos/nuno-ribeiro.svg
 order: 6
 active: true
 bio: "Leva a carrinha, traz a carrinha, e ainda tem tempo para montar o passadiço."

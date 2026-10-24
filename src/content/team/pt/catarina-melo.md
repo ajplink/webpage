@@ -3,7 +3,6 @@
 name: "Catarina Melo"
 role: "Projetos de ambiente"
 department: DP
-photo: ../../../assets/team-photos/catarina-melo.svg
 order: 7
 active: true
 bio: "Ciência cidadã, dados de campo e desculpas para estar ao ar livre."

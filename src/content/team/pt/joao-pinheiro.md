@@ -1,9 +1,9 @@
 ---
-# ENTRADA DE EXEMPLO — conteúdo de exemplo, substituir por uma pessoa real.
-name: "Carla Mendes"
+# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+name: "João Pinheiro"
 role: "Recursos educativos"
+photo: ../../../assets/team-photos/JoãoPinheiro.jpeg
 department: DREE
-photo: ../../../assets/team-photos/carla-mendes.svg
 order: 2
 active: true
 bio: "Desenha kits e guias que funcionam em qualquer escola — mesmo sem internet, mesmo sem orçamento."

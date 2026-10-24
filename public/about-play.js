@@ -36,6 +36,12 @@
     return { ctx, w, h };
   }
 
+  function shade(c, k) {
+    const m = String(c).match(/\d+/g);
+    if (!m) return c;
+    return `rgb(${Math.round(m[0] * k)},${Math.round(m[1] * k)},${Math.round(m[2] * k)})`;
+  }
+
   function pointer(canvas, ev) {
     const r = canvas.getBoundingClientRect();
     return { x: ev.clientX - r.left, y: ev.clientY - r.top };
@@ -144,43 +150,88 @@
     draw() {
       const { ctx, w, h } = fit(this.canvas);
       const { r, cx, cy } = this.geom(w, h);
+      const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
       ctx.clearRect(0, 0, w, h);
-
-      // the frame
       const barY = cy - 6;
-      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-border');
-      ctx.lineWidth = 6;
+      const span = w * 0.34;
+
+      // the floor shadow
+      const floor = cy + this.geom(w, h).len + r * 1.35;
+      const shadow = ctx.createLinearGradient(0, floor - 8, 0, floor + 8);
+      shadow.addColorStop(0, 'transparent');
+      shadow.addColorStop(0.5, 'rgba(0,0,0,0.10)');
+      shadow.addColorStop(1, 'transparent');
+      ctx.fillStyle = shadow;
+      ctx.fillRect(cx - span * 1.2, floor - 8, span * 2.4, 16);
+
+      // the frame: legs + a rounded bar with a soft gradient
       ctx.lineCap = 'round';
+      ctx.strokeStyle = css('--color-text-muted');
+      ctx.lineWidth = 5;
       ctx.beginPath();
-      ctx.moveTo(cx - w * 0.32, barY);
-      ctx.lineTo(cx + w * 0.32, barY);
+      ctx.moveTo(cx - span * 0.86, barY + 4);
+      ctx.lineTo(cx - span * 1.02, floor);
+      ctx.moveTo(cx + span * 0.86, barY + 4);
+      ctx.lineTo(cx + span * 1.02, floor);
+      ctx.stroke();
+
+      const bar = ctx.createLinearGradient(0, barY - 7, 0, barY + 7);
+      bar.addColorStop(0, css('--color-text'));
+      bar.addColorStop(1, css('--color-text-muted'));
+      ctx.strokeStyle = bar;
+      ctx.lineWidth = 12;
+      ctx.beginPath();
+      ctx.moveTo(cx - span, barY);
+      ctx.lineTo(cx + span, barY);
       ctx.stroke();
 
       // strings + balls
       for (let i = 0; i < this.n; i++) {
         const b = this.ballPos(i, w, h);
-        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text-muted');
-        ctx.lineWidth = 1.4;
+        const anchorX = cx + (i - (this.n - 1) / 2) * 2.02 * r;
+        ctx.strokeStyle = css('--color-text-muted');
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
-        ctx.moveTo(cx + (i - (this.n - 1) / 2) * 2.02 * r, barY);
+        ctx.moveTo(anchorX, barY);
         ctx.lineTo(b.x, b.y);
         ctx.stroke();
 
-        const grad = ctx.createRadialGradient(b.x - r * 0.35, b.y - r * 0.4, r * 0.1, b.x, b.y, r);
         const c = this.colors[i % this.colors.length] || '#1d4ed8';
-        grad.addColorStop(0, c);
-        grad.addColorStop(1, c);
+        // soft shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.beginPath();
+        ctx.ellipse(b.x + r * 0.18, b.y + r * 0.28, r, r * 0.96, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // the ball: shaded sphere
+        const grad = ctx.createRadialGradient(b.x - r * 0.4, b.y - r * 0.45, r * 0.15, b.x, b.y, r * 1.05);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.16, c);
+        grad.addColorStop(1, shade(c, 0.72));
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
         ctx.fill();
+        // specular highlight
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.beginPath();
+        ctx.ellipse(b.x - r * 0.34, b.y - r * 0.4, r * 0.2, r * 0.13, -0.7, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-        ctx.fillStyle = '#fff';
-        ctx.font = `600 ${Math.max(9, r * 0.42)}px system-ui, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const label = this.labels[i] || '';
-        ctx.fillText(label.length > 12 ? label.slice(0, 11) + '…' : label, b.x, b.y);
+      // legend under the cradle
+      ctx.font = `500 ${Math.max(10, r * 0.42)}px system-ui, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      const legendY = floor + 14;
+      const cols = this.n;
+      for (let i = 0; i < cols; i++) {
+        const x = cx + (i - (cols - 1) / 2) * (span * 2 / cols);
+        ctx.fillStyle = this.colors[i % this.colors.length];
+        ctx.beginPath();
+        ctx.arc(x, legendY + 6, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = css('--color-text');
+        ctx.fillText(this.labels[i] || '', x, legendY + 16);
       }
     }
   }
@@ -278,55 +329,77 @@
     draw() {
       const { ctx, w, h } = fit(this.canvas);
       ctx.clearRect(0, 0, w, h);
-      const s = Math.min(w * 0.075, h * 0.22);
+      const s = Math.min(w * 0.075, h * 0.2);
+      const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
       for (const f of this.f) {
         const x = f.x * w;
         const y = f.y * h;
+        const body = new Path2D();
+        body.moveTo(-s * 0.26, -s * 1.1);
+        body.lineTo(-s * 0.26, -s * 0.32);
+        body.lineTo(-s * 0.92, s * 0.72);
+        body.quadraticCurveTo(-s * 0.98, s * 1.02, -s * 0.58, s * 1.02);
+        body.lineTo(s * 0.58, s * 1.02);
+        body.quadraticCurveTo(s * 0.98, s * 1.02, s * 0.92, s * 0.72);
+        body.lineTo(s * 0.26, -s * 0.32);
+        body.lineTo(s * 0.26, -s * 1.1);
+
+        ctx.save();
+        ctx.translate(x, y + 10);
+        ctx.scale(1, 0.28);
+        ctx.fillStyle = 'rgba(0,0,0,0.13)';
+        ctx.beginPath();
+        ctx.ellipse(0, s * 3.6, s * 1.15, s * 1.15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
         ctx.save();
         ctx.translate(x, y);
-        ctx.rotate(f.tilt * 0.45);
+        ctx.rotate(f.tilt * 0.5);
 
-        // flask outline (Erlenmeyer)
+        // glass
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.fill(body);
         ctx.lineWidth = 3;
-        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text-muted');
-        ctx.beginPath();
-        ctx.moveTo(-s * 0.28, -s * 1.15);
-        ctx.lineTo(-s * 0.28, -s * 0.35);
-        ctx.lineTo(-s * 0.95, s * 0.75);
-        ctx.quadraticCurveTo(-s, s, -s * 0.6, s);
-        ctx.lineTo(s * 0.6, s);
-        ctx.quadraticCurveTo(s, s, s * 0.95, s * 0.75);
-        ctx.lineTo(s * 0.28, -s * 0.35);
-        ctx.lineTo(s * 0.28, -s * 1.15);
-        ctx.stroke();
+        ctx.strokeStyle = css('--color-text-muted');
+        ctx.stroke(body);
 
         // the liquid
-        const level = Math.max(0, Math.min(1, f.ml / 160));
+        const level = Math.max(0, Math.min(1, f.ml / 165));
         if (level > 0.01) {
           ctx.save();
+          ctx.clip(body);
+          const top = s * (0.95 - 2 * level);
+          const liquid = ctx.createLinearGradient(0, top, 0, s * 1.02);
+          liquid.addColorStop(0, this.colorCss(f.color));
+          liquid.addColorStop(1, shade(this.colorCss(f.color), 0.78));
+          ctx.fillStyle = liquid;
+          ctx.fillRect(-s * 1.3, top, s * 2.6, s * 2.2);
+          // the surface
+          ctx.fillStyle = 'rgba(255,255,255,0.28)';
           ctx.beginPath();
-          ctx.moveTo(-s * 0.28, -s * 0.35);
-          ctx.lineTo(-s * 0.95, s * 0.75);
-          ctx.quadraticCurveTo(-s, s, -s * 0.6, s);
-          ctx.lineTo(s * 0.6, s);
-          ctx.quadraticCurveTo(s, s, s * 0.95, s * 0.75);
-          ctx.lineTo(s * 0.28, -s * 0.35);
-          ctx.closePath();
-          ctx.clip();
-          ctx.fillStyle = this.colorCss(f.color);
-          const top = s * (1 - 2 * level);
-          ctx.fillRect(-s * 1.2, top, s * 2.4, s * 2);
+          ctx.ellipse(0, top, s * 1.28, s * 0.16, 0, 0, Math.PI * 2);
+          ctx.fill();
           ctx.restore();
         }
 
+        // glass highlight
+        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+        ctx.lineWidth = 3.4;
+        ctx.beginPath();
+        ctx.moveTo(-s * 0.12, -s * 0.95);
+        ctx.lineTo(-s * 0.12, -s * 0.4);
+        ctx.lineTo(-s * 0.52, s * 0.55);
+        ctx.stroke();
+
         // the label
-        ctx.rotate(-f.tilt * 0.45);
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text');
-        ctx.font = `600 ${Math.max(9, s * 0.32)}px system-ui, sans-serif`;
+        ctx.rotate(-f.tilt * 0.5);
+        ctx.fillStyle = css('--color-text');
+        ctx.font = `700 ${Math.max(10, s * 0.34)}px system-ui, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText(f.label, 0, s * 1.15);
+        ctx.fillText(f.label, 0, s * 1.2);
         ctx.restore();
       }
     }

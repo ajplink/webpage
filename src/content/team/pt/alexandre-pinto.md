@@ -3,7 +3,6 @@
 name: "Alexandre Pinto"
 role: "Material e espaços"
 department: DL
-photo: ../../../assets/team-photos/alexandre-pinto.svg
 order: 4
 active: true
 bio: "Sabe onde está cada coisa. Sim, mesmo essa."

@@ -2,7 +2,6 @@
 # ENTRADA DE EXEMPLO — substituir por uma pessoa real.
 name: "Miguel Exemplo"
 role: "Responsável de Recursos Educativos"
-photo: ../../../assets/team-photos/miguel-exemplo.svg
 department: DREE
 order: 1
 active: true
