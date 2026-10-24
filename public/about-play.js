@@ -9,16 +9,25 @@
  * (sourced from src/lib/icons.ts by Playground.astro), so the cradle speaks
  * the same icon language as the rest of the site.
  *
- * Physics: n pendulums (gravity + small damping) with IMPACTS modelled
- * properly — on contact the HORIZONTAL velocity components of the equal
- * masses are swapped (elastic collision), and the balls are separated so
+ * Physics: n pendulums (gravity + air drag) with IMPACTS modelled
+ * properly — on contact the horizontal velocity components of the equal
+ * masses are swapped (nearly elastic), and the balls are separated so
  * they cannot stick. Drag a ball and let go.
+ *
+ * ATTENUATION: drag plus a little energy lost at every impact, so the
+ * cradle is not a perpetual motion machine — the opening swing dies out
+ * in about 20 s and the balls snap to rest. Grab one to start it again.
  */
 (() => {
   'use strict';
 
   const DPR = Math.min(2, window.devicePixelRatio || 1);
   const G = 1400;
+  const DRAG = 0.6; // 1/s — velocity lost per second of swinging
+  const REST = 0.985; // fraction of speed kept through one impact
+  // below these the motion is invisible — snap to sleep instead of jogging
+  const REST_OMEGA = 0.05;
+  const REST_THETA = 0.004;
 
   function fit(canvas) {
     const rect = canvas.getBoundingClientRect();
@@ -62,6 +71,7 @@
       this.theta = new Float64Array(this.n);
       this.omega = new Float64Array(this.n);
       this.drag = -1;
+      this.asleep = false;
       this.opening = true; // the classic opening move, sized to the swing room
       for (const ev of ['pointerdown', 'pointermove', 'pointerup', 'pointercancel']) {
         canvas.addEventListener(ev, (e) => this[ev.replace('pointer', '').replace('cancel', 'up')](e));
@@ -116,6 +126,7 @@
         const b = this.ball(i, w, h);
         if (Math.hypot(p.x - b.x, p.y - b.y) < b.r * 1.7) {
           this.drag = i;
+          this.asleep = false;
           this.omega[i] = 0;
           this.canvas.setPointerCapture(e.pointerId);
           break;
@@ -141,6 +152,7 @@
     }
 
     step(dt) {
+      if (this.asleep) return;
       const { w, h } = fit(this.canvas);
       const { r, len } = this.geom(w, h);
       if (this.opening) {
@@ -154,7 +166,7 @@
         for (let i = 0; i < this.n; i++) {
           if (i === this.drag) continue;
           this.omega[i] += (-(G / len) * Math.sin(this.theta[i])) * t;
-          this.omega[i] *= 0.9995;
+          this.omega[i] *= Math.exp(-DRAG * t);
           this.theta[i] += this.omega[i] * t;
         }
         // impacts: equal masses swap their horizontal velocities
@@ -167,14 +179,33 @@
             const va = this.v(i, len);
             const vb = this.v(i + 1, len);
             if (va > vb) {
-              if (i !== this.drag) this.setV(i, vb, len);
-              if (i + 1 !== this.drag) this.setV(i + 1, va, len);
+              // equal masses swap their speeds; REST keeps a little back
+              const keep = (1 + REST) / 2;
+              const lose = (1 - REST) / 2;
+              if (i !== this.drag) this.setV(i, va * lose + vb * keep, len);
+              if (i + 1 !== this.drag) this.setV(i + 1, vb * lose + va * keep, len);
             }
             // push apart so they never stick
             const push = overlap / 2 / len;
             if (i !== this.drag) this.theta[i] -= push;
             if (i + 1 !== this.drag) this.theta[i + 1] += push;
           }
+        }
+      }
+
+      // come to rest for good: snap the residual jiggle away and sleep
+      if (this.drag < 0) {
+        let still = true;
+        for (let i = 0; i < this.n; i++) {
+          if (Math.abs(this.omega[i]) > REST_OMEGA || Math.abs(this.theta[i]) > REST_THETA) {
+            still = false;
+            break;
+          }
+        }
+        if (still) {
+          this.omega.fill(0);
+          this.theta.fill(0);
+          this.asleep = true;
         }
       }
     }
@@ -289,6 +320,7 @@
       last = now;
       if (onScreen.size > 0) {
         for (const wg of widgets) {
+          if (wg.asleep && wg.drag < 0) continue;
           wg.step(dt);
           wg.draw();
         }
