@@ -4,6 +4,6 @@ name: "Rita Exemplo"
 role: "Responsável de Projetos"
 department: DP
 order: 1
-active: true
+active: false
 bio: "Acompanha os projetos submetidos pelos membros, da primeira ideia à demonstração final."
 ---

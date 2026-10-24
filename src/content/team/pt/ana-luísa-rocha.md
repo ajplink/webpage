@@ -4,6 +4,6 @@ name: "Ana Luísa Rocha"
 role: "Acompanhamento de projetos"
 department: DP
 order: 5
-active: true
+active: false
 bio: "Segue cada projeto de perto, com listas, prazos e um otimismo resistente."
 ---

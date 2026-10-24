@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+# PESSOA REAL — dados da equipa (foto: RicardoCampos.jpeg).
 name: "Ricardo Campos"
 role: "Vice-presidente"
-photo: ../../../assets/team-photos/RicardoCampos.jpeg
 department: Direção
+photo: ../../../assets/team-photos/RicardoCampos.jpeg
 order: 2
 active: true
-bio: "Mantém a associação a correr no prazo e na devida ordem. Se existe um calendário, é da Ana — e está atualizado."
+bio: "Vice-presidente da Direção da Associação Plink."
 ---

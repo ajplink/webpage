@@ -4,6 +4,6 @@ name: "Tomás Faria"
 role: "Projetos de matemática"
 department: DP
 order: 4
-active: true
+active: false
 bio: "Transforma problemas em desafios. Diz que é a mesma coisa, mas com mais piada."
 ---

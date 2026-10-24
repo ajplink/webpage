@@ -4,6 +4,6 @@ name: "Miguel Exemplo"
 role: "Responsável de Recursos Educativos"
 department: DREE
 order: 1
-active: true
+active: false
 bio: "Lidera os recursos educativos: materiais, guias e formação que as escolas pedem — e que testamos antes de prometer."
 ---

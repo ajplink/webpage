@@ -1,4 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="1562 1579 480 480">
-  <!-- Associacao Plink: the three yellow ticks of the wordmark (favicon exception). -->
-  <path d="M1816.6 1946c-15-4.6-21-23.6-12.7-40.6 8-16.3 75-74.8 99.6-87 46.7-23.1 81 14.3 46.6 50.9-9.3 9.9-13.5 13.1-48.6 37.7-54.7 38.2-67.6 44.2-84.9 39m-63.1-44.9c-20-9-21.6-39.4-4.5-82.6l5.5-14.5c2-5.7 10-23.6 17-38.5 22.7-47.7 63-62.8 79.9-30 10 19.5 6.3 34.6-20.4 83a823 823 0 0 0-13.4 25c-22.5 46.6-44.6 66.5-64.1 57.6m-63.5-13c-23-14.7-39-53.3-46.6-111.6l-2-14.8c-7-52.7 26.6-88.8 59-63.4 15.6 12.3 19 27.9 18.3 86.6-.8 79.1-10.7 114.7-28.7 103.2" fill="#fed10d"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232 232">
+  <!-- Associacao Plink mascot: the lightbulb (favicon exception; mirrors
+       src/components/Bulb.astro, keep in sync by hand). -->
+  <g transform="translate(58 4) scale(0.92)">
+    <path d="M60 2v12M18 18l8 9M102 18l-8 9M4 74h12M104 74h12" stroke="#fed10d" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M60 22c-27 0-49 21-49 47 0 18 9 30 18 40 6 7 9 12 10 19h42c1-7 4-12 10-19 9-10 18-22 18-40 0-26-22-47-49-47z" fill="#fff570" stroke="#111111" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M43 74c4-6 8 3 12-2s8 3 12-2 8 3 12-2" fill="none" stroke="#111111" stroke-width="5" stroke-linecap="round"/>
+    <rect x="32" y="126" width="56" height="16" rx="8" fill="#111111"/>
+    <path d="M38 142h44v34c0 8-6 14-14 14H52c-8 0-14-6-14-14z" fill="#111111"/>
+    <path d="M42 152h36M42 164h30" stroke="#fff570" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M50 190h20c4 0 7 3 7 7v6c0 5-4 9-9 9h-16c-5 0-9-4-9-9v-6c0-4 3-7 7-7z" fill="#111111"/>
+  </g>
 </svg>

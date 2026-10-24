@@ -4,6 +4,6 @@ name: "João Pedro Costa"
 role: "Eventos"
 department: DL
 order: 2
-active: true
+active: false
 bio: "Monta palcos, mesas e centenas de cadeiras antes de tu chegares."
 ---

@@ -4,7 +4,7 @@ name: "Joana Exemplo"
 role: "Presidente"
 department: Direção
 order: 1
-active: true
+active: false
 bio: "Coordena a direção e garante que as ideias viram planos com datas. Também é a razão de as reuniões acabarem a horas."
 links:
   - label: LinkedIn (exemplo)

@@ -4,6 +4,6 @@ name: "Alexandre Pinto"
 role: "Material e espaços"
 department: DL
 order: 4
-active: true
+active: false
 bio: "Sabe onde está cada coisa. Sim, mesmo essa."
 ---

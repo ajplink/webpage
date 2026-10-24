@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+# PESSOA REAL — dados da equipa (foto: JoãoPinheiro.jpeg).
 name: "João Pinheiro"
-role: "Recursos educativos"
+role: "Presidente"
+department: Direção
 photo: ../../../assets/team-photos/JoãoPinheiro.jpeg
-department: DREE
-order: 2
+order: 1
 active: true
-bio: "Desenha kits e guias que funcionam em qualquer escola — mesmo sem internet, mesmo sem orçamento."
+bio: "Preside à Direção da Associação Plink."
 ---

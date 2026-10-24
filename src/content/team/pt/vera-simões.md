@@ -4,6 +4,6 @@ name: "Vera Simões"
 role: "Redes sociais"
 department: DCI
 order: 4
-active: true
+active: false
 bio: "Conta o que fazemos sem exagerar nos filtros. Quase sempre."
 ---

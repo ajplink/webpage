@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+# PESSOA REAL — dados da equipa (foto: GabrielaCoutinho.jpeg).
 name: "Gabriela Coutinho"
-role: "Design"
+role: "Coordenadora"
+department: DREE
 photo: ../../../assets/team-photos/GabrielaCoutinho.jpeg
-department: DCI
-order: 2
+order: 1
 active: true
-bio: "Faz com que tudo isto pareça bem — e guarda os ficheiros organizados."
+bio: "Coordena o Departamento de Relações Educativas e Empresariais."
 ---

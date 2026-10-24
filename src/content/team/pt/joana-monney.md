@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+# PESSOA REAL — dados da equipa (foto: JoanaMonney.jpeg).
 name: "Joana Monney"
-role: "Tesoureiro"
+role: "Colaboradora"
+department: DCI
 photo: ../../../assets/team-photos/JoanaMonney.jpeg
-department: Direção
-order: 3
+order: 2
 active: true
-bio: "Conta os tostões e explica, com paciência infinita, porque é que afinal não dá para comprar três robôs. Faz as contas certas para podermos sonhar à grande."
+bio: "Colabora no Departamento de Comunicação e Imagem."
 ---

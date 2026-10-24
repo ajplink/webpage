@@ -1,0 +1,72 @@
+---
+/**
+ * Values — the graphics that carry the rest of the About page's points:
+ * one colour panel per value, each with its own hand-drawn mark.
+ */
+import type { Locale } from '../config/site';
+import { t } from '../i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const values = [
+  { key: 'play.valueDoing', icon: 'rocket', color: 'var(--palette-blue)' },
+  { key: 'play.valueAccess', icon: 'users', color: 'var(--palette-pink)' },
+  { key: 'play.valueOpen', icon: 'book', color: 'var(--palette-green)' },
+  { key: 'play.valueCommunity', icon: 'heart', color: 'var(--palette-orange)' },
+] as const;
+---
+
+<ul class="values">
+  {
+    values.map((v) => (
+      <li class="value" style={`--value-color: ${v.color}`}>
+        <span class="value-mark">
+          <Icon name={v.icon} size={38} />
+        </span>
+        <h3>{t(locale, v.key)}</h3>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .values {
+    display: grid;
+    gap: var(--space-s);
+    padding: 0;
+    margin: var(--space-l) 0 0;
+    list-style: none;
+    grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  }
+
+  .value {
+    display: flex;
+    gap: var(--space-s);
+    align-items: center;
+    padding: var(--space-s) var(--space-m);
+    background-color: color-mix(in srgb, var(--value-color) 12%, var(--color-surface));
+    border: var(--border-width) solid color-mix(in srgb, var(--value-color) 35%, transparent);
+    border-radius: var(--radius-l);
+  }
+
+  .value-mark {
+    display: grid;
+    place-items: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    flex: none;
+    color: #fff;
+    background-color: var(--value-color);
+    border-radius: var(--radius-pill);
+    transform: rotate(-6deg);
+  }
+
+  .value h3 {
+    font-size: var(--step-0);
+  }
+</style>

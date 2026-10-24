@@ -4,6 +4,6 @@ name: "Beatriz Lopes"
 role: "Materiais e experimentação"
 department: DREE
 order: 4
-active: true
+active: false
 bio: "Testa tudo antes de vos dar. Se alguma coisa fizer \"ploft\", foi planeado."
 ---

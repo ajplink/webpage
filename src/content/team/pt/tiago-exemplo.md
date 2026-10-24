@@ -4,6 +4,6 @@ name: "Tiago Exemplo"
 role: "Responsável de Logística"
 department: DL
 order: 1
-active: true
+active: false
 bio: "Trata da organização de eventos e workshops: logística, espaços, material e café."
 ---

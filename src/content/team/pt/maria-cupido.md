@@ -5,6 +5,6 @@ role: "Workshops"
 photo: ../../../assets/team-photos/MAG-MariaCupido.jpeg
 department: DL
 order: 3
-active: true
+active: false
 bio: "Coordena oficinas e garante que há material para todos — e ainda sobra cola quente."
 ---

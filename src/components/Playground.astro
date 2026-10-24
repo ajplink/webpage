@@ -1,12 +1,8 @@
 ---
 /**
- * Playground — the playable part of the About page: a Newton's cradle whose
- * balls carry the association's values, and Erlenmeyer flasks (one per body
- * of the association) whose colours mix when poured.
- *
- * Progressive enhancement (documented in AGENTS.md): the page is complete
- * without JavaScript; /about-play.js adds the experiments (vanilla canvas,
- * no dependencies). All graphics are drawn, never images.
+ * Playground — the Newton's cradle that sits next to the "what we do" text:
+ * five pendulums carrying the association's values, with real impact
+ * physics (drag a ball and let go). Vanilla canvas (/about-play.js).
  */
 import type { Locale } from '../config/site';
 import { t } from '../i18n';
@@ -24,72 +20,29 @@ const values = [
   t(locale, 'play.valueCommunity'),
   t(locale, 'play.valueCuriosity'),
 ].join('|');
-
-const bodies = ['Direção', 'DREE', 'DP', 'DL', 'DCI'].join('|');
 ---
 
-<section class="playground" aria-labelledby="play-title">
-  <div class="container">
-    <h2 id="play-title">{t(locale, 'play.title')}</h2>
-    <div class="play-grid">
-      <figure class="panel">
-        <figcaption>
-          <h3>{t(locale, 'play.cradle')}</h3>
-          <p class="hint">{t(locale, 'play.cradleHint')}</p>
-        </figcaption>
-        <canvas data-cradle data-labels={values} height="360" role="img"
-          aria-label={t(locale, 'play.cradle')}></canvas>
-      </figure>
-      <figure class="panel">
-        <figcaption>
-          <h3>{t(locale, 'play.flasks')}</h3>
-          <p class="hint">{t(locale, 'play.flasksHint')}</p>
-        </figcaption>
-        <canvas data-flasks data-labels={bodies} height="360" role="img"
-          aria-label={t(locale, 'play.flasks')}></canvas>
-      </figure>
-    </div>
-  </div>
-</section>
+<figure class="cradle">
+  <canvas data-cradle data-labels={values} height="380" role="img" aria-label={t(locale, 'play.cradle')}></canvas>
+  <figcaption>
+    <strong>{t(locale, 'play.cradle')}</strong>
+    <span>{t(locale, 'play.cradleHint')}</span>
+  </figcaption>
+</figure>
 
 <script is:inline src="/about-play.js"></script>
 
 <style>
-  .playground {
-    margin-top: var(--space-2xl);
-    padding-block: var(--space-xl);
-    background-color: var(--color-tint);
-  }
-
-  .playground h2 {
-    margin-bottom: var(--space-m);
-    font-size: var(--step-2);
-    color: var(--color-accent);
-  }
-
-  .play-grid {
-    display: grid;
-    gap: var(--space-l);
-    grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
-  }
-
-  figure.panel {
+  .cradle {
     display: grid;
     gap: var(--space-2xs);
-  }
-
-  figcaption h3 {
-    font-size: var(--step-1);
-  }
-
-  .hint {
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
+    position: sticky;
+    top: var(--space-s);
   }
 
   canvas {
     width: 100%;
-    height: 22rem;
+    height: 23rem;
     touch-action: none;
     background-color: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
@@ -99,5 +52,16 @@ const bodies = ['Direção', 'DREE', 'DP', 'DL', 'DCI'].join('|');
 
   canvas:active {
     cursor: grabbing;
+  }
+
+  figcaption {
+    display: grid;
+    gap: var(--space-3xs);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+  }
+
+  figcaption strong {
+    color: var(--color-text);
   }
 </style>

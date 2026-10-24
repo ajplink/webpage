@@ -1,12 +1,12 @@
 ---
 /**
- * ThemeToggle — pin the light or dark scheme (segmented pill with sun/moon
- * icons). The button is hidden until /theme.js reveals it: without JS the
- * OS preference decides the scheme (see AGENTS.md — documented progressive
- * enhancement).
+ * ThemeToggle — the mascot lightbulb turns the site's light ON (light mode)
+ * and OFF (dark mode). Hidden until /theme.js reveals it: without JavaScript
+ * the OS preference decides the scheme (see AGENTS.md).
  */
 import { t } from '../i18n';
 import type { Locale } from '../config/site';
+import Bulb from './Bulb.astro';
 
 interface Props {
   locale: Locale;
@@ -24,38 +24,16 @@ const { locale } = Astro.props;
   aria-label={t(locale, 'theme.toggle')}
   aria-pressed="false"
 >
-  <!-- sun -->
-  <svg class="icon icon--sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-    <circle cx="12" cy="12" r="4.25" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
-    <path
-      d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.8"
-      stroke-linecap="round"></path>
-  </svg>
-  <!-- moon -->
-  <svg class="icon icon--moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-    <path
-      d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.8"
-      stroke-linejoin="round"></path>
-  </svg>
+  <Bulb size={34} />
 </button>
 
 <style>
   .theme-toggle {
-    /* Revealed only when JS can make it work (html.js is set before first
-       paint by /theme.js) — no pop-in, no layout shift on navigation. */
     display: none;
-    gap: var(--space-3xs);
-    align-items: center;
     padding: var(--space-3xs);
     cursor: pointer;
-    background-color: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
+    background-color: transparent;
+    border: var(--border-width) solid transparent;
     border-radius: var(--radius-pill);
   }
 
@@ -64,50 +42,10 @@ const { locale } = Astro.props;
   }
 
   .theme-toggle:hover {
-    border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+    border-color: var(--color-border);
   }
 
-  .icon {
-    padding: 0.22rem;
-    color: var(--color-text-muted);
-    border-radius: var(--radius-pill);
-    transition:
-      background-color var(--duration) var(--ease),
-      transform var(--duration-slow) var(--ease);
-  }
-
-  /* playful: the sun spins, the moon tilts, both squish on press */
-  .theme-toggle:hover .icon--sun {
-    transform: rotate(30deg);
-  }
-
-  .theme-toggle:hover .icon--moon {
-    transform: rotate(-16deg) scale(1.08);
-  }
-
-  .theme-toggle:active .icon {
-    transform: scale(0.85);
-    transition-duration: 80ms;
-  }
-
-  /* The icon of the scheme currently in effect gets a highlight chip. */
-  :global(html[data-theme='light']) .icon--sun,
-  :global(html[data-theme='dark']) .icon--moon {
-    color: var(--color-text);
-    background-color: var(--color-tint);
-  }
-
-  @media (prefers-color-scheme: light) {
-    :global(html:not([data-theme='dark'])) .icon--sun {
-      color: var(--color-text);
-      background-color: var(--color-tint);
-    }
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :global(html:not([data-theme='light'])) .icon--moon {
-      color: var(--color-text);
-      background-color: var(--color-tint);
-    }
+  .theme-toggle:active {
+    transform: scale(0.92);
   }
 </style>

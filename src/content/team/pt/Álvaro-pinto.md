@@ -4,6 +4,6 @@ name: "Álvaro Pinto"
 role: "Presidente da Mesa da Assembleia"
 department: Mesa da Assembleia
 order: 1
-active: true
+active: false
 bio: "Preside à assembleia-geral com mão firme e agenda pontual. Cada voto conta — literalmente."
 ---

@@ -1,10 +1,10 @@
 ---
-# PESSOA REAL — foto real; departamento e cargo por confirmar com Ricardo.
+# PESSOA REAL — dados da equipa (foto: SalvadorModesto.jpeg).
 name: "Salvador Modesto"
-role: "Formação de educadores"
+role: "Coordenador"
+department: DCI
 photo: ../../../assets/team-photos/SalvadorModesto.jpeg
-department: DREE
-order: 3
+order: 1
 active: true
-bio: "Dá formação a professores e jura que ninguém nasce a saber soldar. Ainda."
+bio: "Coordena o Departamento de Comunicação e Imagem."
 ---

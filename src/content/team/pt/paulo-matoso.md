@@ -4,6 +4,6 @@ name: "Paulo Matoso"
 role: "Vogal"
 department: Conselho Fiscal
 order: 2
-active: true
+active: false
 bio: "Segundo par de olhos nas contas e o primeiro a perguntar «porquê?» quando algo não fecha."
 ---

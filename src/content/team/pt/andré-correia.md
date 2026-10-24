@@ -4,6 +4,6 @@ name: "André Correia"
 role: "Site e ferramentas"
 department: DCI
 order: 3
-active: true
+active: false
 bio: "Constrói as ferramentas internas e o site. Sim, este site."
 ---

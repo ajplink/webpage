@@ -4,6 +4,6 @@ name: "Filipe Neves"
 role: "Projetos de astronomia"
 department: DP
 order: 6
-active: true
+active: false
 bio: "Ensina a olhar para cima sem se perder. Traz sempre um telescópio a mais."
 ---

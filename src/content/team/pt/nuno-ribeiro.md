@@ -4,6 +4,6 @@ name: "Nuno Ribeiro"
 role: "Transporte e logística"
 department: DL
 order: 6
-active: true
+active: false
 bio: "Leva a carrinha, traz a carrinha, e ainda tem tempo para montar o passadiço."
 ---

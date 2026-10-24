@@ -4,6 +4,6 @@ name: "Nelson Barbosa"
 role: "Fotografia e vídeo"
 department: DCI
 order: 5
-active: true
+active: false
 bio: "Documenta tudo: workshops, eventos e o momento exato em que a experiência funciona."
 ---

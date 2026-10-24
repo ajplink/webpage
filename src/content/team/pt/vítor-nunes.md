@@ -4,6 +4,6 @@ name: "Vítor Nunes"
 role: "2.º Secretário"
 department: Mesa da Assembleia
 order: 3
-active: true
+active: false
 bio: "Segundo secretário e mestre das listas de presenças. Se estavas lá, ele sabe."
 ---
