@@ -25,6 +25,10 @@ npx lighthouse http://localhost:4321/pt/ \
   --chrome-flags="--headless=new --no-sandbox" --output=json
 ```
 
+⚠️ Measure the **built** output, never `npm run dev`: the dev server injects
+the Vite client + dev toolbar (~1 MB of JS) and halves the performance score.
+If the dev server holds the port, use whatever port `astro preview` prints.
+
 Targets: **≥ 95** in performance / accessibility / best practices / SEO
 (currently 100 across the tested pages) and ≤ 150 KB page weight excluding
 images (measure: gzip(HTML) + gzip(CSS) + fetched woff2).

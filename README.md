@@ -94,18 +94,26 @@ Portuguese and the page still exists at its locale URL.
 
 ## Performance and verification
 
-Measured on `npm run preview` + Lighthouse (mobile emulation, simulated throttling):
+Measured on the static build (`npm run build`, then `npm run preview` or any
+static server) with Lighthouse 13.5.0 (mobile emulation, simulated throttling)
+on 25 Oct 2026:
 
 | Page | Performance | Accessibility | Best practices | SEO |
 | --- | --- | --- | --- | --- |
-| `/pt/` (home) | 100 | 100 | 100 | 100 |
-| `/pt/projetos/` | 100 | 100 | 100 | 100 |
-| `/pt/noticias/` | 100 | 100 | 100 | 100 |
+| `/pt/` (home) | 98 | 100 | 100 | 100 |
+| `/pt/projetos/` | 99 | 100 | 100 | 100 |
+| `/pt/noticias/` | 99 | 100 | 100 | 100 |
 | `/pt/noticias/apresentacao-plink/` | 100 | 100 | 100 | 100 |
+| `/pt/doacoes/` | 99 | 100 | 100 | 100 |
 
-Page weight (home, transfer sizes): HTML + CSS (gzip) + Bricolage Grotesque
-Variable (woff2, Latin subsets) stay well inside the 150 KB budget. Images are excluded from the budget and are emitted
-by Astro as AVIF/WebP with explicit dimensions.
+⚠️ **Never measure `npm run dev`** — the dev server injects the Vite client and
+the Astro dev toolbar (~1 MB of JS) and halves the performance score. Always
+measure the built output.
+
+Page weight (home, excluding images): **65 KB** — HTML 16 KB + CSS 7 KB + JS
+2 KB (all gzip) + Bricolage Grotesque Variable 40 KB (woff2, Latin subset,
+weight-only axes). Well inside the 150 KB budget. Images are excluded from the
+budget and are emitted by Astro as AVIF/WebP with explicit dimensions.
 
 Reproduce (Lighthouse is intentionally not a project dependency):
 
@@ -115,6 +123,9 @@ npx lighthouse http://localhost:4321/pt/ \
   --chrome-flags="--headless=new --no-sandbox" --output=json
 npm run contrast
 ```
+
+(`astro preview` falls back to another port if the dev server holds 4321 —
+hit the port the preview prints, and note the dev server must not be measured.)
 
 Accessibility verified beyond Lighthouse: keyboard-only navigation (skip link
 focuses first), one `h1` per page, no heading-level jumps, landmarks, `lang`
