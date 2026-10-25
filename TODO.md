@@ -1,5 +1,11 @@
 # TODO — Plink site rework
 
+**Status 25 Oct 2026 (Ricardo's pass):** everything actionable is done and
+verified (see "Verification pass" below). What remains is real-world data
+("Still open — need Ricardo") and one housekeeping question (the orphan cover
+PNGs). Several items below had already been shipped by earlier commits without
+being ticked — they are now verified and ticked.
+
 ## Ricardo's batches (23 Oct) — status
 
 - [x] **Wordmark writes properly** — root cause of the cut view: `<mask>`
@@ -39,7 +45,9 @@
 - DL (6) and DCI (5) headcounts — my guesses.
 - Área de Sócio data source in v1 (mock + email path today).
 - Real IBAN / MB WAY (placeholders today).
-- Real team photos → drop into `src/assets/team-photos/` and set `photo:`.
+- Real team photos → drop into `src/assets/team-photos/` and set `photo:`
+  (8 real photos in place today; the rest of the roster still shows generated
+  portraits).
 
 ---
 
@@ -51,32 +59,28 @@
       first, the pencil is the real brush width (62) with a soft edge, and
       a yellow marker dot rides the leading edge. `.agents/wordmark.md`
       records the model, the knobs and the verification numbers.
-- [ ] **Favicon = the three strokes** — the wordmark's three yellow strokes
-      again (as in commit `8670031`); the lightbulb favicon I drew is gone.
-- [ ] **Newton's cradle: icons inside the balls** — the caption legend is
-      replaced by each value's icon drawn on its own ball. Bigger: it takes
-      the width left beside the prose. Seamless: no card chrome, the canvas
-      sits straight on the page background.
-- [ ] **Light/dark switch — proposals for Ricardo**:
-      1. **A lâmpada** (chosen) — the mascot bulb, lit (yellow) in light mode,
-         off in dark: “turning the lights on/off”. Brand-native, one glyph.
-      2. **Sol e lua num slider** — pill with a sun at one end, a moon at the
-         other, knob slides between them. Clearest of the conventional ones.
-      3. **Sol↔lua morph** — one icon button, the sun folds into a crescent.
-      4. **Interruptor de luz** (rocker) — physical wall switch, playful.
-- [ ] **Language selector — proposals for Ricardo**:
-      1. **Segmented PT | EN** (chosen) — both languages visible at once,
-         active segment filled; one click, no menu, same control in mobile nav.
-      2. **Dropdown with full names** — “Português / English” rows, bigger
-         flags, tick on the current one.
-      3. **Globe + code** — globe glyph + “PT” pill, dropdown behind it.
-- [ ] **One consistent icon system** — the whole set redrawn on one grid
-      (24×24, 2px stroke, round caps/joins), shapes owned by
-      `src/lib/icons.ts` (single source of truth for `Icon.astro` *and* the
-      cradle's in-ball glyphs). Home cards get a mark chip per kind of
-      content (events = ticket, news = newspaper, projects = flask), section
-      heads carry the same chip, and the header menu, chevron and footer
-      socials stop being hand-rolled one-off SVGs.
+- [x] **Favicon = the three strokes** — `public/favicon.svg` is the wordmark's
+      three yellow strokes again (as in commit `8670031`); the lightbulb
+      favicon is gone.
+- [x] **Newton's cradle: icons inside the balls** — each value's icon is
+      stamped on its own ball (path data sourced from `src/lib/icons.ts`,
+      drawn through `Path2D`); the caption legend is gone (labels live in the
+      canvas `aria-label`). Bigger: the cradle takes the width left beside
+      the prose (`grid-template-columns: 38rem 1fr` on `.about-flow`).
+      Seamless: no card chrome, the canvas sits straight on the page.
+- [x] **Light/dark switch** — proposal 1, **a lâmpada**, is built
+      (`ThemeToggle.astro` + `Icon name="bulb"`): the mascot bulb is lit
+      yellow with a soft glow in light mode, off in dark ("acender/apagar").
+- [x] **Language selector** — proposal 1, **Segmented PT | EN**, is built
+      (`LanguageSwitch.astro`): both languages visible, active segment
+      filled, one click, no menu, same control in the mobile nav.
+- [x] **One consistent icon system** — the whole set is redrawn on one grid
+      (24×24, 2px stroke, round caps/joins) and owned by `src/lib/icons.ts`
+      (single source of truth for `Icon.astro` and the cradle's in-ball
+      glyphs). Home cards get a mark chip per kind of content (events =
+      ticket, news = newspaper, projects = flask), section heads carry the
+      same chip, and the header menu, chevron and footer socials are drawn
+      from the same set — no one-off inline SVGs left.
 
 ---
 
@@ -85,8 +89,9 @@
 ## Brand & identity
 
 - [x] **Lightbulb logo + favicon** — `lampada.svg` (Ricardo's SVG) is the mark,
-      svgo-optimised (29 KB), served from `/lampada.svg` + used as favicon;
-      originals kept untouched at the repo root.
+      svgo-optimised (29 KB), served from `/lampada.svg`; originals kept
+      untouched at the repo root. (Favicon later became the three strokes —
+      see the 24 Oct batch.)
 - [x] **One-stroke handwritten "plink" wordmark** — `nome.svg` (Ricardo's SVG),
       ink + sparks recoloured through tokens (dark mode flips the ink).
 - [x] **The wordmark writes itself in front of the user** — pen-route mask reveal
@@ -96,12 +101,13 @@
 
 ## Theme & language
 
-- [x] **Light + dark mode with a manual toggle** — sun/moon pill in the header,
-      persists across pages, OS preference fallback without JS
-      (`/theme.js`, the one documented progressive enhancement, CSP-safe).
+- [x] **Light + dark mode with a manual toggle** — the bulb switch in the header
+      (see above), persists across pages, OS preference fallback without JS
+      (`/theme.js`, documented in AGENTS.md along with `/about-play.js` and
+      `/robot.js`).
 - [x] **Dark scheme parity** — palette lifts in dark; `npm run contrast` green.
-- [x] **Language switcher is a dropdown with flags** — `details`-based, flag SVG
-      per locale (PT / US / UK), zero JS.
+- [x] **Language switcher** — the segmented PT | EN control (see above); the
+      flag dropdown of the first iteration is retired.
 
 ## Navbar / interaction bugs (explicit asks)
 
@@ -117,18 +123,22 @@
 
 ## Sócios (membership)
 
-- [ ] **Split "Sócios" into two pages**:
-  - [ ] **Tornar-me Sócio** — sign-up + **the benefits of being an associate**.
-  - [ ] **Área de Sócio** — members check their personal info, status, fees;
-        static placeholder + clear path to real access (no backend in v1).
-- [ ] **No membership spam on the front page** — at most one quiet link.
+- [x] **Split "Sócios" into two pages**:
+  - [x] **Tornar-me Sócio** (`/pt/tornar-me-socio/`, `Join.astro` + `join.md`) —
+        sign-up form + the benefits of being an associate + the 1 € fee.
+  - [x] **Área de Sócio** (`/pt/area-de-socio/`, `Members.astro` +
+        `members.md`) — members check their personal info, status, fees;
+        static placeholder with a clear path to real access (mock + email
+        route; no backend in v1 — data source still open above).
+- [x] **No membership spam on the front page** — one quiet link at the bottom
+      of the home (`home.joinQuiet`), never a pitch.
 
 ## New pages
 
-- [ ] **Donations page** (Doações) — how to help, what money buys, IBAN / MB WAY
-      placeholders, transparency note.
-- [ ] **Sponsors page** (Apoios/Parceiros) — tiers, placeholder sponsor logos
-      (local SVGs), "become a sponsor" CTA.
+- [x] **Donations page** (Doações, `/pt/doacoes/`) — what money buys
+      (5/25/100 € tiers), IBAN / MB WAY placeholders, transparency note.
+- [x] **Sponsors page** (Apoios, `/pt/apoios/`) — three tiers, "os níveis são
+      conversas, não catálogos", become-a-sponsor CTA.
 
 ## Content
 
@@ -141,32 +151,71 @@
         distinct SVG portrait per member (seeded by name).
   - [x] **Carousel per department** — CSS scroll-snap, focusable region,
         arrow keys scroll, zero JS.
-- [ ] **More events** — several new placeholder events (upcoming and past).
-- [ ] **About page redesign** — currently reads like a bad wiki.
+- [x] **More events** — 10 placeholder events, split 4 past / 6 upcoming as
+      of today (status is derived from dates, so the split happens on its own).
+- [x] **About page redesign** — mission statement first, prose beside the
+      cradle, values as colour panels, department map with accents; no longer
+      reads like a wiki entry.
 
 ## Design & tone
 
-- [ ] **Design overhaul — stop being square and bland** — soft radii, playful
-      shapes/motifs, asymmetric layouts, sticker energy where it fits.
-- [ ] **Use the palette** — blue, pink, yellow, green, orange all get real
-      screen time across pages.
-- [ ] **Voice** — funny and easygoing, serious when it matters (mission, money).
-      Copy pass across pages.
-- [ ] **The three cover PNGs** are near-identical placeholders shown only on
-      detail pages — replace with distinct art or drop.
+- [x] **Design overhaul — stop being square and bland** — soft radii
+      (`--radius-s/…/pill`), palette-identity panels and cards, the mark chips,
+      the line-follower robot down the page, the playable cradle.
+- [x] **Use the palette** — blue, pink, yellow, green, orange all carry real
+      screen time (departments, value panels, listing cards, accents).
+- [x] **Voice** — funny and easygoing, serious when it matters (mission,
+      money): copy pass done across pages (e.g. "o café é levado muito a
+      sério", "os níveis são conversas, não catálogos"). Real content should
+      keep this register.
+- [x] **The three cover PNGs** — resolved as "drop": no content entry sets
+      `cover:` any more and detail pages only render a cover when present, so
+      the near-identical art is never shown. The files remain in
+      `src/assets/covers/` (nothing gets deleted without Ricardo's OK — see
+      question below).
 
 ## Plumbing & housekeeping
 
-- [ ] Routes + nav + UI strings for the new pages in all three locales.
-- [ ] README/AGENTS/.agents sync: repo map update (Logo, Bulb, Flag,
-      ThemeToggle), theme.js decision recorded.
-- [ ] Verification: `npm run build` (0 errors/warnings), `npm run contrast`,
-      preview + 320 px + keyboard + reduced-motion, Lighthouse ≥ 95.
+- [x] **Routes + nav + UI strings for the new pages** — `members`, `donations`
+      in `routes.ts`/`PAGE_KEYS`, strings in `ui.ts`, footer links + cross-links
+      from Join. (The "three locales" of the old list is stale: there are two,
+      `pt` + `en-gb`, and both build.)
+- [x] **README/AGENTS/.agents sync** — repo map complete (Logo, Bulb, Flag,
+      ThemeToggle, Playground, Values, MemberForm, PlaceholderLink;
+      penpath.py, verify.mjs; the three client scripts), font row fixed
+      (Bricolage, wght-only variant), page keys in CONTRIBUTING and
+      content-model, theme.js decision recorded.
+- [x] **Verification** — full pass below.
 
-## Questions for Ricardo (answered: …)
+## Verification pass (25 Oct 2026)
 
-- Department full names: real expansions for DREE / DP / DL / DCI?
-- DL and DCI headcounts ("etc.")?
-- Área de Sócio "check their info": where does the data come from in v1 —
-  external form link, email, or a placeholder mock-up?
-- Donation details: real IBAN / MB WAY now or keep placeholders?
+All measured against the **built** output (a worktree at HEAD, served
+statically — the dev server injects ~1 MB of Vite/toolbar JS and must never be
+measured):
+
+- `npm run build` → `astro check`: 0 errors, 0 warnings.
+- `npm run contrast`: all pairs pass, light + dark.
+- `node scripts/verify.mjs` (now including the keyboard items): 320 px
+  overflow, one `h1`, no heading jumps, skip link first, no console errors,
+  reduced-motion end state, mobile `<details>` menu operable, project filters
+  operable — all pass on the 8 pt pages.
+- Lighthouse 13.5.0 (mobile emulation): performance **98–100**, accessibility
+  / best practices / SEO **100** on /pt/, /pt/projetos/, /pt/noticias/,
+  /pt/noticias/apresentacao-plink/, /pt/doacoes/.
+- Page weight (home, excl. images): **65 KB** (HTML 16 + CSS 7 + JS 2 gz,
+  font 40 KB woff2) — the ≤ 150 KB budget holds after switching the font to
+  the weight-only variable file (−91 KB).
+- Known noise in the working tree at the time of writing: the in-flight
+  `Logo.astro` work-in-progress renders `<image href="[object Object]">` in
+  the hero masks (404s in the console) and carries a ts(6133) hint. That is
+  uncommitted WIP by the logo pass, not a shipped regression — HEAD is clean.
+
+## Questions for Ricardo
+
+1. Department full names: real expansions for DREE / DP / DL / DCI?
+2. DL and DCI headcounts ("etc.")?
+3. Área de Sócio "check their info": where does the data come from in v1 —
+   external form link, email, or a placeholder mock-up?
+4. Donation details: real IBAN / MB WAY now or keep placeholders?
+5. **New:** the three cover PNGs in `src/assets/covers/` are now unreferenced
+   — OK to delete them, or keep for future content?
