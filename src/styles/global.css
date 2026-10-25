@@ -135,7 +135,7 @@ main {
 /** Responsive card grid used by listings. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(26rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(34rem, 100%), 1fr));
   gap: var(--space-m);
   padding: 0;
   margin: 0;
@@ -164,12 +164,24 @@ main {
  */
 
 .grid--chain {
-  column-gap: 0;
+  /* home rows stay rows: three pieces across at any width that fits them */
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  column-gap: var(--puzzle-seam);
   row-gap: var(--space-m);
 }
 
 .grid--puzzle {
-  gap: 0;
+  /* the seam is the cut line between die-cut edges: thin, and never zero —
+     at gap 0 the neighbours' faces cover each other's side walls and the
+     pieces flatten */
+  gap: var(--puzzle-seam);
+}
+
+/* the shallow 3D view: the whole assembly is seen at a slight angle, so the
+   slabs' side walls (the drop-shadows below) read as thickness */
+.grid--chain,
+.grid--puzzle {
+  transform: perspective(2200px) rotateX(7deg) rotateY(-2.5deg);
 }
 
 ul.grid--chain > *:not(.grid-gap),
@@ -177,8 +189,9 @@ ul.grid--puzzle > *:not(.grid-gap) {
   --r: var(--puzzle-knob);
   --tab-pct: 50%;
   --notch-pct: 50%;
+  --piece-accent: var(--card-accent, var(--panel-color, var(--color-accent)));
   --piece-fill: var(--color-surface);
-  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), var(--puzzle-bevel-dark));
+  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), var(--puzzle-wall-3));
   position: relative;
   isolation: isolate;
   padding: var(--space-l);
@@ -187,8 +200,8 @@ ul.grid--puzzle > *:not(.grid-gap) {
   border-radius: 0;
 }
 
-/* the beveled edge + cast shadow: the same silhouette grown 2px behind the
-   fill, so the rim reads as thickness and the shadow hugs tabs and notches */
+/* the piece body: the same silhouette grown 2px behind the fill = the die-
+   cut edge line; its drop-shadows are the side walls and the cast shadow */
 ul.grid--chain > *:not(.grid-gap)::before,
 ul.grid--puzzle > *:not(.grid-gap)::before {
   content: '';
@@ -200,7 +213,7 @@ ul.grid--puzzle > *:not(.grid-gap)::before {
   filter: var(--puzzle-lift);
 }
 
-/* the fill: the surface with a faint top-lit sheen */
+/* the fill: the top face — gently domed so the light reads on it */
 ul.grid--chain > *:not(.grid-gap)::after,
 ul.grid--puzzle > *:not(.grid-gap)::after {
   content: '';
@@ -208,7 +221,7 @@ ul.grid--puzzle > *:not(.grid-gap)::after {
   inset: var(--piece-inset);
   pointer-events: none;
   z-index: -1;
-  background-image: linear-gradient(180deg, color-mix(in srgb, var(--puzzle-bevel-light) 12%, var(--color-surface)), var(--color-surface) 40%);
+  background-image: linear-gradient(125deg, color-mix(in srgb, var(--piece-accent) 15%, var(--color-surface)) 0%, var(--color-surface) 48%, color-mix(in srgb, var(--puzzle-wall-2) 14%, var(--color-surface)) 100%);
   background-color: var(--piece-fill);
   transition: background-color var(--duration) var(--ease);
 }
@@ -228,7 +241,7 @@ ul.grid--puzzle > *:not(.grid-gap)::after {
 ul.grid--chain > *:not(.grid-gap):hover,
 ul.grid--puzzle > *:not(.grid-gap):hover {
   --piece-fill: color-mix(in srgb, var(--color-primary) 7%, var(--color-surface));
-  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), color-mix(in srgb, var(--color-primary) 35%, var(--puzzle-bevel-dark)));
+  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), color-mix(in srgb, var(--color-primary) 35%, var(--puzzle-wall-3)));
 }
 
 /* Joint tiles: one jigsaw knob, right-pointing (viewBox 100×60 — knob from
