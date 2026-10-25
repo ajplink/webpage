@@ -36,13 +36,8 @@ import penRoute from '../assets/logo/source/pen-route.txt?raw';---
   <defs>
     <!-- the pen route: geometry only — styled through <use> below -->
     <path id="pen-route" pathLength="1000" d={penRoute} fill="none" />
-    <!-- soft leading edge: ink soaks in behind the tip instead of
-         hard-cutting through dense junctions (the crossings) -->
-    <filter id="pen-soft" x="-5%" y="-5%" width="110%" height="110%">
-      <feGaussianBlur stdDeviation="10" />
-    </filter>
     <mask id="write-pen" maskUnits="userSpaceOnUse" x="0" y="0" width="4200" height="4200">
-      <use href="#pen-route" class="wordmark-pen" filter="url(#pen-soft)" />
+      <use href="#pen-route" class="wordmark-pen" />
       <!-- settle: specks the stroke misses fade in at the very end -->
       <rect class="wordmark-settle" x="0" y="0" width="4200" height="4200" fill="#fff" />
     </mask>

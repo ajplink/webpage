@@ -41,7 +41,6 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 ART = ROOT / "src/assets/logo/nome.svg"
 OUT = ROOT / "src/assets/logo/source/pen-route.txt"
-KREF = ROOT / "src/assets/logo/source/k-route.txt"
 
 # ---------------------------------------------------------------- render
 with tempfile.NamedTemporaryFile(suffix=".png") as tmp:
@@ -105,14 +104,12 @@ ANCHORS = [
     ("p: bowl, bottom",                975, 2250),
     ("p: bowl closes at the stem",     878, 2262),
     ("p: leaves towards the l",       1180, 2255),
-    # --- l: up the RIGHT strand first (Ricardo: the right loop before the
-    # left). The junction is a Y-fork: the bridge joins the stem's top, and
-    # just above, the stem forks into the loop's two strands — the stem's top
-    # segment is therefore ridden twice (up, then down after the loop).
-    ("bridge: p to l",                 1330, 2168),
-    ("l: the stem's top fork",         1392, 2145),
-    ("l: up the stem",                 1418, 2098),
-    ("l: the loop's fork",             1437, 2055),
+    # --- l (Ricardo's monoline drawing): the bridge rises straight into the
+    # loop's RIGHT strand, over the apex, down the LEFT strand, and the
+    # descent turns into the stem and the exit flick. A teardrop + flick —
+    # no fork, no retrace.
+    ("bridge: p to l",                 1310, 2185),
+    ("l: the junction",                1425, 2072),
     ("l: right strand, low",           1470, 2010),
     ("l: right strand, mid",           1510, 1830),
     ("l: right strand, high",          1560, 1500),
@@ -121,9 +118,8 @@ ANCHORS = [
     ("l: left strand, top",            1470, 1330),
     ("l: left strand, mid",            1420, 1550),
     ("l: left strand, low",            1378, 1900),
-    ("l: down to the fork",            1425, 2035),
-    ("l: the loop's fork again",       1437, 2055),
-    ("l: down the stem",               1395, 2170),
+    ("l: the junction again",          1425, 2072),
+    ("l: the stem",                    1412, 2160),
     ("l: stem base",                   1425, 2285),
     ("l: exit right",                  1520, 2310),
     ("bridge: l to i",                 1588, 2302),
@@ -141,7 +137,38 @@ ANCHORS = [
     ("n: arch 2 apex",                 2516, 1918),
     ("n: the exit leg",                2695, 2298),
     ("n: connector to the k",          2875, 2335),
+    # --- k (Ricardo's drawing, 24 Oct): the numbers are the writing order.
+    # 1 the bridge -> up the DIAGONAL to the fork -> 2 up the RIGHT strand
+    # (like an l) -> apex -> 3 down the left strand and the stem -> 4 the
+    # stem's bottom tip (a dip) -> back up the OTHER strand (the diagonal)
+    # -> 5 the hook -> 7 -> 6 the knot hairpin -> 8 the leg, out.
+    ("k: the bridge (1)",              2925, 2352),
+    ("k: up the diagonal",             3020, 2245),
+    ("k: the fork",                    3135, 2060),
+    ("k: right strand, low (2)",       3170, 1960),
+    ("k: right strand, mid",           3245, 1620),
+    ("k: right strand, high",          3215, 1390),
+    ("k: the apex",                    3167, 1252),
+    ("k: left strand, top (3)",        3060, 1330),
+    ("k: left strand, mid",            2985, 1600),
+    ("k: the stem, high",              2948, 1950),
+    ("k: the stem, low",               2952, 2150),
+    ("k: the stem's tip (4)",          2965, 2385),
+    ("k: back up the diagonal",        3020, 2245),
+    ("k: the fork again",              3135, 2060),
+    ("k: into the hook (5)",           3235, 1975),
+    ("k: the hook's top",              3320, 1925),
+    ("k: the hook's right",            3422, 2018),
+    ("k: the hook, coming down",       3355, 2145),
+    ("k: the knot's bottom edge",      3240, 2225),
+    ("k: the knot's left extreme",     3132, 2252),
+    ("k: the knot's top edge (7)",     3150, 2205),
+    ("k: the knot, out",               3245, 2160),
+    ("k: the leg (8)",                 3378, 2228),
+    ("k: the leg dips",                3490, 2315),
+    ("k: the rightmost point, done",   3595, 2352),
 ]
+
 
 
 def snap(vx, vy):
@@ -156,6 +183,7 @@ TIP_LABELS = {
     "p: the descender tip",
     "i: the top",
     "n: the middle leg",
+    "k: the stem's tip (4)",
 }
 
 
@@ -250,18 +278,6 @@ curve = snap_walk(curve)
 curve = reach_tips(curve, [ (px(x), py(y)) for label, x, y in ANCHORS if label in TIP_LABELS ])
 curve = extend_ends(curve)
 
-# the k: Ricardo's reference tool traced it right first try — its points are
-# taken VERBATIM (k-route.txt), only re-spaced for an even pen speed.
-kref = np.array([[px(float(a)), py(float(b))] for a, b in
-                 (line.split() for line in KREF.read_text().splitlines()
-                  if line.strip() and not line.startswith("#"))])
-# centre each point on the nearest skeleton point (the ink's true centerline):
-# Ricardo's route is taken as drawn, only nudged onto the middle of the stroke
-d2 = ((skel_pts[None, :, 0] - kref[:, None, 0]) ** 2 +
-      (skel_pts[None, :, 1] - kref[:, None, 1]) ** 2)
-near = d2.min(axis=1) <= 24 * 24
-kref[near] = skel_pts[d2.argmin(axis=1)[near]]
-curve = np.vstack([curve, kref])
 curve = resample(curve)
 d = " ".join(f"{'M' if i == 0 else 'L'}{ux(x):.0f},{uy(y):.0f}" for i, (x, y) in enumerate(curve))
 
