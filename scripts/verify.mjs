@@ -11,6 +11,7 @@
  *   - first Tab focuses the skip link
  *   - no console errors / page exceptions
  *   - reduced motion: the wordmark animation resolves to its end state
+ *   - keyboard: the mobile <details> menu and the project filters are operable
  * Exit code 1 on any failure.
  */
 import { spawn } from 'node:child_process';
@@ -149,6 +150,72 @@ const dash = await (async () =>
     returnByValue: true,
   })).result?.value)();
 report('/pt/', 'reduced motion shows the finished wordmark', dash === '0px', `dashoffset ${dash}`);
+
+/* keyboard: a key press that must ACTIVATE needs `text` — a bare
+ * rawKeyDown/keyUp never runs the activation behaviour of <summary>. */
+const js = async (expression) =>
+  (await cdp('Runtime.evaluate', { expression, returnByValue: true })).result?.value;
+const press = async (key, vk, text) => {
+  await cdp('Input.dispatchKeyEvent', {
+    type: 'keyDown', key, windowsVirtualKeyCode: vk,
+    ...(text ? { text, unmodifiedText: text } : {}),
+  });
+  await cdp('Input.dispatchKeyEvent', { type: 'keyUp', key, windowsVirtualKeyCode: vk });
+  await new Promise((r) => setTimeout(r, 80));
+};
+const focusTop = () => js('document.activeElement && document.activeElement.blur(); document.body.focus()');
+const tabTo = async (isThere, max = 40) => {
+  for (let i = 0; i < max; i++) {
+    await press('Tab', 9);
+    if (await isThere()) return i + 1;
+  }
+  return -1;
+};
+
+// keyboard: the mobile <details> menu opens and takes focus into its links
+await cdp('Emulation.setDeviceMetricsOverride', {
+  width: 320, height: 800, deviceScaleFactor: 1, mobile: true,
+});
+await cdp('Page.navigate', { url: base + '/pt/' });
+await new Promise((r) => setTimeout(r, 500));
+await focusTop();
+const summaryTab = await tabTo(
+  () => js(`document.activeElement.tagName === 'SUMMARY'`),
+);
+report('/pt/', 'keyboard: mobile menu summary is reachable', summaryTab > 0, `tab #${summaryTab}`);
+if (summaryTab > 0) {
+  await press('Enter', 13, '\r');
+  report('/pt/', 'keyboard: Enter opens the mobile menu',
+    await js(`document.querySelector('.nav-mobile').open === true`));
+  let inPanel = false;
+  for (let i = 0; i < 12 && !inPanel; i++) {
+    await press('Tab', 9);
+    inPanel = await js(`!!document.activeElement.closest('.nav-mobile-panel')`);
+  }
+  report('/pt/', 'keyboard: Tab continues into the menu links', inPanel);
+}
+
+// keyboard: the CSS-only project filters respond to keys
+await cdp('Page.navigate', { url: base + '/pt/projetos/' });
+await new Promise((r) => setTimeout(r, 500));
+await focusTop();
+const radioTab = await tabTo(
+  () => js(`document.activeElement.type === 'radio'`),
+);
+report('/pt/projetos/', 'keyboard: filter radios are reachable', radioTab > 0, `tab #${radioTab}`);
+if (radioTab > 0) {
+  const before = await js('document.activeElement.id');
+  await press('ArrowDown', 40);
+  const after = await js('document.activeElement.id');
+  report('/pt/projetos/', 'keyboard: arrow keys move the selection',
+    before !== after, `${before} → ${after}`);
+  const hidden = await js(`(() => {
+    const grid = document.querySelector('.projects-grid');
+    return grid ? [...grid.children].filter((el) => getComputedStyle(el).display === 'none').length : -1;
+  })()`);
+  report('/pt/projetos/', 'keyboard: the selection filters the grid (CSS :has)',
+    hidden > 0, `${hidden} card(s) hidden`);
+}
 
 console.log(failures ? `\n${failures} check(s) failed.` : '\nAll structural checks passed.');
 chrome.kill();
