@@ -5,6 +5,9 @@
 #   scripts/pages.sh off     take the page down (repo and history stay)
 #   scripts/pages.sh status  where is the page right now
 #
+# OFF is immediate at the origin; URLs people already visited may linger in
+# the GitHub CDN cache for up to 10 minutes (its max-age) before they 404.
+#
 # The mirror is the public repo the page deploys from; the private origin
 # keeps being the working repository. Override with PAGES_MIRROR=owner/name.
 set -euo pipefail
