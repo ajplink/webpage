@@ -29,7 +29,8 @@ npm run contrast   # WCAG contrast check of the design tokens
 | `astro` | Static site framework (fixed by the brief). Static output, no server. |
 | `@astrojs/sitemap` | `sitemap-index.xml` with hreflang alternates per locale. |
 | `@astrojs/rss` | Per-locale news feed at `/<locale>/rss.xml`. |
-| `@fontsource-variable/bricolage-grotesque` | Self-hosted variable font (Latin subset fetched at runtime via `unicode-range`), OFL-licensed, no CDN. One family for display and body. |
+| `@fontsource-variable/fraunces` | Self-hosted display serif (Latin subsets fetched at runtime via `unicode-range`), OFL-licensed, no CDN. "Standard" file keeps Fraunces' character axes (wonk/soft/opsz). |
+| `@fontsource-variable/space-grotesk` | Self-hosted body/UI sans (Latin subsets via `unicode-range`), OFL-licensed, no CDN. Weight-only variable file. |
 | `@astrojs/check`, `typescript` (dev) | `astro check` in `npm run build` (zero warnings enforced). |
 
 Nothing else. No UI framework, no CSS framework, no client JS. (Svelte will be
@@ -110,9 +111,11 @@ on 25 Oct 2026:
 the Astro dev toolbar (~1 MB of JS) and halves the performance score. Always
 measure the built output.
 
-Page weight (home, excluding images): **65 KB** — HTML 16 KB + CSS 7 KB + JS
-2 KB (all gzip) + Bricolage Grotesque Variable 40 KB (woff2, Latin subset,
-weight-only axes). Well inside the 150 KB budget. Images are excluded from the
+Page weight (home, excluding images): **112 KB** — HTML 16 KB + CSS 5 KB + JS
+2 KB (all gzip) + Fraunces 67 KB and Space Grotesk 22 KB (woff2, Latin subsets
+only; latin-ext/vietnamese stay unfetched thanks to `unicode-range`). Inside
+the 150 KB budget. (Was 65 KB with the single Bricolage family; the display
+serif is what carries the extra 47 KB.) Images are excluded from the
 budget and are emitted by Astro as AVIF/WebP with explicit dimensions.
 
 Reproduce (Lighthouse is intentionally not a project dependency):

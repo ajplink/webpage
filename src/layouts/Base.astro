@@ -3,9 +3,11 @@
  * Base layout — the only place that owns the document skeleton:
  * <head>, skip link, header, <main> and footer.
  */
-// wght-only variable font: the CSS uses font-weight and nothing else (no
-// stretch/optical axes), and the lighter file keeps the page inside budget.
-import '@fontsource-variable/bricolage-grotesque/wght.css';
+// One serif + one non-serif, and only those: Fraunces (display) +
+// Space Grotesk (body/UI). wght-only for the sans; Fraunces keeps its
+// character axes (standard) for the display type.
+import '@fontsource-variable/fraunces/standard.css';
+import '@fontsource-variable/space-grotesk/wght.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
 

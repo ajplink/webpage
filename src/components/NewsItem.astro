@@ -24,7 +24,7 @@ const { title, summary, date, tags } = item.data;
     <a href={href(locale, 'news', item.slug)}>{title}</a>
   </h3>
   <p class="summary">{summary}</p>
-  <p class="meta"><Icon name="calendar" size={16} /> <time datetime={date.toISOString().slice(0, 10)}>{formatDate(locale, date)}</time></p>
+  <p class="meta"><Icon name="calendar" size={15} /> <time datetime={date.toISOString().slice(0, 10)}>{formatDate(locale, date)}</time></p>
   {
     tags.length > 0 && (
       <ul class="tags" aria-label={t(locale, 'news.tags')}>
@@ -45,26 +45,14 @@ const { title, summary, date, tags } = item.data;
     gap: var(--space-3xs) var(--space-2xs);
     align-items: center;
     margin-top: auto;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: var(--step--1);
     color: var(--color-text-muted);
   }
 
   .meta :global(.icon) {
-    color: var(--color-accent);
-  }
-
-  .date {
-    display: flex;
-    gap: var(--space-3xs);
-    align-items: center;
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
-  }
-
-  .date :global(.icon) {
-    color: var(--palette-orange);
+    color: var(--card-accent, var(--color-accent));
+    flex-shrink: 0;
   }
 
   .title {

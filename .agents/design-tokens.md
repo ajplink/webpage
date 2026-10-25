@@ -40,11 +40,13 @@ so it flips to paper-white in the dark scheme. Shape language lives in
 - Yellow is decorative-only (1.85:1 on the light background) — never use it for
   small text.
 - Cards use **borders, not shadows** (`--shadow` exists for rare, tiny lift).
-- One type family: **Bricolage Grotesque Variable** (OFL) for display and
-  body, self-hosted Latin subset via `@fontsource-variable`, `font-display:
-  swap` (plus a system monospace stack for small data labels). Import the
-  **`wght.css`** variant: the styles use `font-weight` only, and the
-  weight-only file is 40 KB instead of 132 KB (keeps the page budget).
+- Two type families and only two: **Fraunces Variable** (OFL) for display,
+  **Space Grotesk Variable** (OFL) for body/UI — self-hosted Latin subsets via
+  `@fontsource-variable`, `font-display: swap`. Space Grotesk: import the
+  **`wght.css`** variant (styles use `font-weight` only). Fraunces: the
+  **`standard.css`** file keeps its character axes (wonk/soft/opsz) — that
+  character is the point of the serif. The system monospace stack is for
+  semantic code in prose only (`.prose code`), never for design labels.
 - Shared primitives live in `global.css` (`.container`, `.prose`, `.badge`,
   `.grid`, `.button`, `.panel`, `.band`, `.eyebrow`, `.lead`, `.skip-link`);
   component-specific rules stay scoped inside their `.astro` file.

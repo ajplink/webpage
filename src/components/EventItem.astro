@@ -27,9 +27,9 @@ const isoDate = date.toISOString().slice(0, 10);
     <a href={href(locale, 'events', event.slug)}>{title}</a>
   </h3>
   <p class="meta">
-    <Icon name="calendar" size={16} />
+    <Icon name="calendar" size={15} />
     <time datetime={isoDate}>{dateText}</time>
-    · <Icon name="pin" size={16} /> {location}
+    <Icon name="pin" size={15} /> {location}
     {status === 'cancelled' && <span class="badge badge--accent">{t(locale, 'events.cancelled')}</span>}
     {status === 'past' && <span class="badge">{t(locale, 'events.past')}</span>}
   </p>
@@ -46,28 +46,14 @@ const isoDate = date.toISOString().slice(0, 10);
     gap: var(--space-3xs) var(--space-2xs);
     align-items: center;
     margin-top: auto;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: var(--step--1);
     color: var(--color-text-muted);
   }
 
   .meta :global(.icon) {
-    color: var(--color-accent);
-  }
-
-  .date :global(.icon),
-  .location :global(.icon) {
-    color: var(--palette-blue);
-  }
-
-  .date {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2xs);
-    align-items: center;
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
+    color: var(--card-accent, var(--color-accent));
+    flex-shrink: 0;
   }
 
   .title {
@@ -81,14 +67,6 @@ const isoDate = date.toISOString().slice(0, 10);
 
   .title a:hover {
     color: var(--color-primary);
-  }
-
-  .location {
-    display: flex;
-    gap: var(--space-3xs);
-    align-items: center;
-    font-size: var(--step--1);
-    color: var(--color-text-muted);
   }
 
   .summary {
