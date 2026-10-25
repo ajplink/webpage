@@ -1,16 +1,16 @@
 ---
 /**
- * LanguageSwitch — segmented control: both languages visible at once, the
- * current one filled. Two links, one click, no menu — still zero JavaScript,
- * keyboard accessible, and the same control in the mobile nav panel.
- *
- * Alternatives considered (see TODO.md): a dropdown with full language
- * names and bigger flags, or a globe + code pill with a menu behind it.
+ * LanguageSwitch — flag dropdown linking to the same page in other locales.
+ * CSS-only (`<details>`), keyboard accessible, zero JavaScript. Every locale
+ * always exists for every route (content may fall back), so every entry is a
+ * real, working link. The trigger is borderless; the panel keeps the site's
+ * hairline border.
  */
 import { LOCALES, LOCALE_LABELS, HTML_LANG, type Locale } from '../config/site';
 import { alternates, type RouteKey } from '../i18n/routes';
 import { t } from '../i18n';
 import Flag from './Flag.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
@@ -22,7 +22,12 @@ const { locale, routeKey, entrySlug } = Astro.props;
 const alt = alternates(routeKey, entrySlug);
 ---
 
-<div class="lang" role="group" aria-label={t(locale, 'a11y.language')}>
+<details class="lang">
+  <summary aria-label={t(locale, 'a11y.language')}>
+    <Flag {locale} width={18} />
+    <span class="lang-label">{LOCALE_LABELS[locale]}</span>
+    <Icon name="chevron" size={14} />
+  </summary>
   <ul>
     {
       LOCALES.map((l) => (
@@ -40,53 +45,82 @@ const alt = alternates(routeKey, entrySlug);
       ))
     }
   </ul>
-</div>
+</details>
 
 <style>
   .lang {
-    display: inline-flex;
-    line-height: 1.2;
+    position: relative;
     font-size: var(--step--1);
   }
 
-  .lang ul {
-    display: flex;
-    line-height: 1.2;
-    padding: var(--space-3xs);
-    margin: 0;
-    list-style: none;
-    background-color: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-pill);
-  }
-
-  .lang li {
-    list-style: none;
-  }
-
-  .lang a {
+  .lang summary {
     display: inline-flex;
     gap: var(--space-3xs);
     align-items: center;
     padding: var(--space-3xs) var(--space-2xs);
-    font-size: var(--step--1);
-    font-weight: 650;
-    color: var(--color-text-muted);
-    text-decoration: none;
+    font-weight: 600;
+    color: var(--color-text);
+    cursor: pointer;
+    list-style: none;
     border-radius: var(--radius-pill);
-    transition:
-      color var(--duration) var(--ease),
-      background-color var(--duration) var(--ease);
+    transition: background-color var(--duration) var(--ease);
   }
 
-  .lang a:hover {
-    color: var(--color-text);
+  .lang summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang summary:hover {
     background-color: var(--color-tint);
   }
 
-  /* the current language is a filled chip — the page background on ink */
+  .lang summary :global(svg:last-child) {
+    color: var(--color-text-muted);
+    transition: transform var(--duration) var(--ease);
+  }
+
+  .lang[open] summary :global(svg:last-child) {
+    transform: rotate(180deg);
+  }
+
+  .lang ul {
+    position: absolute;
+    right: 0;
+    z-index: 6;
+    min-width: 9rem;
+    padding: var(--space-3xs);
+    margin-top: var(--space-3xs);
+    list-style: none;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    transform-origin: top right;
+    animation: lang-pop var(--duration) var(--ease) both;
+  }
+
+  @keyframes lang-pop {
+    from {
+      opacity: 0;
+      transform: translateY(-0.3rem);
+    }
+  }
+
+  .lang a {
+    display: flex;
+    gap: var(--space-2xs);
+    align-items: center;
+    padding: var(--space-2xs);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--radius-s);
+  }
+
+  .lang a:hover {
+    background-color: var(--color-tint);
+  }
+
   .lang a[aria-current='true'] {
-    color: var(--color-bg);
-    background-color: var(--color-text);
+    color: var(--color-primary);
+    background-color: var(--color-tint);
   }
 </style>
