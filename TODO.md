@@ -45,6 +45,12 @@
 
 ## Ricardo's batch (24 Oct)
 
+- [x] **Wordmark writes as ONE single stroke** — the multi-stroke model is
+      gone; the k follows Ricardo's reference trace verbatim
+      (`src/assets/logo/source/k-route.txt`), the l draws the right loop
+      first, the pencil is the real brush width (62) with a soft edge, and
+      a yellow marker dot rides the leading edge. `.agents/wordmark.md`
+      records the model, the knobs and the verification numbers.
 - [ ] **Favicon = the three strokes** — the wordmark's three yellow strokes
       again (as in commit `8670031`); the lightbulb favicon I drew is gone.
 - [ ] **Newton's cradle: icons inside the balls** — the caption legend is
