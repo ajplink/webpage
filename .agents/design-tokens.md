@@ -42,7 +42,9 @@ so it flips to paper-white in the dark scheme. Shape language lives in
 - Cards use **borders, not shadows** (`--shadow` exists for rare, tiny lift).
 - One type family: **Bricolage Grotesque Variable** (OFL) for display and
   body, self-hosted Latin subset via `@fontsource-variable`, `font-display:
-  swap` (plus a system monospace stack for small data labels).
+  swap` (plus a system monospace stack for small data labels). Import the
+  **`wght.css`** variant: the styles use `font-weight` only, and the
+  weight-only file is 40 KB instead of 132 KB (keeps the page budget).
 - Shared primitives live in `global.css` (`.container`, `.prose`, `.badge`,
   `.grid`, `.button`, `.panel`, `.band`, `.eyebrow`, `.lead`, `.skip-link`);
   component-specific rules stay scoped inside their `.astro` file.
