@@ -4,25 +4,31 @@
 # dependencies = ["pillow", "numpy"]
 # ///
 """
-penpath.py — derives the writing path(s) of the wordmark.
+penpath.py — derives the writing path of the wordmark.
 
     uv run scripts/penpath.py
 
-The word is NOT one stroke (Ricardo, 23 Oct 2026): the p writes itself, then
-the pen lifts to the l's loop (starting at its right side), writes l-i-n,
-lifts again and writes the k starting just like an l (loop -> vertical ->
-a loop -> a smaller loop -> the leg out).
+The word is ONE SINGLE STROKE (Ricardo, 24 Oct 2026): the pen never lifts.
+p -> bridge -> l -> bridge -> i -> n -> bridge -> k, where each "bridge" is
+the connecting ink between letters and is simply ridden along.
 
-Ordering rule: where strokes cross, the ink of the LATER stroke is claimed by
-the later stroke — e.g. the ascent into the l's loop claims only the right
-half of the crossing; the descent claims the left half and the stem later.
+The k (Ricardo's labelling): it arrives on the bridge (1), dips to the stem's
+bottom tip (4), up the stem (3), over the top of the tall loop, down the
+right strand (2), through the crossing, makes the 2nd loop (5), then the
+3rd loop / the knot (7 -> 6), and out the leg (8) — the word ends at the
+rightmost tip.
 
-Geometry: every stroke is a smooth curve through its choreography anchors,
-then snapped to the ink skeleton (the true centerline), so the pencil hugs
-the letterforms.
+Geometry: a smooth curve through the choreography anchors, then snapped to
+the ink skeleton (the true centerline), so the pencil hugs the letterforms.
 
-Output: src/assets/logo/source/pen-route.txt — one SVG path per line (one
-per stroke), in artwork coordinates (viewBox 483 1214 3083 1503).
+Output: src/assets/logo/source/pen-route.txt — ONE SVG path (one line), in
+artwork coordinates (viewBox 483 1214 3083 1503).
+
+The k is special: its route comes from Ricardo's reference trace (accepted
+24 Oct 2026, saved verbatim in src/assets/logo/source/k-route.txt) — the
+descent dives to the stem's bottom tip (4), returns, makes the hook (the
+2nd loop), hairpins around the knot's sliver (the 3rd loop) and exits on
+the leg (8). The points are snapped to the skeleton like everything else.
 """
 
 import subprocess
@@ -35,6 +41,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 ART = ROOT / "src/assets/logo/nome.svg"
 OUT = ROOT / "src/assets/logo/source/pen-route.txt"
+KREF = ROOT / "src/assets/logo/source/k-route.txt"
 
 # ---------------------------------------------------------------- render
 with tempfile.NamedTemporaryFile(suffix=".png") as tmp:
@@ -77,80 +84,63 @@ uy = lambda y: 1214 + (y / H) * 1503
 px = lambda vx: (vx - 483) / 3083 * W
 py = lambda vy: (vy - 1214) / 1503 * H
 
-# ------------------------------------------------------------- strokes
-# (label, [anchors in artwork units]) — order is the writing order.
-STROKES = [
-    ("p", [
-        ("p: leftmost point, the start",   520, 2330),
-        ("p: the tail rises",              640, 2250),
-        ("p: tail joins the stem",         775, 2170),
-        ("p: up to the top of the stem",   830, 1900),
-        ("p: DOWN the stem",               810, 2100),
-        ("p: into the descender",          817, 2450),
-        ("p: the descender tip",           819, 2700),
-        ("p: back up the stem",            822, 2450),
-        ("p: top of the stem again",       835, 1960),
-        ("p: bowl, top left",              905, 1875),
-        ("p: bowl, top",                  1015, 1855),
-        ("p: bowl, upper right",          1105, 1935),
-        ("p: bowl, right",                1114, 2040),
-        ("p: bowl, lower right",          1067, 2170),
-        ("p: bowl, bottom",                975, 2250),
-        ("p: bowl closes at the stem",     885, 2215),
-        ("p: leaves towards the l",       1180, 2255),
-    ]),
-    ("l", [
-        # pen lift from the p's connector onto the RIGHT side of the crossing:
-        # the ascent claims the crossing's right half only
-        ("l: begins on the right of the crossing", 1455, 2085),
-        ("l: loop right strand, low",      1470, 2010),
-        ("l: loop right strand, mid",      1510, 1830),
-        ("l: loop right strand, high",     1560, 1500),
-        ("l: near the apex, right",        1600, 1370),
-        ("l: the apex",                    1555, 1255),
-        ("l: loop left strand, top",       1470, 1330),
-        ("l: loop left strand, mid",       1420, 1550),
-        ("l: loop left strand, low",       1378, 1900),
-        ("l: the crossing, its left half", 1385, 2055),
-        ("l: down the stem (the vertical)",1410, 2150),
-        ("l: stem base",                   1425, 2285),
-        ("l: exit right",                  1520, 2310),
-    ]),
-    ("in", [
-        ("i: up the left strand, base",    1655, 2265),
-        ("i: up the left strand",          1695, 2100),
-        ("i: the top",                     1728, 2000),
-        ("i: down the right strand",       1765, 2110),
-        ("i: the bottom",                  1805, 2265),
-        ("i: exit right",                  1968, 2270),
-        ("n: rise into arch 1",            2085, 2135),
-        ("n: arch 1 apex",                 2268, 1968),
-        ("n: the middle leg",              2295, 2295),
-        ("n: rise into arch 2",            2450, 2055),
-        ("n: arch 2 apex",                 2516, 1918),
-        ("n: the exit leg",                2695, 2295),
-        ("n: connector to the k",          2875, 2335),
-    ]),
-    ("k", [
-        # pen lift: the k starts just like an l — on the right of its loop
-        ("k: begins on the right of its loop", 3105, 2225),
-        ("k: loop right strand, low",      3130, 2060),
-        ("k: loop right strand, mid",      3195, 1875),
-        ("k: loop right strand, high",     3245, 1620),
-        ("k: near the apex, right",        3215, 1390),
-        ("k: the apex",                    3167, 1252),
-        ("k: loop left strand, top",       3060, 1330),
-        ("k: loop left strand, mid",       2985, 1600),
-        ("k: loop left strand, low",       2948, 1950),
-        ("k: the vertical, down",          2950, 2150),
-        ("k: the vertical at the baseline",2958, 2365),
-        ("k: a loop, up right",            3040, 2270),
-        ("k: the smaller loop (the knot)", 3110, 2185),
-        ("k: the knot loops back",         3185, 2200),
-        ("k: the leg kicks out",           3370, 2040),
-        ("k: the leg curves down",         3480, 2180),
-        ("k: the rightmost point, done",   3559, 2315),
-    ]),
+# ---------------------------------------------------------- choreography
+# ONE stroke, in writing order (artwork units). Labels name the motion.
+ANCHORS = [
+    # --- p: up the stem, the descender dip, the bowl, out towards the l
+    ("p: leftmost tail tip, the start",  516, 2322),
+    ("p: the tail rises",              640, 2250),
+    ("p: tail joins the stem",         775, 2170),
+    ("p: up to the top of the stem",   830, 1900),
+    ("p: DOWN the stem",               810, 2100),
+    ("p: into the descender",          817, 2450),
+    ("p: the descender tip",           819, 2712),
+    ("p: back up the stem",            822, 2450),
+    ("p: top of the stem again",       835, 1960),
+    ("p: bowl, top left",              905, 1875),
+    ("p: bowl, top",                  1015, 1855),
+    ("p: bowl, upper right",          1105, 1935),
+    ("p: bowl, right",                1114, 2040),
+    ("p: bowl, lower right",          1067, 2170),
+    ("p: bowl, bottom",                975, 2250),
+    ("p: bowl closes at the stem",     878, 2262),
+    ("p: leaves towards the l",       1180, 2255),
+    # --- l: up the RIGHT strand first (Ricardo: the right loop before the
+    # left). The junction is a Y-fork: the bridge joins the stem's top, and
+    # just above, the stem forks into the loop's two strands — the stem's top
+    # segment is therefore ridden twice (up, then down after the loop).
+    ("bridge: p to l",                 1330, 2168),
+    ("l: the stem's top fork",         1392, 2145),
+    ("l: up the stem",                 1418, 2098),
+    ("l: the loop's fork",             1437, 2055),
+    ("l: right strand, low",           1470, 2010),
+    ("l: right strand, mid",           1510, 1830),
+    ("l: right strand, high",          1560, 1500),
+    ("l: near the apex, right",        1600, 1370),
+    ("l: the apex",                    1555, 1255),
+    ("l: left strand, top",            1470, 1330),
+    ("l: left strand, mid",            1420, 1550),
+    ("l: left strand, low",            1378, 1900),
+    ("l: down to the fork",            1425, 2035),
+    ("l: the loop's fork again",       1437, 2055),
+    ("l: down the stem",               1395, 2170),
+    ("l: stem base",                   1425, 2285),
+    ("l: exit right",                  1520, 2310),
+    ("bridge: l to i",                 1588, 2302),
+    # --- i + n
+    ("i: up the left strand, base",    1655, 2265),
+    ("i: up the left strand",          1695, 2100),
+    ("i: the top",                     1728, 1988),
+    ("i: down the right strand",       1765, 2110),
+    ("i: the bottom",                  1805, 2265),
+    ("i: exit right",                  1968, 2270),
+    ("n: rise into arch 1",            2085, 2135),
+    ("n: arch 1 apex",                 2268, 1968),
+    ("n: the middle leg",              2295, 2332),
+    ("n: rise into arch 2",            2450, 2055),
+    ("n: arch 2 apex",                 2516, 1918),
+    ("n: the exit leg",                2695, 2298),
+    ("n: connector to the k",          2875, 2335),
 ]
 
 
@@ -158,6 +148,15 @@ def snap(vx, vy):
     """nearest ink-skeleton point (the centerline)"""
     d = (skel_pts[:, 0] - px(vx)) ** 2 + (skel_pts[:, 1] - py(vy)) ** 2
     return tuple(skel_pts[int(np.argmin(d))])
+
+
+# the ink tips where the pen turns back (the skeleton stops short of these)
+TIP_LABELS = {
+    "p: up to the top of the stem",
+    "p: the descender tip",
+    "i: the top",
+    "n: the middle leg",
+}
 
 
 def catmull(points, samples=24):
@@ -213,30 +212,75 @@ def resample(points, step=6.0):
     return np.array(out)
 
 
-lines = []
-lengths = []
-for name, anchors in STROKES:
-    curve = catmull([snap(vx, vy) for _, vx, vy in anchors])
-    curve = snap_walk(curve)
-    curve = resample(curve)
-    d = " ".join(f"{'M' if i == 0 else 'L'}{ux(x):.0f},{uy(y):.0f}" for i, (x, y) in enumerate(curve))
-    lines.append(d)
-    lengths.append(sum(float(np.hypot(*(b - a))) for a, b in zip(curve, curve[1:])) or 1.0)
-    # quality check: distance from the ink
-    worst = 0
-    for x, y in curve:
-        xi, yi = int(round(x)), int(round(y))
-        for r in range(1, 30):
-            if any(ink[min(H - 1, max(0, yi + dy)), min(W - 1, max(0, xi + dx))]
-                   for dy in range(-r, r + 1) for dx in range(-r, r + 1)):
-                worst = max(worst, r)
-                break
-    print(f"stroke {name}: {len(curve)} points, max {worst}px off the ink")
+def reach_tips(points, tips, extra=12.0):
+    """push turnarounds through the ink tips: the skeleton stops short of the
+    brush's bulbous ends, so each tip anchor aims the path at the ink and a
+    touch beyond — the pencil's round cap then covers the rest."""
+    out = points.copy()
+    for tx, ty in tips:
+        i = int(np.argmin((out[:, 0] - tx) ** 2 + (out[:, 1] - ty) ** 2))
+        prev = out[max(0, i - 3)]
+        d = np.array([tx, ty], dtype=float) - prev
+        n = float(np.hypot(*d))
+        out[i] = np.array([tx, ty], dtype=float) + (d / n * extra if n > 1e-6 else 0)
+    return out
 
-OUT.write_text("\n".join(lines))
-total = sum(lengths)
-run = 0.0
-for (name, _), ln in zip(STROKES, lengths):
-    print(f"  window {name}: start {run / total:.3f} len {ln / total:.3f}")
-    run += ln
-print(f"-> {OUT.relative_to(ROOT)} ({len(lines)} strokes)")
+
+def extend_ends(points, end=8.0):
+    out = [points[0]]
+    for j in range(1, len(points)):
+        seg = points[j] - points[0]
+        if float(np.hypot(*seg)) > 1e-6:
+            out[0] = points[0] - seg / np.hypot(*seg) * end
+            break
+    for i in range(1, len(points) - 1):
+        out.append(points[i])
+    tail = points[-1]
+    for j in range(len(points) - 2, -1, -1):
+        seg = points[-1] - points[j]
+        if float(np.hypot(*seg)) > 1e-6:
+            tail = points[-1] + seg / np.hypot(*seg) * end
+            break
+    out.append(tail)
+    return np.array(out)
+
+
+curve = catmull([snap(vx, vy) for _, vx, vy in ANCHORS])
+curve = snap_walk(curve)
+curve = reach_tips(curve, [ (px(x), py(y)) for label, x, y in ANCHORS if label in TIP_LABELS ])
+curve = extend_ends(curve)
+
+# the k: Ricardo's reference tool traced it right first try — its points are
+# taken VERBATIM (k-route.txt), only re-spaced for an even pen speed.
+kref = np.array([[px(float(a)), py(float(b))] for a, b in
+                 (line.split() for line in KREF.read_text().splitlines()
+                  if line.strip() and not line.startswith("#"))])
+# centre each point on the nearest skeleton point (the ink's true centerline):
+# Ricardo's route is taken as drawn, only nudged onto the middle of the stroke
+d2 = ((skel_pts[None, :, 0] - kref[:, None, 0]) ** 2 +
+      (skel_pts[None, :, 1] - kref[:, None, 1]) ** 2)
+near = d2.min(axis=1) <= 24 * 24
+kref[near] = skel_pts[d2.argmin(axis=1)[near]]
+curve = np.vstack([curve, kref])
+curve = resample(curve)
+d = " ".join(f"{'M' if i == 0 else 'L'}{ux(x):.0f},{uy(y):.0f}" for i, (x, y) in enumerate(curve))
+
+# quality check: distance of every point from the ink
+worst = 0
+off = []
+for x, y in curve:
+    xi, yi = int(round(x)), int(round(y))
+    for r in range(1, 30):
+        if any(ink[min(H - 1, max(0, yi + dy)), min(W - 1, max(0, xi + dx))]
+               for dy in range(-r, r + 1) for dx in range(-r, r + 1)):
+            if r > 2:
+                off.append((r, ux(x), uy(y)))
+            worst = max(worst, r)
+            break
+print(f"one stroke: {len(curve)} points, max {worst}px off the ink")
+for r, x, y in sorted(off, reverse=True)[:6]:
+    print(f"  {r}px off near art ({x:.0f},{y:.0f})")
+
+OUT.write_text(d + "\n")
+print("  window: start 0.000 len 1.000")
+print(f"-> {OUT.relative_to(ROOT)} (1 stroke)")
