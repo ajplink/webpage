@@ -80,12 +80,12 @@
 
     /**
      * Layout: the balls fill the width minus a swing budget on each side
-     * (2.4r — a ball may travel a bit more than its own diameter), and the
-     * strings are between 2.2r and 3.2r so the drawing fills the canvas
-     * without ever pushing the floor out of it.
+     * (3.3r — the area is roomy both ways), and the strings are between
+     * 2.2r and 3.2r so the drawing fills the canvas without ever pushing
+     * the floor out of it.
      */
     geom(w, h) {
-      const r = Math.min(w / ((this.n - 1) * 2.04 + 6.8), h / 5.6);
+      const r = Math.min(w / ((this.n - 1) * 2.04 + 8.6), h / 5.6);
       const len = Math.min(3.2 * r, Math.max(2.2 * r, h * 0.88 - 1.85 * r));
       const cy = Math.max(8, (h - (len + 1.85 * r)) / 2);
       return { r, len, cx: w / 2, cy };
@@ -96,6 +96,17 @@
       const { r, len } = this.geom(w, h);
       const room = Math.max(0.1 * r, w / 2 - ((this.n - 1) / 2) * 2.04 * r - r - 2);
       return Math.min(1.05, Math.asin(Math.min(1, room / len)));
+    }
+
+    /** Walls at the canvas edge: no flick or release can push a ball out. */
+    clamp(i, max) {
+      if (this.theta[i] > max) {
+        this.theta[i] = max;
+        if (this.omega[i] > 0) this.omega[i] = 0;
+      } else if (this.theta[i] < -max) {
+        this.theta[i] = -max;
+        if (this.omega[i] < 0) this.omega[i] = 0;
+      }
     }
 
     anchor(i, w, h) {
@@ -161,6 +172,7 @@
         this.opening = false;
       }
       const sub = 6;
+      const max = this.swing(w, h);
       for (let s = 0; s < sub; s++) {
         const t = dt / sub;
         for (let i = 0; i < this.n; i++) {
@@ -191,6 +203,7 @@
             if (i + 1 !== this.drag) this.theta[i + 1] += push;
           }
         }
+        for (let i = 0; i < this.n; i++) if (i !== this.drag) this.clamp(i, max);
       }
 
       // come to rest for good: snap the residual jiggle away and sleep
