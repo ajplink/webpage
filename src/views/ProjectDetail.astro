@@ -23,13 +23,9 @@ interface Props {
 const { locale, slug } = Astro.props;
 const entry = await localizedEntry('projects', locale, slug);
 if (!entry) throw new Error(`Missing projects entry: ${slug}`);
-const { title, summary, status, tags, cover, links, hasSimulation } = entry.data;
+const { title, summary, tags, cover, links } = entry.data;
 const leads = await projectLeads(entry, locale);
 const { Content } = await render(entry);
-
-const statusKey = { idea: 'projects.status.idea', active: 'projects.status.active', completed: 'projects.status.completed' } as const;
-const statusBadgeClass =
-  status === 'active' ? 'badge badge--accent' : status === 'idea' ? 'badge badge--quiet' : 'badge';
 ---
 
 <Base
@@ -43,10 +39,6 @@ const statusBadgeClass =
 >
   <article class="container page">
     <header class="page-head">
-      <p class="eyebrow">
-        <span class={statusBadgeClass}>{t(locale, statusKey[status])}</span>
-        {hasSimulation && <span class="badge">{t(locale, 'projects.simulationPending')}</span>}
-      </p>
       <h1>{title}</h1>
       <p class="lead">{summary}</p>
     </header>

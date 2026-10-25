@@ -43,7 +43,6 @@ for (const project of featuredProjects) {
   routeKey="home"
 >
   <Hero
-    eyebrow={t(locale, 'home.eyebrow')}
     title={SITE.tagline[locale]}
     lead={SITE.description[locale]}
   >
@@ -57,7 +56,6 @@ for (const project of featuredProjects) {
     href={href(locale, 'events')}
     linkLabel={t(locale, 'home.viewAll')}
     accent="var(--palette-blue)"
-    icon="ticket"
   >
     {
       featuredEvents.length > 0 ? (
@@ -78,7 +76,6 @@ for (const project of featuredProjects) {
     href={href(locale, 'news')}
     linkLabel={t(locale, 'home.viewAll')}
     accent="var(--palette-orange)"
-    icon="newspaper"
   >
     {
       latestNews.length > 0 ? (
@@ -99,7 +96,6 @@ for (const project of featuredProjects) {
     href={href(locale, 'projects')}
     linkLabel={t(locale, 'home.viewAll')}
     accent="var(--palette-green)"
-    icon="flask"
   >
     {
       featuredProjects.length > 0 ? (

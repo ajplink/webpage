@@ -7,18 +7,16 @@
 import Logo from './Logo.astro';
 
 interface Props {
-  eyebrow: string;
   title: string;
   lead: string;
 }
 
-const { eyebrow, title, lead } = Astro.props;
+const { title, lead } = Astro.props;
 ---
 
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-text">
-      <p class="eyebrow">{eyebrow}</p>
       <h1>{title}</h1>
       <p class="lead">{lead}</p>
       <div class="hero-actions">

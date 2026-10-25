@@ -1,12 +1,8 @@
 ---
 /**
  * Card — generic bordered surface. Border, not shadow; subtle radius.
- * With `icon`, the card opens with a mark chip in its accent hue (the
- * palette system: each kind of content owns a colour AND a glyph).
+ * The palette system: each kind of content owns a hue (the card's accent).
  */
-import type { IconName } from '../lib/icons';
-import Icon from './Icon.astro';
-
 interface Props {
   /** HTML tag to render ('article', 'li', 'div'…). */
   as?: 'article' | 'li' | 'div';
@@ -14,13 +10,11 @@ interface Props {
   dataAttrs?: Record<string, string>;
   /** Duplicate of another card (marquee clone): hidden from assistive tech. */
   ariaHidden?: boolean;
-  /** Palette accent for this kind of content (paints the card's mark). */
+  /** Palette accent for this kind of content. */
   accent?: string;
-  /** Glyph for this kind of content (drawn in the mark chip). */
-  icon?: IconName;
 }
 
-const { as = 'article', dataAttrs = {}, ariaHidden, accent, icon } = Astro.props;
+const { as = 'article', dataAttrs = {}, ariaHidden, accent } = Astro.props;
 const Tag = as;
 ---
 
@@ -29,7 +23,7 @@ const Tag = as;
   {...dataAttrs}
   aria-hidden={ariaHidden ? 'true' : undefined}
   style={accent ? `--card-accent: ${accent}` : undefined}
->{icon && <span class="mark"><Icon name={icon} size={24} /></span>}<slot /></Tag>
+><slot /></Tag>
 
 <style>
   .card {

@@ -112,23 +112,10 @@ a:hover {
   margin-inline: auto;
 }
 
-/** Small label above a title (sentence case — no shouty all-caps). */
-.eyebrow {
-  display: inline-flex;
-  gap: var(--space-2xs);
-  align-items: center;
+/** Quiet meta line under a title (date, location) — nothing sits above titles. */
+.meta {
   font-size: var(--step--1);
-  font-weight: 600;
   color: var(--color-text-muted);
-}
-
-/** Ink dot before a label — the smallest unit of the palette system. */
-.eyebrow::before {
-  content: '';
-  width: 0.55em;
-  height: 0.55em;
-  background-color: var(--color-accent);
-  border-radius: var(--radius-pill);
 }
 
 /** Larger intro paragraph under a title. */

@@ -62,10 +62,6 @@ const ui = {
   'nav.sponsors': { pt: 'Apoios', 'en-gb': 'Sponsors' },
   'nav.privacy': { pt: 'Privacidade', 'en-gb': 'Privacy' },
 
-  'home.eyebrow': {
-    pt: 'Associação de juventude · Portugal',
-    'en-gb': 'Youth association · Portugal',
-  },
   'home.cta': {
     pt: 'Explorar projetos',
     'en-gb': 'Explore projects',

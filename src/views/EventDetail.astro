@@ -36,14 +36,13 @@ const { Content } = await render(entry);
 >
   <article class="container page">
     <header class="page-head">
-      <p class="eyebrow">
+      <h1>{title}</h1>
+      <p class="lead">{summary}</p>
+      <p class="meta">
         <time datetime={date.toISOString().slice(0, 10)}>{formatDateRange(locale, date, endDate)}</time>
         · {location}
         {status === 'cancelled' && <span class="badge badge--accent">{t(locale, 'events.cancelled')}</span>}
-        {status === 'past' && <span class="badge">{t(locale, 'events.past')}</span>}
       </p>
-      <h1>{title}</h1>
-      <p class="lead">{summary}</p>
       {
         status === 'upcoming' && registrationUrl && (
           <p>
