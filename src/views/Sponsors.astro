@@ -41,7 +41,7 @@ const placeholders = [
 
     <section class="sponsors-now" aria-labelledby="sponsors-now-title">
       <h2 id="sponsors-now-title">{t(locale, 'sponsors.current')}</h2>
-      <ul class="logo-grid">
+      <ul class="logo-grid grid--puzzle">
         {
           placeholders.map((sponsor, i) => (
             <li class="panel logo-card">
@@ -53,6 +53,9 @@ const placeholders = [
             </li>
           ))
         }
+        {/* a couple of empty slots: room for more sponsors */}
+        <li class="grid-gap" aria-hidden="true"></li>
+        <li class="grid-gap" aria-hidden="true"></li>
       </ul>
     </section>
 
@@ -99,11 +102,10 @@ const placeholders = [
 
   .logo-grid {
     display: grid;
-    gap: var(--space-s);
     padding: 0;
     margin: 0;
     list-style: none;
-    grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
   }
 
   .logo-card {

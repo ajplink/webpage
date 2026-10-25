@@ -38,9 +38,12 @@ const title = t(locale, 'nav.news');
       news.length > 0 ? (
         <>
           <h2 class="visually-hidden">{t(locale, 'news.allPosts')}</h2>
-          <ul class="grid">
-            {news.map((item) => (
-              <NewsItem {locale} {item} />
+          <ul class="grid grid--puzzle">
+            {news.map((item, i) => (
+              <>
+                <NewsItem {locale} {item} />
+                {(i === 2 || (i + 1) % 7 === 0) && <li class="grid-gap" aria-hidden="true"></li>}
+              </>
             ))}
           </ul>
         </>

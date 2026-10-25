@@ -94,10 +94,13 @@ const filterCss = [
     </div>
 
     <h2 class="visually-hidden">{t(locale, 'projects.allProjects')}</h2>
-    <ul class="grid projects-grid">
+    <ul class="grid grid--puzzle projects-grid">
       {
-        allProjects.map((project) => (
-          <ProjectCard {locale} {project} leads={leadNames.get(project.slug) ?? []} />
+        allProjects.map((project, i) => (
+          <>
+            <ProjectCard {locale} {project} leads={leadNames.get(project.slug) ?? []} />
+            {(i === 2 || (i + 1) % 7 === 0) && <li class="grid-gap" aria-hidden="true"></li>}
+          </>
         ))
       }
     </ul>

@@ -31,9 +31,12 @@ const title = t(locale, 'nav.events');
       <h2 id="events-upcoming">{t(locale, 'events.upcoming')}</h2>
       {
         upcoming.length > 0 ? (
-          <ul class="grid">
-            {upcoming.map((event) => (
-              <EventItem {locale} {event} />
+          <ul class="grid grid--puzzle">
+            {upcoming.map((event, i) => (
+              <>
+                <EventItem {locale} {event} />
+                {(i === 2 || (i + 1) % 7 === 0) && <li class="grid-gap" aria-hidden="true"></li>}
+              </>
             ))}
           </ul>
         ) : (
@@ -46,9 +49,12 @@ const title = t(locale, 'nav.events');
       <h2 id="events-past">{t(locale, 'events.past')}</h2>
       {
         past.length > 0 ? (
-          <ul class="grid">
-            {past.map((event) => (
-              <EventItem {locale} {event} />
+          <ul class="grid grid--puzzle">
+            {past.map((event, i) => (
+              <>
+                <EventItem {locale} {event} />
+                {(i === 2 || (i + 1) % 7 === 0) && <li class="grid-gap" aria-hidden="true"></li>}
+              </>
             ))}
           </ul>
         ) : (

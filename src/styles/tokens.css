@@ -133,10 +133,19 @@
   --radius-m: 1.75rem;
   --radius-l: 2.5rem;
   --radius-pill: 999px;
-  /** Puzzle-piece connectors on the main-page cards (Home.astro): knob =
-      grid gap + 4px so neighbouring pieces interlock; never bigger than
-      the card padding, so the notch never reaches the text. */
-  --puzzle-knob: calc(var(--space-xs) + 0.25rem);
+  /** Puzzle-piece connectors (`.grid--chain` / `.grid--puzzle`, global.css):
+      the knob protrudes this far — and cuts this deep into the neighbour —
+      so pieces genuinely interlock. Bigger pieces carry bigger joints; the
+      knob stays under the card padding (--space-l), so the notch never
+      reaches the text. */
+  --puzzle-knob: calc(var(--space-m) + 0.25rem);
+  /** Puzzle depth: the die-cut edge — warm cut-cardboard grey lit from the
+      top-left (bevel-light on the top/left rim, bevel-dark on the bottom/
+      right), and the soft cast shadow the pieces lift off the page with (a
+      filter value: it must follow the jigsaw silhouette, so drop-shadow). */
+  --puzzle-bevel-light: #e7e1d6;
+  --puzzle-bevel-dark: #b9b1a2;
+  --puzzle-lift: drop-shadow(0 3px 5px rgb(26 29 35 / 0.16));
 
   /** Rare, barely visible lift (cards use borders, not shadows). */
   --shadow: 0 1px 2px rgb(26 29 35 / 0.06);
@@ -204,6 +213,11 @@
 
     /* Shadows are invisible on dark backgrounds; borders carry the structure */
     --shadow: none;
+
+    /* Puzzle depth on dark: the bevel still reads, the cast shadow does not */
+    --puzzle-bevel-light: #39414e;
+    --puzzle-bevel-dark: #0d1015;
+    --puzzle-lift: none;
   }
 }
 
@@ -227,4 +241,7 @@
   --palette-orange: #ff9466;
   --palette-black: #12151b;
   --shadow: none;
+  --puzzle-bevel-light: #39414e;
+  --puzzle-bevel-dark: #0d1015;
+  --puzzle-lift: none;
 }

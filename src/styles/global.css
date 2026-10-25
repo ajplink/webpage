@@ -125,14 +125,185 @@ a:hover {
   max-width: var(--measure);
 }
 
+/* Die-cut silhouettes protrude into the container padding (and the odd
+   empty slot's tab past the grid edge); clip at main so they can never
+   create a page-level horizontal scrollbar. */
+main {
+  overflow-x: clip;
+}
+
 /** Responsive card grid used by listings. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(26rem, 100%), 1fr));
   gap: var(--space-m);
   padding: 0;
   margin: 0;
   list-style: none;
+}
+
+/* ------------------------------------------------------- puzzle pieces
+
+ * Card grids can become die-cut jigsaw pieces (kits assembling, problems
+ * solved together). Two variants, zero JS:
+ *   .grid--chain  — a row interlocks left-right only (the home page rows);
+ *   .grid--puzzle — pieces interlock in a real grid (listing pages), with
+ *                   `.grid-gap` empty slots — a puzzle mid-assembly.
+ * The joint is a real jigsaw knob — waisted neck, bulbous head, not a
+ * semicircle — drawn once as an SVG tile. The tab tile is added to the
+ * silhouette; the same tile is XOR'd out for the notch, so at gap 0 every
+ * tab exactly fills its neighbour's notch, and the later piece's rim paints
+ * over the inserted tab like a real joint. Joint heights walk through four
+ * positions (the nth-child rows below) so no two seams line up; joints on
+ * horizontal seams keep one width position on purpose — they must pair
+ * across rows under any column count, and auto-fill picks the columns.
+ * The silhouette is masked pseudo layers behind the content: text is never
+ * clipped. Depth: a beveled die-cut edge lit top-left + a soft cast shadow,
+ * both following the silhouette. Knob profile after the peacesllc connector
+ * (neck pinches, head bulges); knob and depth values live in tokens.css.
+ */
+
+.grid--chain {
+  column-gap: 0;
+  row-gap: var(--space-m);
+}
+
+.grid--puzzle {
+  gap: 0;
+}
+
+ul.grid--chain > *:not(.grid-gap),
+ul.grid--puzzle > *:not(.grid-gap) {
+  --r: var(--puzzle-knob);
+  --tab-pct: 50%;
+  --notch-pct: 50%;
+  --piece-fill: var(--color-surface);
+  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), var(--puzzle-bevel-dark));
+  position: relative;
+  isolation: isolate;
+  padding: var(--space-l);
+  background: none;
+  border: none;
+  border-radius: 0;
+}
+
+/* the beveled edge + cast shadow: the same silhouette grown 2px behind the
+   fill, so the rim reads as thickness and the shadow hugs tabs and notches */
+ul.grid--chain > *:not(.grid-gap)::before,
+ul.grid--puzzle > *:not(.grid-gap)::before {
+  content: '';
+  position: absolute;
+  inset: var(--piece-inset-grown);
+  pointer-events: none;
+  z-index: -2;
+  background-image: var(--piece-bevel);
+  filter: var(--puzzle-lift);
+}
+
+/* the fill: the surface with a faint top-lit sheen */
+ul.grid--chain > *:not(.grid-gap)::after,
+ul.grid--puzzle > *:not(.grid-gap)::after {
+  content: '';
+  position: absolute;
+  inset: var(--piece-inset);
+  pointer-events: none;
+  z-index: -1;
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--puzzle-bevel-light) 12%, var(--color-surface)), var(--color-surface) 40%);
+  background-color: var(--piece-fill);
+  transition: background-color var(--duration) var(--ease);
+}
+
+ul.grid--chain > *:not(.grid-gap)::before,
+ul.grid--puzzle > *:not(.grid-gap)::before,
+ul.grid--chain > *:not(.grid-gap)::after,
+ul.grid--puzzle > *:not(.grid-gap)::after {
+  mask-image: var(--piece-mask-image);
+  mask-position: var(--piece-mask-position);
+  mask-size: var(--piece-mask-size);
+  mask-repeat: no-repeat;
+  mask-composite: var(--piece-mask-composite);
+}
+
+/* hover: the piece warms up, never lifts (the no-after-click-effects rule) */
+ul.grid--chain > *:not(.grid-gap):hover,
+ul.grid--puzzle > *:not(.grid-gap):hover {
+  --piece-fill: color-mix(in srgb, var(--color-primary) 7%, var(--color-surface));
+  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), color-mix(in srgb, var(--color-primary) 35%, var(--puzzle-bevel-dark)));
+}
+
+/* Joint tiles: one jigsaw knob, right-pointing (viewBox 100×60 — knob from
+   the tile's centre-line rightward: tapered neck + r22 head) and its
+   downward twin (viewBox 60×100). Tile = 2 knobs wide/deep × 1.2 knobs
+   across the seam, so `100%`/`-var(--r)` positions land the tile's centre
+   exactly on the seam. */
+ul.grid--chain > *:not(.grid-gap),
+ul.grid--puzzle > *:not(.grid-gap) {
+  --joint-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Cpath fill='%23000' d='M50 17L64 15L64 45L50 43Z M98 30A22 22 0 1 1 54 30A22 22 0 1 1 98 30Z'/%3E%3C/svg%3E");
+  --joint-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 100'%3E%3Cpath fill='%23000' d='M13 50L15 64L45 64L47 50Z M30 98A22 22 0 1 1 30 54A22 22 0 1 1 30 98Z'/%3E%3C/svg%3E");
+}
+
+/* one piece, chain: tab right + notch left. The box grows by --r on the
+   right to house the tab (gradients never paint outside their layer box);
+   the body tile is the base, the notch is XOR'd out of it, the tab is
+   added last. */
+ul.grid--chain > *:not(.grid-gap) {
+  --piece-inset: 0 calc(-1 * var(--r)) 0 0;
+  --piece-inset-grown: -2px calc(-1 * var(--r) - 2px) -2px -2px;
+  --piece-mask-image: var(--joint-h), var(--joint-h), linear-gradient(#000, #000);
+  --piece-mask-position:
+    100% calc(var(--tab-pct) - var(--r) * 0.6),
+    calc(-1 * var(--r)) calc(var(--notch-pct) - var(--r) * 0.6),
+    0 0;
+  --piece-mask-size:
+    calc(2 * var(--r)) calc(1.2 * var(--r)),
+    calc(2 * var(--r)) calc(1.2 * var(--r)),
+    calc(100% - var(--r)) 100%;
+  --piece-mask-composite: add, exclude, add;
+}
+
+/* one piece, full grid: tab right + bottom, notch left + top. Same recipe,
+   plus the vertical pair; horizontal-seam joints sit at mid-width (they
+   must pair across rows at any column count). */
+ul.grid--puzzle > *:not(.grid-gap) {
+  --piece-inset: 0 calc(-1 * var(--r)) calc(-1 * var(--r)) 0;
+  --piece-inset-grown: -2px calc(-1 * var(--r) - 2px) calc(-1 * var(--r) - 2px) -2px;
+  --piece-mask-image: var(--joint-h), var(--joint-v), var(--joint-h), var(--joint-v), linear-gradient(#000, #000);
+  --piece-mask-position:
+    100% calc(var(--tab-pct) - var(--r) * 0.6),
+    50% 100%,
+    calc(-1 * var(--r)) calc(var(--notch-pct) - var(--r) * 0.6),
+    50% calc(-1 * var(--r)),
+    0 0;
+  --piece-mask-size:
+    calc(2 * var(--r)) calc(1.2 * var(--r)),
+    calc(1.2 * var(--r)) calc(2 * var(--r)),
+    calc(2 * var(--r)) calc(1.2 * var(--r)),
+    calc(1.2 * var(--r)) calc(2 * var(--r)),
+    calc(100% - var(--r)) calc(100% - var(--r));
+  --piece-mask-composite: add, add, exclude, exclude, add;
+}
+
+/* Joint heights: four positions, walked by child index. A piece's left
+   notch always sits at the height its left neighbour's tab uses (index−1),
+   so joined edges match; dangling ends keep the variety. */
+ul.grid--chain > *:nth-child(4n + 1),
+ul.grid--puzzle > *:nth-child(4n + 1) { --tab-pct: 34%; --notch-pct: 66%; }
+ul.grid--chain > *:nth-child(4n + 2),
+ul.grid--puzzle > *:nth-child(4n + 2) { --tab-pct: 58%; --notch-pct: 34%; }
+ul.grid--chain > *:nth-child(4n + 3),
+ul.grid--puzzle > *:nth-child(4n + 3) { --tab-pct: 44%; --notch-pct: 58%; }
+ul.grid--chain > *:nth-child(4n + 4),
+ul.grid--puzzle > *:nth-child(4n + 4) { --tab-pct: 66%; --notch-pct: 44%; }
+
+/** Empty puzzle slot: a piece not placed yet (puzzle grids only). */
+.grid-gap {
+  min-height: var(--space-xl);
+}
+
+@media (max-width: 30rem) {
+  .grid-gap {
+    display: none;
+  }
 }
 
 /* ------------------------------------------------------- sketch surfaces */

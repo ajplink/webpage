@@ -59,7 +59,7 @@ for (const project of featuredProjects) {
   >
     {
       featuredEvents.length > 0 ? (
-        <ul class="grid">
+        <ul class="grid grid--chain">
           {featuredEvents.map((event) => (
             <EventItem {locale} {event} />
           ))}
@@ -79,7 +79,7 @@ for (const project of featuredProjects) {
   >
     {
       latestNews.length > 0 ? (
-        <ul class="grid">
+        <ul class="grid grid--chain">
           {latestNews.map((item) => (
             <NewsItem {locale} {item} />
           ))}
@@ -99,7 +99,7 @@ for (const project of featuredProjects) {
   >
     {
       featuredProjects.length > 0 ? (
-        <ul class="grid">
+        <ul class="grid grid--chain">
           {featuredProjects.map((project) => (
             <ProjectCard {locale} {project} leads={leadNames.get(project.slug) ?? []} />
           ))}
@@ -119,76 +119,9 @@ for (const project of featuredProjects) {
 </Base>
 
 <style>
-  /* The main-page cards are puzzle pieces (kits assembling, problems solved
-     together): jigsaw silhouette with a tab right + bottom and a notch left +
-     top, so a row of them fits together. Shape and outline are masked pseudo
-     layers behind the content — the text is never clipped. Knob and gap come
-     from tokens (--puzzle-knob / --space-xs). */
-  .grid {
-    gap: var(--space-xs);
-  }
-
-  .grid :global(.card) {
-    position: relative;
-    isolation: isolate;
-    background: none;
-    border: none;
-    border-radius: 0;
-  }
-
-  .grid :global(.card)::before,
-  .grid :global(.card)::after {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    /* promote: the composited silhouette rasterises once, not per frame */
-    will-change: transform;
-    /* One jigsaw piece — Temani Afif's CSS jigsaw recipe
-       (css-shape.com/puzzle/), adapted: the box grows by --r on the right
-       and bottom to house the tab strips (gradients never paint outside
-       their layer box), the body is a sized tile that carries the top
-       notch in its base layer, the left notch is cut with `intersect`
-       (commutative — no composite-order traps), and the two tab tiles
-       are added last. Tabs right+bottom, notches left+top, so a row or
-       column of cards interlocks. */
-    --r: var(--puzzle-knob);
-    inset: 0 calc(-1 * var(--r)) calc(-1 * var(--r)) 0;
-    mask-image:
-      radial-gradient(var(--r), #000 calc(100% - 1px), #0000),
-      radial-gradient(var(--r), #000 calc(100% - 1px), #0000),
-      radial-gradient(var(--r) at left 50%, #0000 calc(100% - 1px), #000),
-      radial-gradient(var(--r) at 50% top, #0000 calc(100% - 1px), #000);
-    mask-position:
-      100% calc(50% - var(--r) / 2),
-      calc(50% - var(--r) / 2) 100%,
-      0 0,
-      0 0;
-    mask-size:
-      calc(2 * var(--r)) calc(2 * var(--r)),
-      calc(2 * var(--r)) calc(2 * var(--r)),
-      calc(100% - var(--r)) calc(100% - var(--r)),
-      calc(100% - var(--r)) calc(100% - var(--r));
-    mask-repeat: no-repeat;
-    mask-composite: add, add, intersect, add;
-  }
-
-  /* the hairline outline: the same silhouette grown 1.5px, behind the fill */
-  .grid :global(.card)::before {
-    inset: -1.5px calc(-1 * var(--r) - 1.5px) calc(-1 * var(--r) - 1.5px) -1.5px;
-    z-index: -2;
-    background-color: var(--color-border);
-    transition: background-color var(--duration) var(--ease);
-  }
-
-  .grid :global(.card):hover::before {
-    background-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
-  }
-
-  /* the fill */
-  .grid :global(.card)::after {
-    z-index: -1;
-    background-color: var(--color-surface);
-  }
+  /* Home rows are puzzle chains (.grid--chain): the three cards of a row
+     interlock left-right, tab into notch. The silhouette, depth and the
+     connect geometry live in global.css + tokens.css. */
 
   .quiet-join {
     padding-block: var(--space-l);
