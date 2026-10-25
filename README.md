@@ -138,6 +138,15 @@ attributes per locale, visible focus rings, 320 px without horizontal overflow,
 ## Hosting
 
 Output is hosting-agnostic: `dist/` after `npm run build`.
+
+**Public test page (GitHub Pages, free):** a public mirror deploys from
+`layzyoldman/webpage-test` at `https://layzyoldman.github.io/webpage-test/`.
+Its existence is one command: `scripts/pages.sh on` (sync + deploy) /
+`scripts/pages.sh off` (site 404s, repo and history stay) /
+`scripts/pages.sh status`. The deploy workflow computes the base path from
+the repo name, so the same build works at a domain root or under `/<repo>/`
+(`BASE_PATH` env). Pages ignores `public/_headers`, so security headers do
+not apply on the test page — fine for testing, not for production.
 `public/_headers` ships security headers (CSP without third-party origins,
 HSTS, frame denial) and cache policy (`/_astro/*` immutable, HTML revalidated
 by the host's ETag). COOP/COEP for future `/simulacoes/*` routes is prepared
