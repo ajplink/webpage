@@ -334,6 +334,21 @@ const ui = {
   },
   'form.submit': { pt: 'Enviar candidatura', 'en-gb': 'Send application' },
 
+  'subscribe.events.title': {
+    pt: 'Recebe os próximos eventos por email',
+    'en-gb': 'Get the next events by email',
+  },
+  'subscribe.news.title': {
+    pt: 'Recebe as notícias por email',
+    'en-gb': 'Get the news by email',
+  },
+  'subscribe.note': {
+    pt: 'Sem spam — só o que interessa, e cancelas quando quiseres.',
+    'en-gb': 'No spam — just what matters, and you can cancel anytime.',
+  },
+  'subscribe.email': { pt: 'O teu email', 'en-gb': 'Your email' },
+  'subscribe.submit': { pt: 'Subscrever', 'en-gb': 'Subscribe' },
+
   'play.title': {
     pt: 'Brincar com as ideias',
     'en-gb': 'Play with the ideas',

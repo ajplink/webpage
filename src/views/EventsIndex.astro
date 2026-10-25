@@ -9,6 +9,7 @@ import { t } from '../i18n';
 import Base from '../layouts/Base.astro';
 import Squiggle from '../components/Squiggle.astro';
 import EventItem from '../components/EventItem.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
 
 interface Props {
   locale: Locale;
@@ -55,6 +56,8 @@ const title = t(locale, 'nav.events');
         )
       }
     </section>
+
+    <SubscribeForm {locale} kind="events" />
   </div>
 </Base>
 

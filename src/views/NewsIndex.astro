@@ -8,6 +8,7 @@ import { t } from '../i18n';
 import Base from '../layouts/Base.astro';
 import Squiggle from '../components/Squiggle.astro';
 import NewsItem from '../components/NewsItem.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
 
 interface Props {
   locale: Locale;
@@ -46,6 +47,8 @@ const title = t(locale, 'nav.news');
         <p class="empty">{t(locale, 'home.empty')}</p>
       )
     }
+
+    <SubscribeForm {locale} kind="news" />
   </div>
 </Base>
 

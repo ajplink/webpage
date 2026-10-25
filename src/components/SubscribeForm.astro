@@ -1,0 +1,91 @@
+---
+/**
+ * SubscribeForm — "receive the events / the news by email", one per listing
+ * page. SUBMISSION: posts to `SITE.formUrl`, the one PLACEHOLDER endpoint
+ * (same story as MemberForm: one line in src/config/site.ts when the real
+ * endpoint exists — or add data-netlify="true" to this <form> on Netlify).
+ * Native HTML validation only (zero JavaScript); the CSP allows the form
+ * action (public/_headers).
+ */
+import { SITE, type Locale } from '../config/site';
+import { t } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Which list this subscribes to — picks the heading copy. */
+  kind: 'events' | 'news';
+}
+
+const { locale, kind } = Astro.props;
+---
+
+<form class="subscribe" action={SITE.formUrl} method="post">
+  <input type="hidden" name="tipo" value={`subscrever-${kind}`} />
+  <h2>{t(locale, kind === 'events' ? 'subscribe.events.title' : 'subscribe.news.title')}</h2>
+  <p class="note">{t(locale, 'subscribe.note')}</p>
+  <div class="row">
+    <p class="field">
+      <label for={`subs-email-${kind}`}>{t(locale, 'subscribe.email')}</label>
+      <input id={`subs-email-${kind}`} name="email" type="email" required autocomplete="email" />
+    </p>
+    <p class="actions">
+      <button class="button" type="submit">{t(locale, 'subscribe.submit')}</button>
+    </p>
+  </div>
+</form>
+
+<style>
+  .subscribe {
+    display: grid;
+    gap: var(--space-2xs);
+    padding: var(--space-m);
+    margin-top: var(--space-xl);
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .subscribe h2 {
+    font-size: var(--step-1);
+  }
+
+  .note {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    align-items: end;
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-3xs);
+    flex: 1 1 16rem;
+  }
+
+  .field label {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .field input {
+    width: 100%;
+    padding: var(--space-2xs);
+    font: inherit;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-s);
+  }
+
+  .field input:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-color: var(--color-focus);
+  }
+</style>
