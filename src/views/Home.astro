@@ -141,6 +141,8 @@ for (const project of featuredProjects) {
     content: '';
     position: absolute;
     pointer-events: none;
+    /* promote: the composited silhouette rasterises once, not per frame */
+    will-change: transform;
     /* One jigsaw piece — Temani Afif's CSS jigsaw recipe
        (css-shape.com/puzzle/), adapted: the box grows by --r on the right
        and bottom to house the tab strips (gradients never paint outside
