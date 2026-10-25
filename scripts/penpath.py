@@ -104,6 +104,7 @@ ANCHORS = [
     ("p: bowl, bottom",                975, 2250),
     ("p: bowl closes at the stem",     878, 2262),
     ("p: leaves towards the l",       1180, 2255),
+    ("p: the exit junction",           1302, 2180),
     # --- l (Ricardo's monoline drawing): the bridge rises straight into the
     # loop's RIGHT strand, over the apex, down the LEFT strand, and the
     # descent turns into the stem and the exit flick. A teardrop + flick —
@@ -114,15 +115,19 @@ ANCHORS = [
     ("l: right strand, mid",           1510, 1830),
     ("l: right strand, high",          1560, 1500),
     ("l: near the apex, right",        1600, 1370),
-    ("l: the apex",                    1555, 1255),
+    ("l: the apex",                    1545, 1262),
+    ("l: the apex junction",           1576, 1255),
+    ("l: the apex junction, left",     1504, 1279),
     ("l: left strand, top",            1470, 1330),
     ("l: left strand, mid",            1420, 1550),
     ("l: left strand, low",            1378, 1900),
     ("l: the junction again",          1425, 2072),
     ("l: the stem",                    1412, 2160),
-    ("l: stem base",                   1425, 2285),
+    ("l: stem base",                   1449, 2289),
     ("l: exit right",                  1520, 2310),
-    ("bridge: l to i",                 1588, 2302),
+    ("l: the exit flick junction",     1490, 2313),
+    ("bridge: l to i",                 1606, 2276),
+    ("bridge: l to i, end",            1655, 2265),
     # --- i + n
     ("i: up the left strand, base",    1655, 2265),
     ("i: up the left strand",          1695, 2100),
@@ -137,33 +142,39 @@ ANCHORS = [
     ("n: arch 2 apex",                 2516, 1918),
     ("n: the exit leg",                2695, 2298),
     ("n: connector to the k",          2875, 2335),
+    ("n: the bridge junction",         2853, 2320),
     # --- k (Ricardo's drawing, 24 Oct): the numbers are the writing order.
     # 1 the bridge -> up the DIAGONAL to the fork -> 2 up the RIGHT strand
     # (like an l) -> apex -> 3 down the left strand and the stem -> 4 the
     # stem's bottom tip (a dip) -> back up the OTHER strand (the diagonal)
     # -> 5 the hook -> 7 -> 6 the knot hairpin -> 8 the leg, out.
     ("k: the bridge (1)",              2925, 2352),
+    ("k: the diagonal junction",       2983, 2197),
     ("k: up the diagonal",             3020, 2245),
-    ("k: the fork",                    3135, 2060),
+    ("k: the fork",                    3079, 2053),
     ("k: right strand, low (2)",       3170, 1960),
     ("k: right strand, mid",           3245, 1620),
     ("k: right strand, high",          3215, 1390),
-    ("k: the apex",                    3167, 1252),
+    ("k: the apex",                    3145, 1270),
+    ("k: the apex junction",           3100, 1303),
     ("k: left strand, top (3)",        3060, 1330),
     ("k: left strand, mid",            2985, 1600),
     ("k: the stem, high",              2948, 1950),
     ("k: the stem, low",               2952, 2150),
     ("k: the stem's tip (4)",          2965, 2385),
     ("k: back up the diagonal",        3020, 2245),
-    ("k: the fork again",              3135, 2060),
+    ("k: the fork again",              3079, 2053),
     ("k: into the hook (5)",           3235, 1975),
     ("k: the hook's top",              3320, 1925),
     ("k: the hook's right",            3422, 2018),
-    ("k: the hook, coming down",       3355, 2145),
+    ("k: the hook, coming down",       3312, 2098),
+    ("k: the hook descent junction",   3271, 2152),
+    ("k: the knot junction",           3288, 2180),
     ("k: the knot's bottom edge",      3240, 2225),
     ("k: the knot's left extreme",     3132, 2252),
     ("k: the knot's top edge (7)",     3150, 2205),
     ("k: the knot, out",               3245, 2160),
+    ("k: the knot exit junction",      3319, 2207),
     ("k: the leg (8)",                 3378, 2228),
     ("k: the leg dips",                3490, 2315),
     ("k: the rightmost point, done",   3595, 2352),
@@ -176,6 +187,28 @@ def snap(vx, vy):
     d = (skel_pts[:, 0] - px(vx)) ** 2 + (skel_pts[:, 1] - py(vy)) ** 2
     return tuple(skel_pts[int(np.argmin(d))])
 
+
+# the crossing points: the midline has gaps at the junctions (the thinning
+# erodes the crossing blobs), so these anchors are NOT snapped — they are
+# the points the static artwork doesn't need and the write does (Ricardo).
+JUNCTION_LABELS = {
+    "p: the exit junction",
+    "l: the apex",
+    "l: the apex junction",
+    "l: the apex junction, left",
+    "l: stem base",
+    "l: the exit flick junction",
+    "n: the bridge junction",
+    "k: the diagonal junction",
+    "k: the fork",
+    "k: the fork again",
+    "k: the apex junction",
+    "k: the hook descent junction",
+    "k: the knot junction",
+    "k: the knot exit junction",
+    "bridge: l to i",
+    "bridge: l to i, end",
+}
 
 # the ink tips where the pen turns back (the skeleton stops short of these)
 TIP_LABELS = {
@@ -202,11 +235,16 @@ def catmull(points, samples=24):
     return np.array(out)
 
 
-def snap_walk(points, radius=14):
-    """slide every point onto the centerline, keeping continuity"""
+def snap_walk(points, radius=14, keep=()):
+    """slide every point onto the centerline, keeping continuity; points at
+    crossing junctions stay put (the midline has gaps there)"""
     out = []
     prev = None
     for x, y in points:
+        if any((x - k[0]) ** 2 + (y - k[1]) ** 2 < 12 * 12 for k in keep):
+            out.append((x, y))
+            prev = (x, y)
+            continue
         d2 = (skel_pts[:, 0] - x) ** 2 + (skel_pts[:, 1] - y) ** 2
         near = skel_pts[d2 < radius * radius]
         if len(near) == 0:
@@ -321,8 +359,11 @@ def extend_stop(points, end=8.0):
 def build(anchors):
     if len(anchors) == 1:
         anchors = anchors * 2
-    c = catmull([snap(vx, vy) for _, vx, vy in anchors])
-    c = snap_walk(c)
+    pts = [snap(vx, vy) if label not in JUNCTION_LABELS else (px(vx), py(vy))
+           for label, vx, vy in anchors]
+    c = catmull(pts)
+    keep = [np.array([px(vx), py(vy)]) for label, vx, vy in anchors if label in JUNCTION_LABELS]
+    c = snap_walk(c, keep=keep)
     c = reach_tips(c, [(px(x), py(y)) for label, x, y in anchors if label in TIP_LABELS])
     return resample(c)
 
@@ -378,6 +419,62 @@ for r, x, y in sorted(off, reverse=True)[:5]:
     print(f"  {r}px off near art ({x:.0f},{y:.0f})")
 
 OUT.write_text(d + "\n")
+
+# ------------------------------------------------- ownership mask images
+# Every ink pixel belongs to the pen whose path passes closest (ties go to
+# the later pen — it paints over, like a hand). This is the exact Voronoi
+# of the strands: rasterised and saved as mask images, because a band can
+# only approximate it and cut strands against each other.
+import json
+from PIL import Image as _Image, ImageDraw as _Draw
+
+CLAIMS = ROOT / "src/assets/logo/source/claims"
+CLAIMS.mkdir(exist_ok=True)
+h, w = ink.shape
+owner = np.zeros((h, w), dtype=np.int16) - 1
+dist = np.full((h, w), 1 << 30, dtype=np.int32)
+for si, c in enumerate(strands):
+    pts = [(float(x), float(y)) for x, y in c[1]]
+    step = np.full((h, w), 1 << 30, dtype=np.int32)
+    im = _Image.new("L", (w, h), 0)
+    dr = _Draw.Draw(im)
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        dr.line((x0, y0, x1, y1), fill=255, width=2)
+    r = 1
+    for x, y in pts:
+        dr.ellipse((x - r, y - r, x + r, y + r), fill=255)
+    near = np.array(im) > 0
+    step[near] = 1
+    # grow the band ring by ring: the first ring that reaches a pixel is its
+    # distance to this strand
+    cur = near.copy()
+    ring = 1
+    frontier = near.copy()
+    while frontier.any() and ring < 240:
+        im2 = _Image.new("L", (w, h), 0)
+        dr2 = _Draw.Draw(im2)
+        rr = ring + 1
+        for x, y in pts[::3]:
+            dr2.ellipse((x - rr, y - rr, x + rr, y + rr), fill=255)
+        grown = np.array(im2) > 0
+        new = grown & ~cur
+        step[new] = ring + 1
+        cur = grown
+        frontier = new
+        ring += 1
+    better = step < dist
+    tie = (step == dist) & (owner < si)  # ties go to the later pen
+    upd = (better | tie) & (step < (1 << 30))
+    owner[upd] = si
+    dist[upd] = step[upd]
+
+for si, c in enumerate(strands):
+    m = np.where(ink & (owner == si), 255, 0).astype(np.uint8)
+    _Image.fromarray(m, "L").save(CLAIMS / f"claim-{si:02d}.png")
+print(f"ownership masks: {len(strands)} written to {CLAIMS.relative_to(ROOT)}")
+leftover = int((ink & (owner < 0)).sum())
+print(f"ink owned by nobody: {leftover}px")
+
 import json
 UNITS = ROOT / "src/assets/logo/source/pen-units.json"
 UNITS.write_text(json.dumps(units, indent=1) + "\n")
