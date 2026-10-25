@@ -273,15 +273,95 @@ def extend_ends(points, end=8.0):
     return np.array(out)
 
 
-curve = catmull([snap(vx, vy) for _, vx, vy in ANCHORS])
-curve = snap_walk(curve)
-curve = reach_tips(curve, [ (px(x), py(y)) for label, x, y in ANCHORS if label in TIP_LABELS ])
-curve = extend_ends(curve)
+# --------------------------------------------------------------- strands
+# The route is one stroke, but the REVEAL is per strand: each strand's ink
+# may only appear when the pen rides THAT strand (Ricardo, 24 Oct: the
+# crossings must feel like actual writing). The strand list below cuts the
+# anchors into the ink's strands — anywhere two strands come within the
+# pencil's width (crossings, hairpins, forks), they must be separate.
+UNIT_STARTS = [
+    ("p-body",     "p: leftmost tail tip, the start"),
+    ("p-bowl",     "p: bowl, top left"),
+    ("bridge-pl",  "p: leaves towards the l"),
+    ("l-up",       "l: the junction"),
+    ("l-down",     "l: left strand, top"),
+    ("bridge-li",  "l: exit right"),
+    ("i-up",       "i: up the left strand, base"),
+    ("in-b",       "i: down the right strand"),
+    ("in-c",       "n: rise into arch 2"),
+    ("k-diag",     "k: the bridge (1)"),
+    ("k-up",       "k: right strand, low (2)"),
+    ("k-stem",     "k: left strand, top (3)"),
+    ("k-retrace",  "k: back up the diagonal"),
+    ("k-hook",     "k: into the hook (5)"),
+    ("k-knot-a",   "k: the knot's bottom edge"),
+    ("k-knot-b",   "k: the knot's top edge (7)"),
+    ("k-leg",      "k: the leg (8)"),
+]
 
-curve = resample(curve)
+
+def extend_start(points, end=8.0):
+    for j in range(1, len(points)):
+        seg = points[j] - points[0]
+        if float(np.hypot(*seg)) > 1e-6:
+            return np.vstack([points[0] - seg / np.hypot(*seg) * end, points])
+    return points
+
+
+def extend_stop(points, end=8.0):
+    tail = points[-1]
+    for j in range(len(points) - 2, -1, -1):
+        seg = points[-1] - points[j]
+        if float(np.hypot(*seg)) > 1e-6:
+            tail = points[-1] + seg / np.hypot(*seg) * end
+            break
+    return np.vstack([points, tail])
+
+
+def build(anchors):
+    if len(anchors) == 1:
+        anchors = anchors * 2
+    c = catmull([snap(vx, vy) for _, vx, vy in anchors])
+    c = snap_walk(c)
+    c = reach_tips(c, [(px(x), py(y)) for label, x, y in anchors if label in TIP_LABELS])
+    return resample(c)
+
+
+starts = {label: name for name, label in UNIT_STARTS}
+groups = []
+for entry in ANCHORS:
+    if entry[0] in starts:
+        groups.append([starts.pop(entry[0]), []])
+    groups[-1][1].append(entry)
+
+strands = []
+for name, anchors in groups:
+    c = build(anchors)
+    if name == UNIT_STARTS[0][0]:
+        c = extend_start(c)
+    if name == UNIT_STARTS[-1][0]:
+        c = extend_stop(c)
+    strands.append((name, c))
+
+lengths = [sum(float(np.hypot(*(b - a))) for a, b in zip(c, c[1:])) or 1.0 for _, c in strands]
+total = sum(lengths)
+run = 0.0
+units = []
+all_pts = []
+for (name, c), ln in zip(strands, lengths):
+    units.append({
+        "name": name,
+        "d": " ".join(f"{'M' if i == 0 else 'L'}{ux(x):.0f},{uy(y):.0f}" for i, (x, y) in enumerate(c)),
+        "start": round(run / total, 4),
+        "len": round(ln / total, 4),
+    })
+    all_pts.append(c)
+    print(f"  strand {name:11s} window {run / total:.3f} +{ln / total:.3f}")
+    run += ln
+
+curve = np.vstack(all_pts)
 d = " ".join(f"{'M' if i == 0 else 'L'}{ux(x):.0f},{uy(y):.0f}" for i, (x, y) in enumerate(curve))
 
-# quality check: distance of every point from the ink
 worst = 0
 off = []
 for x, y in curve:
@@ -294,9 +374,12 @@ for x, y in curve:
             worst = max(worst, r)
             break
 print(f"one stroke: {len(curve)} points, max {worst}px off the ink")
-for r, x, y in sorted(off, reverse=True)[:6]:
+for r, x, y in sorted(off, reverse=True)[:5]:
     print(f"  {r}px off near art ({x:.0f},{y:.0f})")
 
 OUT.write_text(d + "\n")
-print("  window: start 0.000 len 1.000")
-print(f"-> {OUT.relative_to(ROOT)} (1 stroke)")
+import json
+UNITS = ROOT / "src/assets/logo/source/pen-units.json"
+UNITS.write_text(json.dumps(units, indent=1) + "\n")
+print(f"-> {OUT.relative_to(ROOT)} (1 stroke, {len(units)} strands)")
+print(f"-> {UNITS.relative_to(ROOT)}")
