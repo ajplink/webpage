@@ -56,7 +56,7 @@ const inkPath = "M821 2717c-10.8-2.3-20-12.4-26-25.7-8.4-19.4-12.4-112.4-11.8-26
     {penStrands.map((s, i) => <path id={`strand-${i}`} pathLength="1000" d={s.d} fill="none" />)}
     {penStrands.map((s, i) => (
       <mask id={`claim-${i}`} maskUnits="userSpaceOnUse" x="0" y="0" width="4200" height="4200">
-        <image href={claims[i]} x="483" y="1214" width="3083" height="1503" style="image-rendering: pixelated" />
+        <image href={claims[s.claim]} x="483" y="1214" width="3083" height="1503" style="image-rendering: pixelated" />
       </mask>
     ))}
     {penStrands.map((s, i) => (

@@ -384,6 +384,13 @@ for name, anchors in groups:
         c = extend_stop(c)
     strands.append((name, c))
 
+# passes that ride the same ink share one claim (a pen that retraces its own
+# strand owns that ink once — no seams, no pen writing like a printer)
+GROUP = {name: ("diag" if name in ("k-diag", "k-retrace") else name) for name, _ in strands}
+gidx = {}
+for name, _ in strands:
+    gidx.setdefault(GROUP[name], len(gidx))
+
 lengths = [sum(float(np.hypot(*(b - a))) for a, b in zip(c, c[1:])) or 1.0 for _, c in strands]
 total = sum(lengths)
 run = 0.0
@@ -392,6 +399,7 @@ all_pts = []
 for (name, c), ln in zip(strands, lengths):
     units.append({
         "name": name,
+        "claim": gidx[GROUP[name]],
         "d": " ".join(f"{'M' if i == 0 else 'L'}{ux(x):.0f},{uy(y):.0f}" for i, (x, y) in enumerate(c)),
         "start": round(run / total, 4),
         "len": round(ln / total, 4),
@@ -433,8 +441,9 @@ CLAIMS.mkdir(exist_ok=True)
 h, w = ink.shape
 owner = np.zeros((h, w), dtype=np.int16) - 1
 dist = np.full((h, w), 1 << 30, dtype=np.int32)
-for si, c in enumerate(strands):
-    pts = [(float(x), float(y)) for x, y in c[1]]
+for name, c in strands:
+    si = gidx[GROUP[name]]
+    pts = [(float(x), float(y)) for x, y in c]
     step = np.full((h, w), 1 << 30, dtype=np.int32)
     im = _Image.new("L", (w, h), 0)
     dr = _Draw.Draw(im)
@@ -462,13 +471,75 @@ for si, c in enumerate(strands):
         cur = grown
         frontier = new
         ring += 1
-    better = step < dist
-    tie = (step == dist) & (owner < si)  # ties go to the later pen
-    upd = (better | tie) & (step < (1 << 30))
+    better = step < dist  # ties keep the first pen (it painted that ink)
+    upd = better & (step < (1 << 30))
     owner[upd] = si
     dist[upd] = step[upd]
 
-for si, c in enumerate(strands):
+# junction blobs: ink near a crossing belongs wholly to the earliest pen
+# whose path passes through the crossing
+p2 = [np.roll(np.roll(skel.astype(np.uint8), dy, 0), dx, 1) for dy, dx in
+      ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))]
+junc = skel & (sum(p2) >= 3)
+# only the real crossings (size-filtered clusters), not thinning noise
+from collections import deque as _dq
+_seen = np.zeros_like(junc)
+_big = []
+for jy, jx in zip(*np.where(junc)):
+    if _seen[jy, jx]:
+        continue
+    q = _dq([(jy, jx)]); _seen[jy, jx] = True; pts = []
+    while q:
+        cy, cx = q.popleft(); pts.append((cy, cx))
+        for dy in range(-3, 4):
+            for dx in range(-3, 4):
+                ny, nx = cy + dy, cx + dx
+                if 0 <= ny < h and 0 <= nx < w and junc[ny, nx] and not _seen[ny, nx]:
+                    _seen[ny, nx] = True; q.append((ny, nx))
+    if len(pts) >= 10:
+        _big.append((int(np.mean([a for a, _ in pts])), int(np.mean([b for _, b in pts]))))
+J_R = 20
+for jy, jx in _big:
+    if not ink[jy, jx]:
+        continue
+    best_si, best_d = -1, 1 << 30
+    for name, c in strands:
+        d = min((x - jx) ** 2 + (y - jy) ** 2 for x, y in c)
+        if d < best_d:
+            best_d, best_si = d, gidx[GROUP[name]]
+    if best_d <= J_R * J_R:
+        y0, y1 = max(0, jy - J_R), min(h, jy + J_R + 1)
+        x0, x1 = max(0, jx - J_R), min(w, jx + J_R + 1)
+        disk = np.zeros((h, w), dtype=bool)
+        yy, xx = np.ogrid[:h, :w]
+        disk |= ((yy - jy) ** 2 + (xx - jx) ** 2) <= J_R * J_R
+        owner[ink & disk] = best_si
+
+# the ink tips: one bulb of ink, painted whole by the pen that dips in
+for label, vx, vy in ANCHORS:
+    if label not in TIP_LABELS:
+        continue
+    jx, jy = px(vx), py(vy)
+    best_si, best_d = -1, 1 << 30
+    for name, c in strands:
+        d = min((x - jx) ** 2 + (y - jy) ** 2 for x, y in c)
+        if d < best_d:
+            best_d, best_si = d, gidx[GROUP[name]]
+    yy, xx = np.ogrid[:h, :w]
+    disk = ((yy - jy) ** 2 + (xx - jx) ** 2) <= 24 * 24
+    owner[ink & disk] = best_si
+
+for _ in range(2):
+    smoothed = owner.copy()
+    for si in range(len(strands)):
+        votes = np.zeros(owner.shape, dtype=np.int16)
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                votes += (np.roll(np.roll(owner, dy, 0), dx, 1) == si)
+        smoothed[(votes >= 5) & (owner != si) & ink] = si
+    owner = smoothed
+
+for si in range(len(groups)):
     m = np.where(ink & (owner == si), 255, 0).astype(np.uint8)
     _Image.fromarray(m, "L").save(CLAIMS / f"claim-{si:02d}.png")
 print(f"ownership masks: {len(strands)} written to {CLAIMS.relative_to(ROOT)}")
