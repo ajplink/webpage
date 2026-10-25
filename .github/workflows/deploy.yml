@@ -1,0 +1,58 @@
+# Build the Astro site and deploy it to GitHub Pages.
+#
+# The site serves at the repo root for <owner>.github.io repositories and at
+# /<repo>/ for project repositories — BASE_PATH is computed from the repo
+# name so both work (public/ ships a .nojekyll so _astro/ survives Pages).
+#
+# One manual step: Settings → Pages → Source → "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Compute base path (root for *.github.io repos, /<repo>/ otherwise)
+        id: base
+        run: |
+          name="${GITHUB_REPOSITORY#*/}"
+          if [ "$name" = "ajplink.github.io" ]; then
+            echo "base=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=/$name/" >> "$GITHUB_OUTPUT"
+          fi
+      - run: npm run build
+        env:
+          BASE_PATH: ${{ steps.base.outputs.base }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

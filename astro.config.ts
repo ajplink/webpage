@@ -8,6 +8,9 @@ import { SITE, LOCALES, DEFAULT_LOCALE, HTML_LANG } from './src/config/site';
 export default defineConfig({
   // Public origin of the deployed site. Placeholder until the real domain exists.
   site: SITE.url,
+  // Deploy base path: '/' at a domain root, '/<repo>/' on GitHub Pages project
+  // sites (the deploy workflow sets BASE_PATH from the repository name).
+  base: process.env.BASE_PATH || '/',
   output: 'static',
   // Directory-style output: every URL ends with "/" (canonical URLs follow the same rule).
   trailingSlash: 'ignore',

@@ -5,6 +5,7 @@
 import { SITE, type Locale } from '../config/site';
 import { publishedNews } from '../lib/content';
 import { t } from '../i18n';
+import { asset } from '../i18n/routes';
 import Base from '../layouts/Base.astro';
 import Squiggle from '../components/Squiggle.astro';
 import NewsItem from '../components/NewsItem.astro';
@@ -26,7 +27,7 @@ const title = t(locale, 'nav.news');
       <Squiggle class="head-squiggle" />
       {
         SITE.features.rss && (
-          <a class="link-arrow rss" href={`/${locale}/rss.xml`}>
+          <a class="link-arrow rss" href={asset(`${locale}/rss.xml`)}>
             {t(locale, 'news.rss')}
           </a>
         )

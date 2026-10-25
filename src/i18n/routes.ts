@@ -37,13 +37,25 @@ export const SECTION_COLLECTIONS = {
 
 export type SectionKey = keyof typeof SECTION_COLLECTIONS;
 
+/**
+ * Deployment base path: '' at a domain root, '/<repo>' on GitHub Pages
+ * project sites. Set BASE_PATH at build time (see astro.config.ts); Astro
+ * then exposes it as import.meta.env.BASE_URL.
+ */
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 /** Page keys that are plain (content-driven or listing) pages, no detail children. */
 export const PAGE_KEYS = ['about', 'team', 'events', 'news', 'projects', 'sponsors', 'join', 'members', 'donations', 'privacy'] as const satisfies readonly RouteKey[];
 
 /** URL path (with trailing slash) for a route, optionally for one entry. */
 export function href(locale: Locale, key: RouteKey, entrySlug?: string): string {
   const parts = [locale, ROUTES[key][locale], entrySlug].filter((p): p is string => Boolean(p));
-  return `/${parts.join('/')}/`;
+  return `${BASE}/${parts.join('/')}/`;
+}
+
+/** URL for a file in public/ (favicon, scripts…), respecting the base path. */
+export function asset(path: string): string {
+  return `${BASE}/${path.replace(/^\//, '')}`;
 }
 
 /** Absolute URL for a route. */

@@ -12,7 +12,7 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 
 import type { Locale } from '../config/site';
-import type { RouteKey } from '../i18n/routes';
+import { asset, type RouteKey } from '../i18n/routes';
 import { htmlLang, t } from '../i18n';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
@@ -40,13 +40,13 @@ const { locale, title, description, routeKey, entrySlug, image, type, noindex } 
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#12151b" media="(prefers-color-scheme: dark)" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
     <!-- Theme bootstrap: the one documented progressive enhancement (AGENTS.md).
          Applies a pinned light/dark scheme before first paint; without JS the
          OS preference decides. -->
-    <script is:inline src="/theme.js"></script>
-    <script is:inline src="/robot.js"></script>
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script is:inline src={asset('theme.js')}></script>
+    <script is:inline src={asset('robot.js')}></script>
+    <link rel="sitemap" href={asset('sitemap-index.xml')} />
     <SEO
       {locale}
       {title}

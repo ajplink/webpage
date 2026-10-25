@@ -5,7 +5,7 @@
  * No third-party requests: everything is self-hosted or inline.
  */
 import { DEFAULT_LOCALE, HTML_LANG, LOCALES, SITE, type Locale } from '../config/site';
-import { absoluteUrl, type RouteKey } from '../i18n/routes';
+import { absoluteUrl, asset, type RouteKey } from '../i18n/routes';
 import { t } from '../i18n';
 
 interface Props {
@@ -36,7 +36,7 @@ const {
 } = Astro.props;
 
 const canonical = absoluteUrl(locale, routeKey, entrySlug);
-const ogImage = image ?? `${SITE.url}/og-placeholder.png`;
+const ogImage = image ?? `${SITE.url}${asset('og-placeholder.png')}`;
 const fullTitle =
   routeKey === 'home' ? `${SITE.name} — ${SITE.tagline[locale]}` : `${title} · ${SITE.name}`;
 
@@ -69,7 +69,7 @@ const jsonLd = {
   rel="alternate"
   type="application/rss+xml"
   title={`${SITE.name} — ${t(locale, 'nav.news')}`}
-  href={`${SITE.url}/${locale}/rss.xml`}
+  href={`${SITE.url}${asset(`${locale}/rss.xml`)}`}
 />}
 
 <meta property="og:type" content={type} />

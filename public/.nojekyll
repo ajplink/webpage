@@ -1,0 +1,2 @@
+# GitHub Pages runs Jekyll by default and silently drops folders whose names
+# start with an underscore (our _astro/ assets). This file turns Jekyll off.

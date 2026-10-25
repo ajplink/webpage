@@ -6,7 +6,7 @@
  */
 import { type Locale } from '../config/site';
 import { localizedEntry, DEPARTMENTS, DEPT_ACCENT, type Department } from '../lib/content';
-import { href } from '../i18n/routes';
+import { asset, href } from '../i18n/routes';
 import { t } from '../i18n';
 import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
@@ -31,7 +31,7 @@ const { Content } = await render(page);
         <h1>{page.data.title}</h1>
         {page.data.summary && <p class="lead">{page.data.summary}</p>}
       </div>
-      <img class="head-bulb" src="/lampada.svg" alt="" width="180" height="228" loading="eager" decoding="async" />
+      <img class="head-bulb" src={asset('lampada.svg')} alt="" width="180" height="228" loading="eager" decoding="async" />
     </header>
 
     <div class="about-flow">

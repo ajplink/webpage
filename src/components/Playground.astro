@@ -8,6 +8,7 @@
  */
 import type { Locale } from '../config/site';
 import { t } from '../i18n';
+import { asset } from '../i18n/routes';
 import { ICON_PATHS, type IconName } from '../lib/icons';
 
 interface Props {
@@ -33,7 +34,7 @@ const described = `${t(locale, 'play.cradle')} — ${labels.join(' · ')}. ${t(l
   <canvas data-cradle data-icons={glyphs} role="img" aria-label={described}></canvas>
 </figure>
 
-<script is:inline src="/about-play.js"></script>
+<script is:inline src={asset('about-play.js')}></script>
 
 <style>
   .cradle {
