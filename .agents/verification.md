@@ -29,7 +29,9 @@ Targets: **≥ 95** in performance / accessibility / best practices / SEO
 (currently 100 across the tested pages) and ≤ 150 KB page weight excluding
 images (measure: gzip(HTML) + gzip(CSS) + fetched woff2).
 
-Structural sanity (Playwright + system Chromium works well):
+Structural sanity — `node scripts/verify.mjs http://localhost:4321` runs most
+of the checks below against a running site (system Chromium via CDP, no
+dependencies); keyboard reachability needs a manual pass:
 
 - 320 px viewport: no horizontal overflow (`documentElement.scrollWidth`).
 - One `h1` per page; no heading-level jumps.

@@ -10,7 +10,7 @@ Five collections, validated by Zod schemas in `src/content.config.ts`
 | `events` | `src/content/events/<locale>/<slug>.md` | `title`, `date`, `endDate?`, `location`, `summary`, `registrationUrl?`, `cancelled`, `cover?` | full description |
 | `news` | `src/content/news/<locale>/<slug>.md` | `title`, `date`, `summary`, `tags[]`, `draft`, `cover?` | MDX post |
 | `projects` | `src/content/projects/<locale>/<slug>.md` | `title`, `summary`, `status` (idea/active/completed), `tags[]`, `leads[]` (references to `team`), `links?`, `hasSimulation`, `cover?` | full description |
-| `pages` | `src/content/pages/<locale>/<slug>.md` | `title`, `summary?` | page text (`about`, `join`, `privacy` — file names are fixed keys) |
+| `pages` | `src/content/pages/<locale>/<slug>.md` | `title`, `summary?` | page text (`about`, `join`, `members`, `donations`, `sponsors`, `privacy` — file names are fixed keys) |
 
 ## Derived, never stored
 

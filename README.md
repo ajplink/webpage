@@ -29,7 +29,7 @@ npm run contrast   # WCAG contrast check of the design tokens
 | `astro` | Static site framework (fixed by the brief). Static output, no server. |
 | `@astrojs/sitemap` | `sitemap-index.xml` with hreflang alternates per locale. |
 | `@astrojs/rss` | Per-locale news feed at `/<locale>/rss.xml`. |
-| `@fontsource-variable/inter`, `@fontsource-variable/fraunces` | Self-hosted variable fonts (Latin subset fetched at runtime via `unicode-range`), OFL-licensed, no CDN. |
+| `@fontsource-variable/bricolage-grotesque` | Self-hosted variable font (Latin subset fetched at runtime via `unicode-range`), OFL-licensed, no CDN. One family for display and body. |
 | `@astrojs/check`, `typescript` (dev) | `astro check` in `npm run build` (zero warnings enforced). |
 
 Nothing else. No UI framework, no CSS framework, no client JS. (Svelte will be
@@ -51,13 +51,17 @@ src/components/         Header, Footer, SEO, Hero, Section, Card, TeamCard,
                         EventItem, NewsItem, ProjectCard, Tag, Prose,
                         Logo (wordmark), Bulb (mark), Icon (SVG icon set),
                         Squiggle, Flag, LanguageSwitch, ThemeToggle,
+                        Playground, Values, MemberForm, PlaceholderLink,
                         SimulationSlot
 src/views/              one file per page type (routes stay thin)
 src/pages/              routes: [locale]/…, RSS, robots.txt, 404, root mirror
 public/                 _headers, favicon.svg, lampada.svg, og-placeholder.png,
-                        theme.js (the one documented progressive enhancement)
+                        theme.js, about-play.js, robot.js (the three documented
+                        client scripts — see AGENTS.md; zero JS beyond them)
 scripts/contrast.mjs    token contrast checker (npm run contrast)
 scripts/avatars.mjs     regenerates the placeholder SVG team portraits
+scripts/verify.mjs      structural checks vs a running site (CDP, no deps)
+scripts/penpath.py      wordmark pen-route geometry (see .agents/wordmark.md)
 CONTRIBUTING.md         how to add content (pt)
 AGENTS.md, .agents/     invariants and guides for future development
 ```
@@ -70,13 +74,15 @@ AGENTS.md, .agents/     invariants and guides for future development
    Then run `npm run contrast` — all pairs must stay ≥ 4.5:1 (AA).
    Dark mode overrides are in the same file, at the bottom.
 2. **Fonts** — `src/styles/tokens.css`, `--font-sans` / `--font-display`, plus the
-   two `@fontsource-variable/…` imports in `src/layouts/Base.astro` (max 2 families).
+   `@fontsource-variable/…` import in `src/layouts/Base.astro` (one family today).
 3. **Identity** — `src/config/site.ts`: name, legal name, NIPC, address, e-mail,
    social links, tagline, description, footer text.
 4. **URLs** — localized slugs live in `src/i18n/routes.ts` (one line per locale).
 5. **Favicon / OG image** — `public/favicon.svg` and `public/og-placeholder.png`
-   mirror the palette by hand (SVG favicons can't read CSS variables); regenerate
-   the placeholder covers in `src/assets/covers/` if you want brand-consistent art.
+   mirror the palette by hand (SVG favicons can't read CSS variables). The
+   placeholder covers in `src/assets/covers/` are currently unreferenced (no
+   content entry sets `cover:`) — bring them back on brand if content starts
+   using covers again.
 
 ## Adding content
 

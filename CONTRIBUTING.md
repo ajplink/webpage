@@ -118,10 +118,11 @@ Nota sobre `leads`: o valor é a pasta do idioma seguida do nome do ficheiro da
 pessoa, sem `.md` — `src/content/team/pt/ana-silva.md` → `pt/ana-silva`.
 O site resolve automaticamente a versão traduzida da pessoa na página inglesa.
 
-## 5. Alterar uma página (Sobre, Juntar, Privacidade)
+## 5. Alterar uma página (Sobre, Sócios, Doações, Apoios, Privacidade)
 
 Os textos destas páginas vivem em `src/content/pages/<idioma>/` com nomes fixos:
-`about.md`, `join.md`, `privacy.md`. Não mude estes nomes (as URLs são traduzidas
+`about.md`, `join.md`, `members.md`, `donations.md`, `sponsors.md`, `privacy.md`.
+Não mude estes nomes (as URLs são traduzidas
 noutro sítio — ver `.agents/i18n.md`). Editar = abrir o ficheiro e alterar o
 Markdown.
 
