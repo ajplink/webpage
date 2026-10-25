@@ -3,7 +3,9 @@
  * Base layout — the only place that owns the document skeleton:
  * <head>, skip link, header, <main> and footer.
  */
-import '@fontsource-variable/bricolage-grotesque/standard.css';
+// wght-only variable font: the CSS uses font-weight and nothing else (no
+// stretch/optical axes), and the lighter file keeps the page inside budget.
+import '@fontsource-variable/bricolage-grotesque/wght.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
 
