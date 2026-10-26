@@ -11,6 +11,7 @@ import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
 import Icon from '../components/Icon.astro';
 import PlaceholderLink from '../components/PlaceholderLink.astro';
+import PieceArt from '../components/PieceArt.astro';
 
 interface Props {
   locale: Locale;
@@ -45,6 +46,7 @@ const placeholders = [
         {
           placeholders.map((sponsor, i) => (
             <li class="panel logo-card">
+              <PieceArt />
               <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
                 <path d={sponsor.mark} fill="none" stroke={sponsor.color} stroke-width="1.8" stroke-linejoin="round" />
               </svg>

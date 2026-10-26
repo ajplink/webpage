@@ -38,10 +38,12 @@
   );
   publish();
 
-  /* 2. blocks show up as you scroll down (after the DOM exists) */
+  /* 2. blocks show up as you scroll down (after the DOM exists). Cards are
+        never in this list: their info must be readable the moment the page
+        paints (and the reveal's transform would fight the hover zoom). */
   const reveal = () => {
   const targets = document.querySelectorAll(
-    'main .page-head, main section, main .panel, .card, .value, figure, .join-form, .sponsors-now, .quiet-join',
+    'main .page-head, main section, main .panel, .value, figure, .join-form, .sponsors-now, .quiet-join',
   );
   const io = new IntersectionObserver(
     (entries) => {
