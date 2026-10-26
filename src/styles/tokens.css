@@ -138,7 +138,7 @@
       the edge (a third of the piece height) and protrudes 38% of it into
       the neighbour. Card padding is half the tile, so a socket can never
       reach the text. */
-  --puzzle-knob: clamp(10.5rem, 9rem + 4vw, 12.5rem);
+  --puzzle-knob: clamp(11rem, 9.5rem + 4vw, 13rem);
   /** The seam between die-cut pieces. Not zero and not hairline: the gap is
       where each slab's side wall shows — at gap 0 the neighbours' faces
       cover each other's walls and the 3D dies. The knob bridges it. */
