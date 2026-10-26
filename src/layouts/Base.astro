@@ -6,7 +6,9 @@
 // One serif + one non-serif, and only those: Fraunces (display) +
 // Space Grotesk (body/UI). wght-only for the sans; Fraunces keeps its
 // character axes (standard) for the display type.
+import frauncesWoff2 from '@fontsource-variable/fraunces/files/fraunces-latin-standard-normal.woff2';
 import '@fontsource-variable/fraunces/standard.css';
+import spaceGroteskWoff2 from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2';
 import '@fontsource-variable/space-grotesk/wght.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
@@ -40,6 +42,10 @@ const { locale, title, description, routeKey, entrySlug, image, type, noindex } 
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#12151b" media="(prefers-color-scheme: dark)" />
+    <!-- the two Latin faces the page paints text with: fetch them in
+         parallel with the CSS instead of after it parses -->
+    <link rel="preload" href={frauncesWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={spaceGroteskWoff2} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
     <!-- Theme bootstrap: the one documented progressive enhancement (AGENTS.md).
          Applies a pinned light/dark scheme before first paint; without JS the

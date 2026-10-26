@@ -65,4 +65,16 @@
   document.readyState === 'loading'
     ? document.addEventListener('DOMContentLoaded', reveal)
     : reveal();
+
+  /* 3. the wordmark's write waits for load + a free frame (see Logo.astro):
+        the site is interactive immediately, the word writes a beat later. */
+  const releaseWrite = () => {
+    const go = () => document.documentElement.classList.add('wordmark-go');
+    'requestIdleCallback' in window
+      ? requestIdleCallback(go, { timeout: 1200 })
+      : setTimeout(go, 300);
+  };
+  document.readyState === 'complete'
+    ? releaseWrite()
+    : window.addEventListener('load', releaseWrite, { once: true });
 })();

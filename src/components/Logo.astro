@@ -183,6 +183,18 @@ const inkPath = "M821 2717c-10.8-2.3-20-12.4-26-25.7-8.4-19.4-12.4-112.4-11.8-26
     fill: var(--logo-spark);
   }
 
+  /* With JS the write is held paused until `wordmark-go` lands on <html>
+     (robot.js, after load + idle): the page paints instantly and the word
+     writes itself a beat later. Without JS nothing pauses and the write
+     plays on load as always. Paused with `both` fill = the blank start
+     state, so there is no flash of the finished word. */
+  html.js:not(.wordmark-go) .wordmark--draw .wordmark-pen,
+  html.js:not(.wordmark-go) .wordmark--draw .wordmark-tip,
+  html.js:not(.wordmark-go) .wordmark--draw .wordmark-settle,
+  html.js:not(.wordmark-go) .wordmark--draw .wordmark-sparks {
+    animation-play-state: paused;
+  }
+
   /* Static default = the finished word. The animation only replays it.
      Each strand reveals during its own window (arc-length proportional,
      so the pen moves at a constant speed across the whole word). */
