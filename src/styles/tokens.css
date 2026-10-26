@@ -138,33 +138,22 @@
       the edge (a third of the piece height) and protrudes 38% of it into
       the neighbour. Card padding is half the tile, so a socket can never
       reach the text. */
-  --puzzle-knob: clamp(12rem, 10rem + 5vw, 14.5rem);
-  /** The cut line between die-cut pieces: thin, never zero — at gap 0 the
-      neighbours' faces cover each other's side walls and the 3D flattens. */
-  --puzzle-seam: 2px;
-  /** Puzzle depth — the pieces are thick extruded slabs seen at a shallow
-      angle (the grid tilts in global.css): a bright chamfer on the lit
-      edges, a ten-step side wall (20px of extrusion, tinted by the piece's
-      accent) and a big soft cast shadow. One filter value: drop-shadows
-      must follow the jigsaw silhouette. */
-  --puzzle-bevel-light: #f5f0e6;
-  --puzzle-wall-1: #d8d0bf;
-  --puzzle-wall-2: #b6ab93;
-  --puzzle-wall-3: #8f8368;
-  --puzzle-wall-mix: color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1));
-  --puzzle-lift:
-    drop-shadow(-3px -3px 0 var(--puzzle-bevel-light))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 0%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 11%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 22%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 33%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 44%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 56%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 67%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 78%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 89%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 100%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 30%, var(--puzzle-wall-1))))
-    drop-shadow(0 30px 34px rgb(26 29 35 / 0.30));
+  --puzzle-knob: clamp(10.5rem, 9rem + 4vw, 12.5rem);
+  /** The seam between die-cut pieces. Not zero and not hairline: the gap is
+      where each slab's side wall shows — at gap 0 the neighbours' faces
+      cover each other's walls and the 3D dies. The knob bridges it. */
+  --puzzle-seam: 14px;
+  /** Puzzle depth — the pieces are matte extruded slabs seen at a shallow
+      angle (the grid tilts in global.css): no gloss, no gradients — flat
+      coloured faces, a flat bright chamfer on the lit edges, and a twenty-
+      pixel side wall that is always the piece's accent colour, deepening
+      toward the cut edge. One filter value: drop-shadows must follow the
+      jigsaw silhouette. */
+  --puzzle-bevel-light: #ffffff;
+  --puzzle-wall-1: #9a9184;
+  --puzzle-wall-2: #5f584d;
+  --puzzle-wall-3: #2e2921;
+  --puzzle-shadow: rgb(26 29 35 / 0.32);
 
   /** Rare, barely visible lift (cards use borders, not shadows). */
   --shadow: 0 1px 2px rgb(26 29 35 / 0.06);
@@ -237,24 +226,11 @@
        from lifted grey to deeper than the page, and the cast shadow
        separates the slab from the background — dark mode needs it more,
        not less */
-    --puzzle-bevel-light: #5b6a7e;
-    --puzzle-wall-1: #39424f;
-    --puzzle-wall-2: #232b36;
-    --puzzle-wall-3: #12171e;
-    --puzzle-wall-mix: color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1));
-    --puzzle-lift:
-      drop-shadow(-3px -3px 0 var(--puzzle-bevel-light))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 0%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 11%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 22%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 33%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 44%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 56%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 67%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 78%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 89%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 100%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(0 32px 38px rgb(0 0 0 / 0.65));
+    --puzzle-bevel-light: #8fa3bd;
+  --puzzle-wall-1: #3a4250;
+  --puzzle-wall-2: #232a35;
+  --puzzle-wall-3: #0a0d12;
+  --puzzle-shadow: rgb(0 0 0 / 0.7);
   }
 }
 
@@ -282,22 +258,9 @@
        from lifted grey to deeper than the page, and the cast shadow
        separates the slab from the background — dark mode needs it more,
        not less */
-    --puzzle-bevel-light: #5b6a7e;
-    --puzzle-wall-1: #39424f;
-    --puzzle-wall-2: #232b36;
-    --puzzle-wall-3: #12171e;
-    --puzzle-wall-mix: color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1));
-    --puzzle-lift:
-      drop-shadow(-3px -3px 0 var(--puzzle-bevel-light))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 0%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 11%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 22%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 33%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 44%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 56%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 67%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 78%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 89%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(2px 2px 0 color-mix(in srgb, var(--puzzle-wall-3) 100%, color-mix(in srgb, var(--card-accent, var(--panel-color, var(--color-accent))) 34%, var(--puzzle-wall-1))))
-      drop-shadow(0 32px 38px rgb(0 0 0 / 0.65));
+    --puzzle-bevel-light: #8fa3bd;
+  --puzzle-wall-1: #3a4250;
+  --puzzle-wall-2: #232a35;
+  --puzzle-wall-3: #0a0d12;
+  --puzzle-shadow: rgb(0 0 0 / 0.7);
 }
