@@ -14,8 +14,8 @@ summary: "Cada euro vira material, oficinas e oportunidades. Sem intermediários
 
 ## Como doar
 
-- **Transferência bancária** — IBAN `PT50 0000 0000 0000 0000 0000 0` *(PLACEHOLDER)*
-- **MB WAY** — `900 000 000` *(PLACEHOLDER)*
+- **Transferência bancária** — IBAN `PT50 0000 0000 0000 0000 0000 0`
+- **MB WAY** — `900 000 000`
 
 Para doações maiores ou apoio em espécie (material, espaço, transporte), fala connosco primeiro —
 conseguimos sempre arranjar forma de ajudar.

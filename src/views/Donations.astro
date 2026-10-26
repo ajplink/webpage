@@ -41,11 +41,11 @@ const { Content } = await render(page);
           <dl>
             <div>
               <dt>IBAN</dt>
-              <dd>PT50 0000 0000 0000 0000 0000 0 <span class="placeholder">PLACEHOLDER</span></dd>
+              <dd>PT50 0000 0000 0000 0000 0000 0</dd>
             </div>
             <div>
               <dt>MB WAY</dt>
-              <dd>900 000 000 <span class="placeholder">PLACEHOLDER</span></dd>
+              <dd>900 000 000</dd>
             </div>
           </dl>
           <Squiggle />
@@ -100,11 +100,6 @@ const { Content } = await render(page);
   .give-card dd {
     font-family: var(--font-sans);
     overflow-wrap: anywhere;
-  }
-
-  .placeholder {
-    font-size: 0.85em;
-    color: var(--color-accent);
   }
 
   .give-card :global(.button) {
