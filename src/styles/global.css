@@ -149,23 +149,26 @@ main {
  *   .grid--chain  — a row interlocks left-right only (the home page rows);
  *   .grid--puzzle — pieces interlock in a real grid (listing pages), with
  *                   `.grid-gap` empty slots — a puzzle mid-assembly.
- * The joint is a real jigsaw knob — waisted neck, bulbous head, not a
- * semicircle — drawn once as an SVG tile. The tab tile is added to the
- * silhouette; the same tile is XOR'd out for the notch, so at gap 0 every
- * tab exactly fills its neighbour's notch, and the later piece's rim paints
- * over the inserted tab like a real joint. Joint heights walk through four
- * positions (the nth-child rows below) so no two seams line up; joints on
- * horizontal seams keep one width position on purpose — they must pair
- * across rows under any column count, and auto-fill picks the columns.
- * The silhouette is masked pseudo layers behind the content: text is never
- * clipped. Depth: a beveled die-cut edge lit top-left + a soft cast shadow,
- * both following the silhouette. Knob profile after the peacesllc connector
- * (neck pinches, head bulges); knob and depth values live in tokens.css.
+ * The joint is a big jigsaw knob — waisted neck, bulbous head — drawn once
+ * as an SVG tile: the tab tile is added to the silhouette, the same tile is
+ * XOR'd out for the notch, so every tab exactly fills its neighbour's
+ * notch. The knob spans 60% of the tile (~a third of the piece's height
+ * along the edge) and protrudes 38% of it. Joint heights walk through four
+ * positions so no two seams line up; joints on horizontal seams keep one
+ * width position on purpose — they must pair across rows at any column
+ * count, and auto-fill picks the columns. The silhouette is masked pseudo
+ * layers behind the content: text is never clipped (the padding is half the
+ * tile, so a socket cannot reach it).
+ *
+ * The pieces are extruded slabs seen at a shallow angle: the grid tilts in
+ * 3D below, each piece's ::before carries a bright chamfer, a ten-step side
+ * wall (the slab's thickness) and a cast shadow (all in tokens), and hover
+ * lifts a piece out of the plane.
  */
 
 .grid--chain {
-  /* home rows stay rows: three pieces across at any width that fits them */
-  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  /* home rows stay rows: two big pieces across at any width that fits them */
+  grid-template-columns: repeat(auto-fit, minmax(min(28rem, 100%), 1fr));
   column-gap: var(--puzzle-seam);
   row-gap: var(--space-m);
 }
@@ -177,11 +180,12 @@ main {
   gap: var(--puzzle-seam);
 }
 
-/* the shallow 3D view: the whole assembly is seen at a slight angle, so the
-   slabs' side walls (the drop-shadows below) read as thickness */
+/* the shallow 3D view: the whole assembly is seen at a slight angle, and
+   children keep their Z so hover can pop a piece out of the plane */
 .grid--chain,
 .grid--puzzle {
   transform: perspective(2200px) rotateX(7deg) rotateY(-2.5deg);
+  transform-style: preserve-3d;
 }
 
 ul.grid--chain > *:not(.grid-gap),
@@ -190,18 +194,26 @@ ul.grid--puzzle > *:not(.grid-gap) {
   --tab-pct: 50%;
   --notch-pct: 50%;
   --piece-accent: var(--card-accent, var(--panel-color, var(--color-accent)));
-  --piece-fill: var(--color-surface);
+  --piece-fill: color-mix(in srgb, var(--piece-accent) 16%, var(--color-surface));
   --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), var(--puzzle-wall-3));
   position: relative;
   isolation: isolate;
-  padding: var(--space-l);
+  padding: calc(var(--r) / 2);
   background: none;
   border: none;
   border-radius: 0;
+  transition: transform var(--duration-slow) var(--ease);
 }
 
-/* the piece body: the same silhouette grown 2px behind the fill = the die-
-   cut edge line; its drop-shadows are the side walls and the cast shadow */
+/* hover: the piece pops out of the plane and its face warms */
+ul.grid--chain > *:not(.grid-gap):hover,
+ul.grid--puzzle > *:not(.grid-gap):hover {
+  transform: translateZ(48px);
+  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), color-mix(in srgb, var(--color-primary) 35%, var(--puzzle-wall-3)));
+}
+
+/* the extrusion wall + cast shadow: the same silhouette grown 2px behind
+   the fill (the chamfer line), carrying the drop-shadow stack */
 ul.grid--chain > *:not(.grid-gap)::before,
 ul.grid--puzzle > *:not(.grid-gap)::before {
   content: '';
@@ -213,7 +225,7 @@ ul.grid--puzzle > *:not(.grid-gap)::before {
   filter: var(--puzzle-lift);
 }
 
-/* the fill: the top face — gently domed so the light reads on it */
+/* the fill: the top face — gently domed and tinted by the piece's accent */
 ul.grid--chain > *:not(.grid-gap)::after,
 ul.grid--puzzle > *:not(.grid-gap)::after {
   content: '';
@@ -221,7 +233,7 @@ ul.grid--puzzle > *:not(.grid-gap)::after {
   inset: var(--piece-inset);
   pointer-events: none;
   z-index: -1;
-  background-image: linear-gradient(125deg, color-mix(in srgb, var(--piece-accent) 15%, var(--color-surface)) 0%, var(--color-surface) 48%, color-mix(in srgb, var(--puzzle-wall-2) 14%, var(--color-surface)) 100%);
+  background-image: linear-gradient(125deg, color-mix(in srgb, var(--piece-accent) 32%, var(--color-surface)) 0%, transparent 55%);
   background-color: var(--piece-fill);
   transition: background-color var(--duration) var(--ease);
 }
@@ -237,40 +249,31 @@ ul.grid--puzzle > *:not(.grid-gap)::after {
   mask-composite: var(--piece-mask-composite);
 }
 
-/* hover: the piece warms up, never lifts (the no-after-click-effects rule) */
-ul.grid--chain > *:not(.grid-gap):hover,
-ul.grid--puzzle > *:not(.grid-gap):hover {
-  --piece-fill: color-mix(in srgb, var(--color-primary) 7%, var(--color-surface));
-  --piece-bevel: linear-gradient(145deg, var(--puzzle-bevel-light), color-mix(in srgb, var(--color-primary) 35%, var(--puzzle-wall-3)));
-}
-
-/* Joint tiles: one jigsaw knob, right-pointing (viewBox 100×60 — knob from
-   the tile's centre-line rightward: tapered neck + r22 head) and its
-   downward twin (viewBox 60×100). Tile = 2 knobs wide/deep × 1.2 knobs
-   across the seam, so `100%`/`-var(--r)` positions land the tile's centre
+/* Joint tiles: one big jigsaw knob (waisted neck, bulbous head), right-
+   pointing and its downward twin — 100-unit tile, knob spans 60 units of
+   the edge and protrudes 38, so the offsets below land the tile's centre
    exactly on the seam. */
 ul.grid--chain > *:not(.grid-gap),
 ul.grid--puzzle > *:not(.grid-gap) {
-  --joint-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Cpath fill='%23000' d='M50 17L64 15L64 45L50 43Z M98 30A22 22 0 1 1 54 30A22 22 0 1 1 98 30Z'/%3E%3C/svg%3E");
-  --joint-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 100'%3E%3Cpath fill='%23000' d='M13 50L15 64L45 64L47 50Z M30 98A22 22 0 1 1 30 54A22 22 0 1 1 30 98Z'/%3E%3C/svg%3E");
+  --joint-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23000' d='M50 33C54 31 59 27 62 20A30 30 0 0 1 62 80C59 73 54 69 50 67Z'/%3E%3C/svg%3E");
+  --joint-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23000' d='M33 50C31 54 27 59 20 62A30 30 0 0 0 80 62C73 59 69 54 67 50Z'/%3E%3C/svg%3E");
 }
 
-/* one piece, chain: tab right + notch left. The box grows by --r on the
-   right to house the tab (gradients never paint outside their layer box);
-   the body tile is the base, the notch is XOR'd out of it, the tab is
-   added last. */
+/* one piece, chain: tab right + notch left. The box grows by 0.38·--r on
+   the right to house the tab; the body tile is the base, the notch is XOR'd
+   out of it, the tab is added last. */
 ul.grid--chain > *:not(.grid-gap) {
-  --piece-inset: 0 calc(-1 * var(--r)) 0 0;
-  --piece-inset-grown: -2px calc(-1 * var(--r) - 2px) -2px -2px;
+  --piece-inset: 0 calc(-0.38 * var(--r)) 0 0;
+  --piece-inset-grown: -2px calc(-0.38 * var(--r) - 2px) -2px -2px;
   --piece-mask-image: var(--joint-h), var(--joint-h), linear-gradient(#000, #000);
   --piece-mask-position:
-    100% calc(var(--tab-pct) - var(--r) * 0.6),
-    calc(-1 * var(--r)) calc(var(--notch-pct) - var(--r) * 0.6),
+    calc(100% + var(--r) * 0.12) calc(var(--tab-pct) - var(--r) * 0.5),
+    calc(var(--r) * -0.5) calc(var(--notch-pct) - var(--r) * 0.5),
     0 0;
   --piece-mask-size:
-    calc(2 * var(--r)) calc(1.2 * var(--r)),
-    calc(2 * var(--r)) calc(1.2 * var(--r)),
-    calc(100% - var(--r)) 100%;
+    var(--r) var(--r),
+    var(--r) var(--r),
+    calc(100% - 0.38 * var(--r)) 100%;
   --piece-mask-composite: add, exclude, add;
 }
 
@@ -278,21 +281,21 @@ ul.grid--chain > *:not(.grid-gap) {
    plus the vertical pair; horizontal-seam joints sit at mid-width (they
    must pair across rows at any column count). */
 ul.grid--puzzle > *:not(.grid-gap) {
-  --piece-inset: 0 calc(-1 * var(--r)) calc(-1 * var(--r)) 0;
-  --piece-inset-grown: -2px calc(-1 * var(--r) - 2px) calc(-1 * var(--r) - 2px) -2px;
+  --piece-inset: 0 calc(-0.38 * var(--r)) calc(-0.38 * var(--r)) 0;
+  --piece-inset-grown: -2px calc(-0.38 * var(--r) - 2px) calc(-0.38 * var(--r) - 2px) -2px;
   --piece-mask-image: var(--joint-h), var(--joint-v), var(--joint-h), var(--joint-v), linear-gradient(#000, #000);
   --piece-mask-position:
-    100% calc(var(--tab-pct) - var(--r) * 0.6),
-    50% 100%,
-    calc(-1 * var(--r)) calc(var(--notch-pct) - var(--r) * 0.6),
-    50% calc(-1 * var(--r)),
+    calc(100% + var(--r) * 0.12) calc(var(--tab-pct) - var(--r) * 0.5),
+    50% calc(100% + var(--r) * 0.12),
+    calc(var(--r) * -0.5) calc(var(--notch-pct) - var(--r) * 0.5),
+    50% calc(var(--r) * -0.5),
     0 0;
   --piece-mask-size:
-    calc(2 * var(--r)) calc(1.2 * var(--r)),
-    calc(1.2 * var(--r)) calc(2 * var(--r)),
-    calc(2 * var(--r)) calc(1.2 * var(--r)),
-    calc(1.2 * var(--r)) calc(2 * var(--r)),
-    calc(100% - var(--r)) calc(100% - var(--r));
+    var(--r) var(--r),
+    var(--r) var(--r),
+    var(--r) var(--r),
+    var(--r) var(--r),
+    calc(100% - 0.38 * var(--r)) calc(100% - 0.38 * var(--r));
   --piece-mask-composite: add, add, exclude, exclude, add;
 }
 

@@ -27,9 +27,9 @@ const [{ upcoming }, news, allProjects] = await Promise.all([
   projects(locale),
 ]);
 
-const featuredEvents = upcoming.slice(0, 3);
-const latestNews = news.slice(0, 3);
-const featuredProjects = allProjects.slice(0, 3);
+const featuredEvents = upcoming.slice(0, 2);
+const latestNews = news.slice(0, 2);
+const featuredProjects = allProjects.slice(0, 2);
 const leadNames = new Map<string, string[]>();
 for (const project of featuredProjects) {
   leadNames.set(project.slug, (await projectLeads(project, locale)).map((m) => m.data.name));
