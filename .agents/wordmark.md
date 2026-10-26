@@ -71,6 +71,36 @@ run (24 Oct 2026): tip error 0.5–0.8 px at p = 0.30/0.55/0.80, revealed
 ink grows monotonically (993 → 2243 sampled px live), reduced motion shows
 the finished word immediately with the tip's computed opacity 0.
 
+## Performance
+
+The write is the page's only expensive animation — measured (25 Oct 2026,
+Lighthouse mobile emulation, `/pt/`):
+
+- with the write: performance 71–79, ~0.6–1 s of main-thread blocking over
+  its 1.6 s;
+- with the write disabled: 91–99, blocking 37–340 ms.
+
+Cause: the ink is one ~3000-unit path re-rasterised every frame through
+nested image + dash masks, once per strand. Two mitigations are already
+in place:
+
+1. The two Latin woff2 faces are preloaded in `Base.astro` (first content
+   paint on `/pt/` measured 1.8 s → 1.13 s).
+2. The write is held paused until load + a free frame
+   (`html.js:not(.wordmark-go)` in `Logo.astro`, released by `robot.js`),
+   so the page paints and is interactive immediately and the word writes
+   a beat later. Without JS nothing pauses; reduced motion shows the
+   finished word.
+
+**Recorded option, not built:** to make the write itself free, replace the
+stroke reveal with pre-sliced static reveals — ~48 copies of each strand
+whose `stroke-dasharray` windows each show one slice of the path, faded in
+sequence (opacity is compositor-only: rasterise once, cross-fade), with
+the marker dot as a transform-animated marker. Same look, no per-frame
+raster. It reworks this model's internals, so it needs Ricardo's nod
+before it is attempted. Cheaper lever in the meantime: `--draw-duration`
+(1.6 → 1.2 s cuts the work by a quarter).
+
 ## Iterating (the workflow that worked)
 
 1. Edit the anchors in `scripts/penpath.py` (each is labelled with the
