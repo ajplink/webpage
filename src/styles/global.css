@@ -162,7 +162,7 @@ main {
  *
  * The pieces are extruded slabs seen at a shallow angle: the grid tilts in
  * 3D below, and the piece element carries the whole depth stack as one
- * filter — chamfer, twenty-step side wall and cast shadow (values in
+ * filter — chamfer, twelve-step side wall and cast shadow (values in
  * tokens) — all derived from the single fill silhouette so nothing can
  * misregister. The filter lives on the element, never on a masked pseudo:
  * CSS applies filter BEFORE mask, so a pseudo's shadows are clipped by its
@@ -204,32 +204,25 @@ ul.grid--puzzle > *:not(.grid-gap) {
   background: none;
   border: none;
   border-radius: 0;
+  will-change: transform;
   /* Walls + cast shadow follow the silhouette — see the mask-order note.
      A declaration (not a custom property): var()s inside a custom property
      resolve where it is declared (:root), which is exactly what made the
      walls render in the fallback accent instead of the card's own. */
   filter: drop-shadow(-2px -2px 0 var(--puzzle-bevel-light))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 0%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 5%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 11%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 16%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 21%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 26%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 32%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 37%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 42%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 47%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 53%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 58%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 63%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 68%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 74%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 79%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 84%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 89%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 95%, var(--puzzle-wall-1))))
-    drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 100%, var(--puzzle-wall-1))))
-    drop-shadow(0 30px 34px var(--puzzle-shadow));
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 0%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 9%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 18%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 27%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 36%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 45%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 55%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 64%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 73%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 82%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 91%, var(--puzzle-wall-1))))
+    drop-shadow(2px 2px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 100%, var(--puzzle-wall-1))))
+    drop-shadow(0 18px 20px var(--puzzle-shadow));
   transition: transform var(--duration-slow) var(--ease);
 }
 

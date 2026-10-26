@@ -111,11 +111,11 @@ on 25 Oct 2026:
 the Astro dev toolbar (~1 MB of JS) and halves the performance score. Always
 measure the built output.
 
-Page weight (home, excluding images): **112 KB** — HTML 16 KB + CSS 5 KB + JS
+Page weight (home, excluding images): **115 KB** — HTML 16 KB + CSS 8 KB + JS
 2 KB (all gzip) + Fraunces 67 KB and Space Grotesk 22 KB (woff2, Latin subsets
 only; latin-ext/vietnamese stay unfetched thanks to `unicode-range`). Inside
-the 150 KB budget. (Was 65 KB with the single Bricolage family; the display
-serif is what carries the extra 47 KB.) Images are excluded from the
+the 150 KB budget. (The CSS grew with the die-cut puzzle slabs — the
+extrusion filter chain — and is still well inside budget.) Images are excluded from the
 budget and are emitted by Astro as AVIF/WebP with explicit dimensions.
 
 Reproduce (Lighthouse is intentionally not a project dependency):
