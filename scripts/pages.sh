@@ -15,6 +15,12 @@ set -euo pipefail
 REPO="${PAGES_MIRROR:-layzyoldman/webpage-test}"
 SITE="https://${REPO%%/*}.github.io/${REPO#*/}/"
 
+# Run gh as the mirror's owner: the active gh account may be a read-only
+# collaborator, and the Pages endpoints 404 without write access.
+if OWNER_TOKEN="$(gh auth token -u "${REPO%%/*}" 2>/dev/null)"; then
+  export GH_TOKEN="$OWNER_TOKEN"
+fi
+
 case "${1:-status}" in
   on)
     git push mirror master
