@@ -161,11 +161,12 @@ main {
  * tile, so a socket cannot reach it).
  *
  * The pieces are extruded slabs seen at a shallow angle: the grid tilts in
- * 3D below, the piece element carries the extrusion filter (ten-step side
- * wall + cast shadow, in tokens) and its ::before the flat chamfer. The
- * filter lives on the element, never on a masked pseudo: CSS applies
- * filter BEFORE mask, so a pseudo's shadows are clipped by its own
- * silhouette (measured: zero pixels below the edge).
+ * 3D below, and the piece element carries the whole depth stack as one
+ * filter — chamfer, twenty-step side wall and cast shadow (values in
+ * tokens) — all derived from the single fill silhouette so nothing can
+ * misregister. The filter lives on the element, never on a masked pseudo:
+ * CSS applies filter BEFORE mask, so a pseudo's shadows are clipped by its
+ * own silhouette (measured: zero pixels below the edge).
  */
 
 .grid--chain {
@@ -207,7 +208,7 @@ ul.grid--puzzle > *:not(.grid-gap) {
      A declaration (not a custom property): var()s inside a custom property
      resolve where it is declared (:root), which is exactly what made the
      walls render in the fallback accent instead of the card's own. */
-  filter: drop-shadow(-3px -3px 0 var(--puzzle-bevel-light))
+  filter: drop-shadow(-2px -2px 0 var(--puzzle-bevel-light))
     drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 0%, var(--puzzle-wall-1))))
     drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 5%, var(--puzzle-wall-1))))
     drop-shadow(1px 1px 0 color-mix(in srgb, var(--piece-accent) 48%, color-mix(in srgb, var(--puzzle-wall-3) 11%, var(--puzzle-wall-1))))
@@ -239,18 +240,6 @@ ul.grid--puzzle > *:not(.grid-gap):hover {
   --piece-fill: color-mix(in srgb, var(--piece-accent) 32%, var(--color-surface));
 }
 
-/* the extrusion wall + cast shadow: the same silhouette grown 2px behind
-   the fill (the chamfer line), carrying the drop-shadow stack */
-ul.grid--chain > *:not(.grid-gap)::before,
-ul.grid--puzzle > *:not(.grid-gap)::before {
-  content: '';
-  position: absolute;
-  inset: var(--piece-inset-grown);
-  pointer-events: none;
-  z-index: -2;
-  background-color: var(--puzzle-bevel-light);
-}
-
 /* the fill: the top face — gently domed and tinted by the piece's accent */
 ul.grid--chain > *:not(.grid-gap)::after,
 ul.grid--puzzle > *:not(.grid-gap)::after {
@@ -263,8 +252,6 @@ ul.grid--puzzle > *:not(.grid-gap)::after {
   transition: background-color var(--duration) var(--ease);
 }
 
-ul.grid--chain > *:not(.grid-gap)::before,
-ul.grid--puzzle > *:not(.grid-gap)::before,
 ul.grid--chain > *:not(.grid-gap)::after,
 ul.grid--puzzle > *:not(.grid-gap)::after {
   mask-image: var(--piece-mask-image);
@@ -274,14 +261,15 @@ ul.grid--puzzle > *:not(.grid-gap)::after {
   mask-composite: var(--piece-mask-composite);
 }
 
-/* Joint tiles: one big jigsaw knob (waisted neck, bulbous head), right-
-   pointing and its downward twin — 100-unit tile, knob spans 60 units of
-   the edge and protrudes 38, so the offsets below land the tile's centre
-   exactly on the seam. */
+/* Joint tiles: the classic jigsaw joint from Ricardo's drawing — a big
+   ball (56 units) hugging the edge, short concave scallops, narrow opening
+   (24 units). Ball protrudes 42 units into the neighbour (and cuts 42 into
+   this piece for the socket). Tile is --puzzle-knob square; the offsets
+   below land the tile's centre exactly on the seam. */
 ul.grid--chain > *:not(.grid-gap),
 ul.grid--puzzle > *:not(.grid-gap) {
-  --joint-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23000' d='M50 33C50 26 55 21 62 20A30 30 0 0 1 62 80C55 79 50 74 50 67Z'/%3E%3C/svg%3E");
-  --joint-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23000' d='M67 50C74 50 79 55 80 62A30 30 0 0 1 20 62C21 55 26 50 33 50Z'/%3E%3C/svg%3E");
+  --joint-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23000' d='M50 38C50 33 53 28 57 23A28 28 0 0 1 57 77C53 72 50 67 50 62Z'/%3E%3C/svg%3E");
+  --joint-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23000' d='M62 50C67 50 72 53 77 57A28 28 0 0 1 23 57C28 53 33 50 38 50Z'/%3E%3C/svg%3E");
 }
 
 /* one piece, chain: tab right + notch left. The box grows by 0.38·--r on
@@ -293,11 +281,10 @@ ul.grid--chain > *:not(.grid-gap) {
 }
 ul.grid--chain > *:not(.grid-gap) {
   --piece-inset: 0 calc(-0.38 * var(--r)) 0 0;
-  --piece-inset-grown: -2px calc(-0.38 * var(--r) - 2px) -2px -2px;
   --piece-mask-image: var(--joint-h), var(--joint-h), linear-gradient(#000, #000);
   --piece-mask-position:
     calc(100% + var(--r) * 0.12) calc(var(--tab-pct) - var(--r) * 0.5),
-    calc(var(--r) * -0.5) calc(var(--notch-pct) - var(--r) * 0.5),
+    calc(var(--r) * -0.5 - var(--puzzle-seam)) calc(var(--notch-pct) - var(--r) * 0.5),
     0 0;
   --piece-mask-size:
     var(--r) var(--r),
@@ -311,13 +298,12 @@ ul.grid--chain > *:not(.grid-gap) {
    must pair across rows at any column count). */
 ul.grid--puzzle > *:not(.grid-gap) {
   --piece-inset: 0 calc(-0.38 * var(--r)) calc(-0.38 * var(--r)) 0;
-  --piece-inset-grown: -2px calc(-0.38 * var(--r) - 2px) calc(-0.38 * var(--r) - 2px) -2px;
   --piece-mask-image: var(--joint-h), var(--joint-v), var(--joint-h), var(--joint-v), linear-gradient(#000, #000);
   --piece-mask-position:
     calc(100% + var(--r) * 0.12) calc(var(--tab-pct) - var(--r) * 0.5),
     50% calc(100% + var(--r) * 0.12),
-    calc(var(--r) * -0.5) calc(var(--notch-pct) - var(--r) * 0.5),
-    50% calc(var(--r) * -0.5),
+    calc(var(--r) * -0.5 - var(--puzzle-seam)) calc(var(--notch-pct) - var(--r) * 0.5),
+    50% calc(var(--r) * -0.5 - var(--puzzle-seam)),
     0 0;
   --piece-mask-size:
     var(--r) var(--r),
