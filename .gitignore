@@ -13,6 +13,9 @@ npm-debug.log*
 .vscode/
 .idea/
 
+# agent working notes (never publish)
+.pi/
+
 # local env overrides (none used by the site itself)
 .env
 .env.production
