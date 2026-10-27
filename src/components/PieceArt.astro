@@ -2,44 +2,37 @@
 /**
  * PieceArt — the die-cut jigsaw slab behind a card's content.
  *
- * All vector, no filters, no raster layers: the slab bodies are rounded
- * boxes and the joints are small SVGs (crisp at any zoom, cheap to paint —
- * the old masked filter stack rasterised and blurred under the grid
- * transform: that was both the pixelation and the lag).
+ * Pure structure, no geometry: three extrusion layers, each a body box
+ * plus two joint tiles. ALL the shape lives in global.css as two data-URI
+ * tiles (--joint-lr, --joint-tb) that serve both as the knob fill (masked
+ * spans) and as the socket cut (mask-composite on the bodies) — so a knob
+ * and its socket are the same shape BY CONSTRUCTION and the pieces must
+ * fit (see the placement rule in global.css). All vector, no filters: the
+ * old masked filter stack rasterised and blurred under the grid's
+ * transform — that was both the pixelation and the lag.
  *
- * Four layers, back to front:
- *   piece-shadow — the cast shadow, below only (the grid tilts on one axis,
- *                  so the bottom edge is the only side we see);
+ * Three layers, back to front (the grid tilts on one axis, so the bottom
+ * edge is the only side we see):
+ *   piece-shadow — the cast shadow, below only;
  *   piece-wall   — the slab's side wall below the face;
- *   piece-face   — the flat face, with the sockets cut in the page colour;
- *   piece-knobs  — the piece's own balls, painted above every face so a
- *                  neighbour's ball always fills the socket it mates with.
- * The joint is the classic shape from Ricardo's outline — big ball hugging
- * the edge, short concave scallops, narrow opening — at edge midpoints.
+ *   piece-face   — the flat face, sockets cut through every layer.
  */
 ---
 
 <span class="piece piece-base" aria-hidden="true">
   <span class="piece-shadow">
     <span class="piece-body"></span>
-    <svg class="joint joint-r" width="88" height="100" viewBox="0 0 88 100"><path d="M0 22.5C0 14 14 5 22 2.6A50 50 0 1 1 22 97.4C14 95 0 86 0 77.5Z"/></svg>
-    <svg class="joint joint-b" width="100" height="88" viewBox="0 0 100 88"><path d="M77.5 0C86 0 95 14 97.4 22A50 50 0 1 1 2.6 22C5 14 14 0 22.5 0Z"/></svg>
+    <span class="joint joint-r"></span>
+    <span class="joint joint-b"></span>
   </span>
   <span class="piece-wall">
     <span class="piece-body"></span>
-    <svg class="joint joint-r" width="88" height="100" viewBox="0 0 88 100"><path d="M0 22.5C0 14 14 5 22 2.6A50 50 0 1 1 22 97.4C14 95 0 86 0 77.5Z"/></svg>
-    <svg class="joint joint-b" width="100" height="88" viewBox="0 0 100 88"><path d="M77.5 0C86 0 95 14 97.4 22A50 50 0 1 1 2.6 22C5 14 14 0 22.5 0Z"/></svg>
+    <span class="joint joint-r"></span>
+    <span class="joint joint-b"></span>
   </span>
   <span class="piece-face">
     <span class="piece-body"></span>
-    <svg class="joint joint-r" width="88" height="100" viewBox="0 0 88 100"><path d="M0 22.5C0 14 14 5 22 2.6A50 50 0 1 1 22 97.4C14 95 0 86 0 77.5Z"/></svg>
-    <svg class="joint joint-b" width="100" height="88" viewBox="0 0 100 88"><path d="M77.5 0C86 0 95 14 97.4 22A50 50 0 1 1 2.6 22C5 14 14 0 22.5 0Z"/></svg>
-    <svg class="joint joint-l" width="88" height="100" viewBox="0 0 88 100"><path class="piece-socket" d="M0 22.5C0 14 14 5 22 2.6A50 50 0 1 1 22 97.4C14 95 0 86 0 77.5Z"/></svg>
-    <svg class="joint joint-t" width="100" height="88" viewBox="0 0 100 88"><path class="piece-socket" d="M77.5 0C86 0 95 14 97.4 22A50 50 0 1 1 2.6 22C5 14 14 0 22.5 0Z"/></svg>
+    <span class="joint joint-r"></span>
+    <span class="joint joint-b"></span>
   </span>
-</span>
-
-<span class="piece piece-knobs" aria-hidden="true">
-  <svg class="joint joint-r" width="88" height="100" viewBox="0 0 88 100"><path d="M0 22.5C0 14 14 5 22 2.6A50 50 0 1 1 22 97.4C14 95 0 86 0 77.5Z"/></svg>
-  <svg class="joint joint-b" width="100" height="88" viewBox="0 0 100 88"><path d="M77.5 0C86 0 95 14 97.4 22A50 50 0 1 1 2.6 22C5 14 14 0 22.5 0Z"/></svg>
 </span>
