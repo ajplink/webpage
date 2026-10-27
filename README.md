@@ -154,8 +154,7 @@ there as commented-out rules — **never enable it site-wide**.
 
 Canonical URLs use a trailing slash (`/pt/sobre/`), matching the directory
 output. `/` mirrors the Portuguese home with a canonical pointing at `/pt/`.
-Update `SITE.url` in `src/config/site.ts` before going live (currently the
-placeholder `https://plink.example`).
+`SITE.url` in `src/config/site.ts` is the canonical origin (`https://plink.pt`).
 
 ## Decisions worth reviewing
 
