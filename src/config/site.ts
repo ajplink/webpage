@@ -48,8 +48,8 @@ export type Localized = Record<Locale, string>;
 /* --------------------------------------------------------------- identity */
 
 export const SITE = {
-  /** Public origin, no trailing slash. PLACEHOLDER domain. */
-  url: 'https://plink.example', // PLACEHOLDER
+  /** Public origin, no trailing slash. Custom domain served by statichost. */
+  url: 'https://plink.pt',
   /** Site name used in titles, headers and JSON-LD. */
   name: 'Associação Plink',
   /** Full legal designation. PLACEHOLDER. */
